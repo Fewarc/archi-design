@@ -10,7 +10,8 @@ import Divider from "@/_components/Divider";
 import Input from "@/_components/Input";
 import Button from "@/_components/Button";
 
-export default function Home() {
+
+const Home: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
@@ -83,3 +84,5 @@ export default function Home() {
     </div>
   );
 }
+
+export default Home;
