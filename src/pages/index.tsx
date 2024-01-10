@@ -10,7 +10,6 @@ import Divider from "@/_components/Divider";
 import Input from "@/_components/Input";
 import Button from "@/_components/Button";
 
-
 const Home: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -38,7 +37,7 @@ const Home: React.FC = () => {
           <h2 className="text-2xl">Zaloguj się, aby rozpocząć</h2>
         </div>
         <div className="mt-16 flex w-full flex-col gap-y-4 sm:mt-4">
-          <GoogleSignIn redirectUrl="/projects"/>
+          <GoogleSignIn redirectUrl="/projects" />
           <Divider className="my-2 text-xs font-semibold">lub</Divider>
           <Input
             value={email}
@@ -83,6 +82,6 @@ const Home: React.FC = () => {
       </div>
     </div>
   );
-}
+};
 
 export default Home;
