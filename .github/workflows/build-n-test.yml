@@ -9,6 +9,7 @@ on:
 env:
   DATABASE_URL: ${{ secrets.DATABASE_URL }}
   NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+  NEXTAUTH_URL: http://localhost:3000
 
 jobs:
   build:
