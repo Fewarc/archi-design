@@ -29,6 +29,7 @@
       "@/*": ["./src/*"]
     }
   },
+  "types": ["cypress"],
   "include": [
     ".eslintrc.cjs",
     "next-env.d.ts",
