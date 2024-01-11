@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [ "main" ]
 
+env:
+  DATABASE_URL: test
+  NEXTAUTH_SECRET: test
+
 jobs:
   build:
     runs-on: ubuntu-latest
