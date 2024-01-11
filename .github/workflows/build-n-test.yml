@@ -7,8 +7,8 @@ on:
     branches: [ "main" ]
 
 env:
-  DATABASE_URL: test
-  NEXTAUTH_SECRET: test
+  DATABASE_URL: ${{ secrets.DATABASE_URL }}
+  NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
 
 jobs:
   build:
