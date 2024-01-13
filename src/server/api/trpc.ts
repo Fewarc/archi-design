@@ -7,7 +7,7 @@
  * need to use are documented accordingly near the end.
  */
 
-import { initTRPC } from "@trpc/server";
+import { TRPCError, initTRPC } from "@trpc/server";
 import { type Session } from "next-auth";
 import superjson from "superjson";
 import { ZodError } from "zod";
@@ -15,7 +15,6 @@ import { ZodError } from "zod";
 import { getServerAuthSession } from "@/server/auth";
 import { db } from "@/server/db";
 import { CreateNextContextOptions } from "@trpc/server/adapters/next";
-import { TRPCError } from "node_modules/@trpc/server/dist/error/TRPCError";
 import { ErrorFormatterInput } from "@/utils/types";
 
 /**
