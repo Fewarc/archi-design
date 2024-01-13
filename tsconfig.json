@@ -28,7 +28,7 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "types": ["cypress"]
+    "types": ["jest", "cypress"]
   },
   "include": [
     ".eslintrc.cjs",
@@ -39,5 +39,5 @@
     "**/*.js",
     ".next/types/**/*.ts"
   ],
-  "exclude": ["node_modules", "./cypress.config.ts", "**/*.test.ts"]
+  "exclude": ["./cypress.config.ts"]
 }
