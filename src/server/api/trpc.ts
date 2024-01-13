@@ -7,14 +7,16 @@
  * need to use are documented accordingly near the end.
  */
 
-import { initTRPC, TRPCError } from "@trpc/server";
-import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
+import { initTRPC } from "@trpc/server";
 import { type Session } from "next-auth";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
 import { getServerAuthSession } from "@/server/auth";
 import { db } from "@/server/db";
+import { CreateNextContextOptions } from "@trpc/server/adapters/next";
+import { TRPCError } from "node_modules/@trpc/server/dist/error/TRPCError";
+import { ErrorFormatterInput } from "@/utils/types";
 
 /**
  * 1. CONTEXT
@@ -51,11 +53,12 @@ const createInnerTRPCContext = (opts: CreateContextOptions) => {
  *
  * @see https://trpc.io/docs/context
  */
-export const createTRPCContext = async (opts: CreateNextContextOptions) => {
-  const { req, res } = opts;
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const createTRPCContext = async (_opts: CreateNextContextOptions) => {
+  // const { req, res } = opts;
 
   // Get the session from the server using the getServerSession wrapper function
-  const session = await getServerAuthSession({ req, res });
+  const session = await getServerAuthSession();
 
   return createInnerTRPCContext({
     session,
@@ -72,7 +75,10 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
 
 const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: superjson,
-  errorFormatter({ shape, error }) {
+  errorFormatter({
+    shape,
+    error,
+  }: ErrorFormatterInput) {
     return {
       ...shape,
       data: {

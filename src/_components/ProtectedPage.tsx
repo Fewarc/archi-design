@@ -1,7 +1,7 @@
 "use client"
 import { BuiltInProviderType } from "next-auth/providers/index";
 import { LiteralUnion, getSession, signIn } from "next-auth/react";
-import { ReactNode, useEffect } from "react";
+import { ReactNode } from "react";
 
 interface ProtectedPageProps {
   children: ReactNode;
