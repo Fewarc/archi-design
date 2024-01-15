@@ -2,7 +2,7 @@ import Button from "@/_components/Button";
 import Dropdown from "@/_components/Dropdown";
 import NavBar from "@/_components/NavBar";
 import { DropdownItem } from "@/utils/types";
-import { Search } from "lucide-react";
+import { Plus, Search } from "lucide-react";
 import { NextPage } from "next";
 import { GetSessionParams, getSession } from "next-auth/react";
 import { useState } from "react";
@@ -79,6 +79,12 @@ const Projects: NextPage = () => {
 
   return (
     <div className="relative flex flex-col md:flex md:flex-row">
+      <Button
+        className="fixed bottom-4 right-4 rounded-2xl bg-archi-purple p-4"
+        variant="icon"
+      >
+        <Plus className="text-white" />
+      </Button>
       <NavBar />
       <section className="px-4 pt-9">
         <div className="flex items-center justify-between">
@@ -101,6 +107,7 @@ const Projects: NextPage = () => {
             selectedItems={filter as Array<DropdownItem>}
           />
         </div>
+        <div>PROJEKTY</div>
       </section>
     </div>
   );
