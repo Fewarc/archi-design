@@ -8,8 +8,7 @@ export interface ErrorFormatterInput {
   error: TRPCError;
 }
 
-export interface DropdownItem {
+export interface DropdownItem<T = string> {
   displayName: string;
-  key: string;
-  divide?: boolean;
+  key: T;
 }

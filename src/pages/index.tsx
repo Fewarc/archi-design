@@ -33,7 +33,7 @@ const Home: React.FC = () => {
       <div className="flex h-full w-full flex-col items-center justify-center px-4 sm:max-w-[484px]">
         <Logo />
         <div className="mt-7 text-center font-bold">
-          <h1 className="text-[34px]">Witaj ponownie!</h1>
+          <h1 className="w-full">Witaj ponownie!</h1>
           <h2 className="text-2xl">Zaloguj się, aby rozpocząć</h2>
         </div>
         <div className="mt-16 flex w-full flex-col gap-y-4 sm:mt-4">
