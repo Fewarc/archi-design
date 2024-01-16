@@ -78,7 +78,7 @@ const Projects: NextPage = () => {
   };
 
   return (
-    <div className="relative flex flex-col md:flex md:flex-row">
+    <div className="relative flex flex-col md:flex md:flex-row h-full w-full">
       <Button
         className="fixed bottom-4 right-4 rounded-2xl bg-archi-purple p-4"
         variant="icon"
