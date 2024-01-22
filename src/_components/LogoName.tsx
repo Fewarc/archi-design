@@ -8,7 +8,7 @@ const LogoName: React.FC<LogoNameProps> = ({
   className
 }) => {
   return <div className={cn("border", className)}>
-    LOGO XDDDDDD
+    LOGO NAME
   </div>
 }
 
