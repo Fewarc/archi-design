@@ -7,3 +7,8 @@ export interface ErrorFormatterInput {
   shape: DefaultErrorShape;
   error: TRPCError;
 }
+
+export interface DropdownItem<T = string> {
+  displayName: string;
+  key: T;
+}
