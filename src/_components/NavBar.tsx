@@ -43,7 +43,7 @@ const NavBar: React.FC = () => {
       </Button>
     </section>
   ) : (
-    <section className="flex h-full w-60 flex-col items-center shadow-navbar">
+    <section className="flex h-full min-w-60 flex-col items-center shadow-double">
       <LogoName className="mb-10 mt-10 h-[60px] w-[200px]" />
       <section className="w-full pl-2 pr-2">
         <p className="ml-2 w-full text-xs font-semibold leading-[18px]">
@@ -89,7 +89,7 @@ const NavBar: React.FC = () => {
           <Button
             onClick={() => null}
             variant="defualt"
-            className="mt-4 w-fit justify-start rounded-full border-0 bg-archi-purple px-5 py-2 font-medium text-white"
+            className="mt-4 w-fit justify-start rounded-full border-0 bg-archi-purple px-5 py-2 font-medium text-white shadow-double"
           >
             <Plus className="-ml-1 -mt-0.5 mr-2" />
             Dodaj projekt

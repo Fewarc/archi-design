@@ -1,13 +1,14 @@
 import { cn } from "@/utils/styleUtils";
 import Button from "./Button";
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   variant?: "default" | "border_label";
   label?: React.ReactNode;
   password?: boolean;
-  error?: string | string[];
+  error?: string[];
+  icon?: ReactNode;
   inputClassName?: string;
   className?: string;
 }
@@ -17,6 +18,7 @@ const Input: React.FC<InputProps> = ({
   label,
   password = false,
   error,
+  icon,
   className,
   inputClassName,
   ...props
@@ -26,13 +28,15 @@ const Input: React.FC<InputProps> = ({
   return (
     <div
       className={cn(
-        "h-14 border border-gray-500",
+        "h-14 border border-gray-500 flex",
         {
           "relative rounded-lg border-black": variant === "border_label",
+          "relative border-0 h-fit min-h-[33px] p-0 border-black border-b": variant === "default",
         },
         className,
       )}
     >
+      {!!icon && icon}
       {label && (
         <label
           className={cn("", {
@@ -53,6 +57,7 @@ const Input: React.FC<InputProps> = ({
             "h-full w-full rounded-lg px-4",
             {
               "pr-12": password,
+              "outline-none": variant === "default"
             },
             inputClassName,
           )}
