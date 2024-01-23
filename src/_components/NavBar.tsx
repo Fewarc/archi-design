@@ -4,14 +4,20 @@ import {
   Bookmark,
   CircleUserRound,
   Folder,
+  LogOut,
   Menu as MenuIcon,
+  PieChart,
   Plus,
+  Settings,
+  ShoppingCart,
 } from "lucide-react";
 import Logo from "./Logo";
 import LogoName from "./LogoName";
 import { useRouter } from "next/router";
 import { cn } from "@/utils/styleUtils";
 import Divider from "./Divider";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
 
 type MockProject = {
   name: string;
@@ -20,10 +26,9 @@ type MockProject = {
 const NavBar: React.FC = () => {
   const isMobile = useMediaQuery("(max-width: 768px)");
   const router = useRouter();
+  const { data: session } = useSession();
 
-  console.log(router);
-
-  const activeProjects: MockProject[] = Array(3).fill({
+  const mockActiveProjects: MockProject[] = Array(3).fill({
     name: "Kasia, Gliwice",
   });
 
@@ -70,7 +75,7 @@ const NavBar: React.FC = () => {
         <p className="ml-2 w-full text-xs font-semibold leading-[18px]">
           PROJEKTY
         </p>
-        {activeProjects.map((project) => (
+        {mockActiveProjects.map((project) => (
           <Button
             onClick={() => null}
             variant="borderless"
@@ -80,24 +85,70 @@ const NavBar: React.FC = () => {
             <h5 className="ml-2 mt-0.5">{project.name}</h5>
           </Button>
         ))}
-        <div className="w-full flex justify-center">
+        <div className="flex w-full justify-center">
           <Button
             onClick={() => null}
             variant="defualt"
-            className="mt-4 w-fit justify-start py-2 px-5 font-medium text-white bg-archi-purple rounded-full border-0"
+            className="mt-4 w-fit justify-start rounded-full border-0 bg-archi-purple px-5 py-2 font-medium text-white"
           >
-            <Plus className="-ml-1 mr-2 -mt-0.5"/>
+            <Plus className="-ml-1 -mt-0.5 mr-2" />
             Dodaj projekt
           </Button>
         </div>
       </section>
-      <div className="w-full flex-grow flex flex-col justify-end">
+      <div className="flex w-full flex-grow flex-col justify-end">
         <section className="w-full pl-2 pr-2">
-        <p className="ml-2 w-full text-xs font-semibold leading-[18px]">
-          OBSZAR ROBOCZY
-        </p>
+          <p className="ml-2 w-full text-xs font-semibold leading-[18px]">
+            OBSZAR ROBOCZY
+          </p>
+          <Button
+            onClick={() => null}
+            variant="defualt"
+            className="mt-2 w-full justify-start border-0 py-2 pl-2 font-medium"
+          >
+            <ShoppingCart />
+            <h5 className="ml-2 mt-0.5">Lista zakupów</h5>
+          </Button>
+          <Button
+            onClick={() => null}
+            variant="defualt"
+            className="mt-2 w-full justify-start border-0 py-2 pl-2 font-medium"
+          >
+            <PieChart />
+            <h5 className="ml-2 mt-0.5">Kosztorys</h5>
+          </Button>
+          <Button
+            onClick={() => null}
+            variant="defualt"
+            className="mt-2 w-full justify-start border-0 py-2 pl-2 font-medium"
+          >
+            <Settings />
+            <h5 className="ml-2 mt-0.5">Ustawienia</h5>
+          </Button>
+          <Button
+            onClick={() => null}
+            variant="defualt"
+            className="mt-2 w-full justify-start border-0 py-2 pl-2 font-medium"
+          >
+            <LogOut />
+            <h5 className="ml-2 mt-0.5">Wyloguj się</h5>
+          </Button>
         </section>
       </div>
+      <Divider className="mt-4 w-full px-4" />
+      <section className="mb-4 mt-4 flex w-full items-center gap-x-2 pl-4">
+        <Image
+          src={session?.user.image!}
+          alt="user google image"
+          width={40}
+          height={40}
+          className="max-h-10 max-w-10 flex-grow rounded-full"
+        />
+        <div>
+          <h5 className="font-medium">{session?.user.name}</h5>
+          <h5 className="text-sm">{session?.user.email}</h5>
+        </div>
+      </section>
     </section>
   );
 };
