@@ -12,7 +12,7 @@ const AddProject: NextPage = () => {
   const [clientName, setClientName] = useState("");
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
-  const [phone, setPhone] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [email, setEmail] = useState("");
 
   const { validate, errors } = useValidation(newProjectSchema);
@@ -23,12 +23,11 @@ const AddProject: NextPage = () => {
       clientName,
       address,
       city,
-      phone,
+      phone: phoneNumber,
       email,
     });
 
     if (!!validatedData) {
-      
     }
   };
 
@@ -74,8 +73,8 @@ const AddProject: NextPage = () => {
         <div className="mt-8 text-[11px]">DANE KONTAKTOWE</div>
         <div className="mt-4 flex flex-col gap-y-4">
           <Input
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
             variant="border_label"
             placeholder="xxx xxx xxx"
             label={<div className="text-xs font-semibold">Numer telefonu</div>}

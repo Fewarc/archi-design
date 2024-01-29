@@ -15,7 +15,6 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-
 // Necessary for Next auth
 model Account {
     id                String  @id @default(cuid()) @map("_id")
@@ -51,4 +50,24 @@ model User {
     emailVerified DateTime?
     accounts      Account[]
     sessions      Session[]
+}
+
+enum ProjectStatus {
+    ACTIVE
+    PAUSED
+    FINISHED
+}
+
+model Project {
+    id              String        @id @default(cuid()) @map("_id")
+    startDate       DateTime      @default(now())
+    updatedAt       DateTime      @updatedAt
+    plannedDeadline DateTime?
+    name            String
+    clientName      String
+    address         String
+    city            String
+    phoneNumber     String
+    email           String
+    status          ProjectStatus @default(ACTIVE)
 }
