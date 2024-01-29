@@ -3,9 +3,11 @@ import Dropdown from "@/_components/Dropdown";
 import Input from "@/_components/Input";
 import NavBar from "@/_components/NavBar";
 import { DropdownItem } from "@/utils/types";
+import { protectRoute } from "@/utils/validation";
 import { ArrowDownUp, Filter, Plus, Search as SearchIcon } from "lucide-react";
 import { NextPage } from "next";
 import { GetSessionParams, getSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 type SortDropdownItem = DropdownItem<"name" | "modified" | "asc" | "desc">;
@@ -54,6 +56,8 @@ const Projects: NextPage = () => {
   >([null, null]);
   const [filter, setFilter] = useState<[FilterDropdownItem | null]>([null]);
 
+  const router = useRouter();
+
   const handleSortSelect = (item: SortDropdownItem) => {
     if (item.key === "name" || item.key === "modified") {
       if (sort[0] === item) {
@@ -83,6 +87,7 @@ const Projects: NextPage = () => {
       <Button
         className="fixed bottom-4 right-4 rounded-2xl bg-archi-purple p-4 md:hidden"
         variant="icon"
+        onClick={() => router.push("/add-project")}
       >
         <Plus className="text-white" />
       </Button>
@@ -132,20 +137,7 @@ const Projects: NextPage = () => {
 };
 
 export async function getServerSideProps(context: GetSessionParams) {
-  const session = await getSession(context);
-
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
-  }
-
-  return {
-    props: { session },
-  };
+  return protectRoute(context);
 }
 
 export default Projects;
