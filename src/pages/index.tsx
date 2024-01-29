@@ -11,8 +11,8 @@ import Input from "@/_components/Input";
 import Button from "@/_components/Button";
 
 const Home: React.FC = () => {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const { errors, validate } = useValidation(loginSchema);
 

@@ -33,7 +33,7 @@ const NavBar: React.FC = () => {
   });
 
   return isMobile ? (
-    <section className="flex w-full items-center justify-between px-4 pt-9">
+    <section className="flex w-full items-center justify-between px-4 pt-7 pb-2 fixed bg-white">
       <Button variant="icon">
         <MenuIcon className="h-8 w-8" strokeWidth={1.2} />
       </Button>
