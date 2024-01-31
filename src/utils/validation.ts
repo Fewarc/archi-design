@@ -30,6 +30,6 @@ export const newProjectSchema = z.object({
   clientName: z.string().min(1, { message: "Pole wymagane." }),
   address: z.string().min(1, { message: "Pole wymagane." }),
   city: z.string().min(1, { message: "Pole wymagane." }),
-  phone: z.string().min(1, { message: "Pole wymagane." }),
+  phoneNumber: z.string().min(1, { message: "Pole wymagane." }),
   email: z.string().email({ message: "Nieprawidłowy adres e-mail." }),
 });

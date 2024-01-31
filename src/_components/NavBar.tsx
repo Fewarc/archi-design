@@ -50,7 +50,7 @@ const NavBar: React.FC = () => {
           MENU GŁÓWNE
         </p>
         <Button
-          onClick={() => null}
+          onClick={() => router.push("/projects")}
           variant="borderless"
           className={cn("mt-2 w-full justify-start py-2 pl-2 font-medium", {
             "bg-archi-purple-light font-bold": router.pathname === "/projects",
@@ -80,6 +80,7 @@ const NavBar: React.FC = () => {
             onClick={() => null}
             variant="borderless"
             className="mt-2 w-full justify-start py-2 pl-2 font-medium"
+            key={"key"}
           >
             <Folder />
             <h5 className="ml-2 mt-0.5">{project.name}</h5>

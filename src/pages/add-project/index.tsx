@@ -6,6 +6,7 @@ import Input from "@/_components/Input";
 import { useState } from "react";
 import Button from "@/_components/Button";
 import { useValidation } from "@/utils/hooks";
+import { api } from "@/utils/api";
 
 const AddProject: NextPage = () => {
   const [name, setName] = useState("");
@@ -17,18 +18,19 @@ const AddProject: NextPage = () => {
 
   const { validate, errors } = useValidation(newProjectSchema);
 
+  const { mutate: createProject } = api.project.create.useMutation();
+
   const handleAddProject = () => {
     const validatedData = validate({
       name,
       clientName,
       address,
       city,
-      phone: phoneNumber,
+      phoneNumber,
       email,
     });
 
-    if (!!validatedData) {
-    }
+    !!validatedData && createProject(validatedData);
   };
 
   return (
@@ -78,7 +80,7 @@ const AddProject: NextPage = () => {
             variant="border_label"
             placeholder="xxx xxx xxx"
             label={<div className="text-xs font-semibold">Numer telefonu</div>}
-            error={errors?.phone?._errors}
+            error={errors?.phoneNumber?._errors}
           />
           <Input
             value={email}

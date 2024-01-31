@@ -27,13 +27,13 @@ const Input: React.FC<InputProps> = ({
 
   return (
     <div>
-
       <div
         className={cn(
-          "h-14 border border-gray-500 flex",
+          "flex h-14 border border-gray-500",
           {
             "relative rounded-lg border-black": variant === "border_label",
-            "relative border-0 h-fit min-h-[33px] p-0 border-black border-b": variant === "default",
+            "relative h-fit min-h-[33px] border-0 border-b border-black p-0":
+              variant === "default",
           },
           className,
         )}
@@ -59,7 +59,7 @@ const Input: React.FC<InputProps> = ({
               "h-full w-full rounded-lg px-4",
               {
                 "pr-12": password,
-                "outline-none": variant === "default"
+                "outline-none": variant === "default",
               },
               inputClassName,
             )}
@@ -77,15 +77,15 @@ const Input: React.FC<InputProps> = ({
           )}
         </div>
       </div>
-      <div className="px-2 pt-1 text-[12px]">
-        {!!error && (
+      {!!error && (
+        <div className="px-2 pt-1 text-[12px]">
           <div className="flex flex-col text-red-500">
             {Array.isArray(error)
               ? error.map((e) => <div key={e}>{e}</div>)
               : error}
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

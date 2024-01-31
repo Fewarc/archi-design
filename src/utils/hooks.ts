@@ -17,14 +17,14 @@ export function useValidation<T extends z.ZodRawShape>(schema: z.ZodObject<T>) {
       >
     >();
 
-  function validate(data: unknown) {
+  function validate<TObject extends Object>(data: TObject) {
     const result = schema.safeParse(data);
 
     if (result.success) {
       const resultData = result.data as unknown as T;
       setData(resultData);
       setErrors(undefined);
-      return resultData;
+      return resultData as unknown as TObject;
     } else {
       const formattedErrors = result.error.format();
       setErrors(formattedErrors);

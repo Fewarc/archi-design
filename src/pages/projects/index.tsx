@@ -2,11 +2,10 @@ import Button from "@/_components/Button";
 import Dropdown from "@/_components/Dropdown";
 import Input from "@/_components/Input";
 import NavBar from "@/_components/NavBar";
+import { api } from "@/utils/api";
 import { DropdownItem } from "@/utils/types";
-import { protectRoute } from "@/utils/validation";
 import { ArrowDownUp, Filter, Plus, Search as SearchIcon } from "lucide-react";
 import { NextPage } from "next";
-import { GetSessionParams, getSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
@@ -100,9 +99,9 @@ const Projects: NextPage = () => {
               <SearchIcon />
             </Button>
             <Button
-              onClick={() => null}
               variant="defualt"
               className="shadow-double hidden w-fit justify-start rounded-full border-0 bg-archi-purple px-5 py-2 font-medium text-white md:flex"
+              onClick={() => router.push("/add-project")}
             >
               <Plus className="-ml-1 -mt-0.5 mr-2" />
               Dodaj projekt
@@ -136,8 +135,8 @@ const Projects: NextPage = () => {
   );
 };
 
-export async function getServerSideProps(context: GetSessionParams) {
-  return protectRoute(context);
-}
+// export async function getServerSideProps(context: GetSessionParams) {
+//   return protectRoute(context);
+// }
 
 export default Projects;

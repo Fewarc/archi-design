@@ -53,11 +53,11 @@ const createInnerTRPCContext = (opts: CreateContextOptions) => {
  * @see https://trpc.io/docs/context
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const createTRPCContext = async (_opts: CreateNextContextOptions) => {
-  // const { req, res } = opts;
+export const createTRPCContext = async (opts: CreateNextContextOptions) => {
+  const { req, res } = opts;
 
   // Get the session from the server using the getServerSession wrapper function
-  const session = await getServerAuthSession();
+  const session = await getServerAuthSession(req, res);
 
   return createInnerTRPCContext({
     session,

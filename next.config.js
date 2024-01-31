@@ -8,7 +8,11 @@ await import("./src/env.js");
 const config = {
   reactStrictMode: true,
   images: {
-    domains: ["lh3.googleusercontent.com"]
+    remotePatterns: [
+      {
+        hostname: "lh3.googleusercontent.com",
+      },
+    ],
   },
   /**
    * If you are using `appDir` then you must comment the below `i18n` config out.
