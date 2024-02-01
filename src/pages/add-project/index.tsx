@@ -7,6 +7,7 @@ import { useState } from "react";
 import Button from "@/_components/Button";
 import { useValidation } from "@/utils/hooks";
 import { api } from "@/utils/api";
+import { useRouter } from "next/router";
 
 const AddProject: NextPage = () => {
   const [name, setName] = useState("");
@@ -16,9 +17,13 @@ const AddProject: NextPage = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [email, setEmail] = useState("");
 
+  const router = useRouter();
+
   const { validate, errors } = useValidation(newProjectSchema);
 
-  const { mutate: createProject } = api.project.create.useMutation();
+  const { mutate: createProject } = api.project.create.useMutation({
+    onSuccess: () => router.push("/projects"),
+  });
 
   const handleAddProject = () => {
     const validatedData = validate({

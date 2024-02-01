@@ -2,10 +2,13 @@ import Button from "@/_components/Button";
 import Dropdown from "@/_components/Dropdown";
 import Input from "@/_components/Input";
 import NavBar from "@/_components/NavBar";
+import ProjectCard from "@/_components/ProjectCard";
 import { api } from "@/utils/api";
 import { DropdownItem } from "@/utils/types";
+import { protectRoute } from "@/utils/validation";
 import { ArrowDownUp, Filter, Plus, Search as SearchIcon } from "lucide-react";
 import { NextPage } from "next";
+import { GetSessionParams } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
@@ -57,6 +60,9 @@ const Projects: NextPage = () => {
 
   const router = useRouter();
 
+  const { data: projects, isLoading: _projectsLoading } =
+    api.project.getAll.useQuery();
+
   const handleSortSelect = (item: SortDropdownItem) => {
     if (item.key === "name" || item.key === "modified") {
       if (sort[0] === item) {
@@ -91,8 +97,8 @@ const Projects: NextPage = () => {
         <Plus className="text-white" />
       </Button>
       <NavBar />
-      <div className="flex h-full w-full justify-center">
-        <section className="w-full max-w-[1142px] px-4 pt-9">
+      <div className="flex h-full w-full flex-col items-center justify-start pt-24">
+        <section className="w-full max-w-[1142px] px-4">
           <div className="flex items-center justify-between">
             <h1>Projekty</h1>
             <Button variant="icon" className="md:hidden">
@@ -100,14 +106,14 @@ const Projects: NextPage = () => {
             </Button>
             <Button
               variant="defualt"
-              className="shadow-double hidden w-fit justify-start rounded-full border-0 bg-archi-purple px-5 py-2 font-medium text-white md:flex"
+              className="hidden w-fit justify-start rounded-full border-0 bg-archi-purple px-5 py-2 font-medium text-white shadow-double md:flex"
               onClick={() => router.push("/add-project")}
             >
               <Plus className="-ml-1 -mt-0.5 mr-2" />
               Dodaj projekt
             </Button>
           </div>
-          <div className="mt-5 flex w-full gap-x-4">
+          <div className="mt-5 flex w-full">
             <Input
               variant="default"
               placeholder="Wyszukaj..."
@@ -120,6 +126,7 @@ const Projects: NextPage = () => {
               onSelect={handleSortSelect}
               selectedItems={sort as Array<SortDropdownItem>}
               icon={<ArrowDownUp strokeWidth={1.2} />}
+              className="mr-4"
             />
             <Dropdown
               label="Filtruj"
@@ -130,13 +137,16 @@ const Projects: NextPage = () => {
             />
           </div>
         </section>
+        <section className="flex flex-col gap-y-3 mt-3 w-full px-4">
+          {projects?.map((project) => <ProjectCard project={project} />)}
+        </section>
       </div>
     </div>
   );
 };
 
-// export async function getServerSideProps(context: GetSessionParams) {
-//   return protectRoute(context);
-// }
+export async function getServerSideProps(context: GetSessionParams) {
+  return protectRoute(context);
+}
 
 export default Projects;

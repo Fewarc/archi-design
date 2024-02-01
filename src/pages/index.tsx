@@ -24,7 +24,6 @@ const Home: React.FC = () => {
 
     if (!!validatedData) {
       // TODO: handle manual login here
-      console.log(validatedData);
     }
   }
 
@@ -70,7 +69,7 @@ const Home: React.FC = () => {
           <div className="flex w-full justify-end text-sm">
             <Button
               variant="link"
-              onClick={() => console.log("forgot password")}
+              onClick={() => null}
             >
               Nie pamiętasz hasła?
             </Button>
