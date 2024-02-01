@@ -11,5 +11,9 @@ export interface ErrorFormatterInput {
 export interface DropdownItem<T = string> {
   displayName: string;
   key: T;
-  onClick?: Function;
+}
+
+export interface ContextMenuItem {
+  displayName: string;
+  onClick: Function;
 }

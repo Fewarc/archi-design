@@ -1,6 +1,8 @@
 import { cn } from "@/utils/styleUtils";
 import { Project } from "@prisma/client";
 import { MoreHorizontal } from "lucide-react";
+import ContextMenu from "./ContextMenu";
+import { ContextMenuItem } from "@/utils/types";
 
 interface ProjectCardProps {
   project: Project;
@@ -12,6 +14,21 @@ const ProjectStatusMap = new Map<Project['status'], string>([
   ["FINISHED", "ZAKOŃCZONY"],
   ["PAUSED", "WSTRZYMANY"]
 ]);
+
+const PROJECT_CONTEXT_MENU_ITEMS: ContextMenuItem[] = [
+  {
+    displayName: "Zmień nazwę",
+    onClick: () => null
+  },
+  {
+    displayName: "Zarchiwizuj",
+    onClick: () => null
+  },
+  {
+    displayName: "Usuń",
+    onClick: () => null
+  },
+]
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ project, className }) => {
   return (
@@ -25,7 +42,9 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, className }) => {
         <div className="h-fit rounded-full bg-archi-purple-dark px-3 text-xs font-medium leading-[18px] text-white">
           {ProjectStatusMap.get(project.status)}
         </div>
-        <MoreHorizontal />
+        <ContextMenu menuItems={PROJECT_CONTEXT_MENU_ITEMS}>
+          <MoreHorizontal />
+        </ContextMenu>
       </section>
       <section className="text-2xl font-bold">{project.name}</section>
       <section className="mt-1 flex justify-between text-[12px] leading-[14px]">
