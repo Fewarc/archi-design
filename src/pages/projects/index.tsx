@@ -100,8 +100,8 @@ const Projects: NextPage = () => {
         <Plus className="text-white" />
       </Button>
       <NavBar />
-      <div className="flex h-full w-full flex-col items-center justify-start pt-24">
-        <section className="w-full max-w-[1142px] px-4">
+      <div className="flex h-full w-full flex-col items-center justify-start pt-24 md:pt-8 md:pl-60">
+        <section className="w-full px-4 max-w-[1400px]">
           <div className="flex items-center justify-between">
             <h1>Projekty</h1>
             <Button variant="icon" className="md:hidden">
@@ -121,7 +121,7 @@ const Projects: NextPage = () => {
               variant="default"
               placeholder="Wyszukaj..."
               icon={<SearchIcon />}
-              className="hidden md:flex"
+              className="hidden md:flex mr-4"
             />
             <Dropdown
               label="Sortuj"
@@ -140,7 +140,7 @@ const Projects: NextPage = () => {
             />
           </div>
         </section>
-        <section className="flex flex-col gap-y-3 mt-3 w-full px-4">
+        <section className="flex flex-col gap-y-3 mt-3 w-full px-4 pb-4 max-w-[1400px]">
           {projects?.map((project) => <ProjectCard project={project} />)}
         </section>
       </div>

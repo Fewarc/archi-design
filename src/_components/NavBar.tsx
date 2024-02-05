@@ -33,7 +33,7 @@ const NavBar: React.FC = () => {
   });
 
   return isMobile ? (
-    <section className="flex w-full items-center justify-between px-4 pt-7 pb-2 fixed bg-white">
+    <section className="flex w-full items-center justify-between px-4 pt-7 pb-2 fixed bg-white z-50">
       <Button variant="icon">
         <MenuIcon className="h-8 w-8" strokeWidth={1.2} />
       </Button>
@@ -43,7 +43,7 @@ const NavBar: React.FC = () => {
       </Button>
     </section>
   ) : (
-    <section className="flex h-full min-w-60 flex-col items-center shadow-double">
+    <section className="flex h-full min-w-60 flex-col items-center shadow-double fixed bg-white">
       <LogoName className="mb-10 mt-10 h-[60px] w-[200px]" />
       <section className="w-full pl-2 pr-2">
         <p className="ml-2 w-full text-xs font-semibold leading-[18px]">

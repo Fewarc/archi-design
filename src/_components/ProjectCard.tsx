@@ -42,7 +42,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, className }) => {
         <div className="h-fit rounded-full bg-archi-purple-dark px-3 text-xs font-medium leading-[18px] text-white">
           {ProjectStatusMap.get(project.status)}
         </div>
-        <ContextMenu menuItems={PROJECT_CONTEXT_MENU_ITEMS}>
+        <ContextMenu menuItems={PROJECT_CONTEXT_MENU_ITEMS} className="mr-2">
           <MoreHorizontal />
         </ContextMenu>
       </section>
