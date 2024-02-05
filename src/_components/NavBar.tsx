@@ -18,6 +18,7 @@ import { cn } from "@/utils/styleUtils";
 import Divider from "./Divider";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { api } from "@/utils/api";
 
 type MockProject = {
   name: string;
@@ -26,11 +27,11 @@ type MockProject = {
 const NavBar: React.FC = () => {
   const isMobile = useMediaQuery("(max-width: 768px)");
   const router = useRouter();
+
   const { data: session } = useSession();
 
-  const mockActiveProjects: MockProject[] = Array(3).fill({
-    name: "Kasia, Gliwice",
-  });
+  const { data: activeProjects, isLoading: _projectsLoading } =
+    api.project.getAll.useQuery();
 
   return isMobile ? (
     <section className="flex w-full items-center justify-between px-4 pt-7 pb-2 fixed bg-white z-50">
@@ -75,12 +76,12 @@ const NavBar: React.FC = () => {
         <p className="ml-2 w-full text-xs font-semibold leading-[18px]">
           PROJEKTY
         </p>
-        {mockActiveProjects.map((project) => (
+        {activeProjects?.slice(0, 3).map((project) => (
           <Button
             onClick={() => null}
             variant="borderless"
             className="mt-2 w-full justify-start py-2 pl-2 font-medium"
-            key={"key"}
+            key={project.name + project.clientName}
           >
             <Folder />
             <h5 className="ml-2 mt-0.5">{project.name}</h5>

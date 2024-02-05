@@ -139,8 +139,8 @@ const Projects: NextPage = () => {
             />
           </div>
         </section>
-        <section className="flex flex-col gap-y-3 md:gap-y-5 mt-3 w-full px-4 pb-4 max-w-[1400px]">
-          {projects?.map((project) => <ProjectCard project={project} />)}
+        <section className="flex flex-col gap-y-3 md:gap-y-5 mt-3 w-full px-4 pb-4 max-w-page-content">
+          {projects?.map((project) => <ProjectCard project={project} key={project.name + project.clientName}/>)}
         </section>
       </div>
     </div>
