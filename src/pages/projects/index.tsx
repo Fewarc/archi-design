@@ -7,6 +7,7 @@ import ProjectCard from "@/_components/ProjectCard";
 import { api } from "@/utils/api";
 import { DropdownItem } from "@/utils/types";
 import { protectRoute } from "@/utils/validation";
+import { useQueryClient } from "@tanstack/react-query";
 import { ArrowDownUp, Filter, Plus, Search as SearchIcon } from "lucide-react";
 import { NextPage } from "next";
 import { GetSessionParams } from "next-auth/react";
@@ -60,8 +61,6 @@ const Projects: NextPage = () => {
   const [filter, setFilter] = useState<[FilterDropdownItem | null]>([null]);
   const [addProjectOpen, setAddProjectOpen] = useState<boolean>(false);
 
-  const router = useRouter();
-
   const { data: projects, isLoading: _projectsLoading } =
     api.project.getAll.useQuery();
 
@@ -101,7 +100,7 @@ const Projects: NextPage = () => {
       </Button>
       <NavBar />
       <div className="flex h-full w-full flex-col items-center justify-start pt-24 md:pt-8 md:pl-60">
-        <section className="w-full px-4 max-w-[1400px]">
+        <section className="w-full px-4 max-w-page-content">
           <div className="flex items-center justify-between">
             <h1>Projekty</h1>
             <Button variant="icon" className="md:hidden">
@@ -116,7 +115,7 @@ const Projects: NextPage = () => {
               Dodaj projekt
             </Button>
           </div>
-          <div className="mt-5 flex w-full">
+          <div className="mt-5 flex w-full md:mb-10">
             <Input
               variant="default"
               placeholder="Wyszukaj..."
@@ -140,7 +139,7 @@ const Projects: NextPage = () => {
             />
           </div>
         </section>
-        <section className="flex flex-col gap-y-3 mt-3 w-full px-4 pb-4 max-w-[1400px]">
+        <section className="flex flex-col gap-y-3 md:gap-y-5 mt-3 w-full px-4 pb-4 max-w-[1400px]">
           {projects?.map((project) => <ProjectCard project={project} />)}
         </section>
       </div>

@@ -21,7 +21,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
   useOnClickOutside(contextMenuRef, () => setOpen(false));
 
   return (
-    <div className={cn("relative", className)}>
+    <div className={cn("relative", className)} ref={contextMenuRef}>
       <Button variant="icon" onClick={() => setOpen(!open)}>
         {children}
       </Button>

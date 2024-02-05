@@ -5,6 +5,9 @@ export default {
   content: ["./src/**/*.tsx"],
   theme: {
     extend: {
+      maxWidth: {
+        "page-content": "1400px"
+      },
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],
       },
@@ -18,6 +21,7 @@ export default {
           light: "#EDECF9",
           DEFAULT: "#4745C4",
           dark: "#2B2976",
+          text: "#6C6AD0"
         },
         "archi-gray": {
           DEFAULT: "#565D60",

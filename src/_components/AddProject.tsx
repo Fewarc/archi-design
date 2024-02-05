@@ -30,10 +30,15 @@ const AddProject: React.FC<AddProjectProps> = ({
   const [phoneNumber, setPhoneNumber] = useState("");
   const [email, setEmail] = useState("");
 
+  const utils = api.useUtils();
+
   const { validate, errors } = useValidation(newProjectSchema);
 
   const { mutate: createProject } = api.project.create.useMutation({
-    onSuccess: () => onClose(),
+    onSuccess: () => {
+      utils.project.getAll.invalidate();
+      onClose();
+    },
   });
 
   const isMobile = useMediaQuery("(max-width: 768px)");
