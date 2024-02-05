@@ -1,3 +1,4 @@
+import AddProject from "@/_components/AddProject";
 import Button from "@/_components/Button";
 import Dropdown from "@/_components/Dropdown";
 import Input from "@/_components/Input";
@@ -57,6 +58,7 @@ const Projects: NextPage = () => {
     [SortDropdownItem | null, SortDropdownItem | null]
   >([null, null]);
   const [filter, setFilter] = useState<[FilterDropdownItem | null]>([null]);
+  const [addProjectOpen, setAddProjectOpen] = useState<boolean>(false);
 
   const router = useRouter();
 
@@ -89,10 +91,11 @@ const Projects: NextPage = () => {
 
   return (
     <div className="relative z-0 flex h-full w-full flex-col md:flex md:flex-row">
+      <AddProject open={addProjectOpen} onClose={() => setAddProjectOpen(false)}/>
       <Button
         className="fixed bottom-4 right-4 rounded-2xl bg-archi-purple p-4 md:hidden"
         variant="icon"
-        onClick={() => router.push("/add-project")}
+        onClick={() => setAddProjectOpen(true)}
       >
         <Plus className="text-white" />
       </Button>
@@ -107,7 +110,7 @@ const Projects: NextPage = () => {
             <Button
               variant="defualt"
               className="hidden w-fit justify-start rounded-full border-0 bg-archi-purple px-5 py-2 font-medium text-white shadow-double md:flex"
-              onClick={() => router.push("/add-project")}
+              onClick={() => setAddProjectOpen(true)}
             >
               <Plus className="-ml-1 -mt-0.5 mr-2" />
               Dodaj projekt
