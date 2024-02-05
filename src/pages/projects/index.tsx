@@ -1,11 +1,17 @@
+import AddProject from "@/_components/AddProject";
 import Button from "@/_components/Button";
 import Dropdown from "@/_components/Dropdown";
 import Input from "@/_components/Input";
 import NavBar from "@/_components/NavBar";
+import ProjectCard from "@/_components/ProjectCard";
+import { api } from "@/utils/api";
 import { DropdownItem } from "@/utils/types";
+import { protectRoute } from "@/utils/validation";
+import { useQueryClient } from "@tanstack/react-query";
 import { ArrowDownUp, Filter, Plus, Search as SearchIcon } from "lucide-react";
 import { NextPage } from "next";
-import { GetSessionParams, getSession } from "next-auth/react";
+import { GetSessionParams } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 type SortDropdownItem = DropdownItem<"name" | "modified" | "asc" | "desc">;
@@ -53,6 +59,10 @@ const Projects: NextPage = () => {
     [SortDropdownItem | null, SortDropdownItem | null]
   >([null, null]);
   const [filter, setFilter] = useState<[FilterDropdownItem | null]>([null]);
+  const [addProjectOpen, setAddProjectOpen] = useState<boolean>(false);
+
+  const { data: projects, isLoading: _projectsLoading } =
+    api.project.getAll.useQuery();
 
   const handleSortSelect = (item: SortDropdownItem) => {
     if (item.key === "name" || item.key === "modified") {
@@ -80,35 +90,37 @@ const Projects: NextPage = () => {
 
   return (
     <div className="relative z-0 flex h-full w-full flex-col md:flex md:flex-row">
+      <AddProject open={addProjectOpen} onClose={() => setAddProjectOpen(false)}/>
       <Button
         className="fixed bottom-4 right-4 rounded-2xl bg-archi-purple p-4 md:hidden"
         variant="icon"
+        onClick={() => setAddProjectOpen(true)}
       >
         <Plus className="text-white" />
       </Button>
       <NavBar />
-      <div className="flex h-full w-full justify-center">
-        <section className="w-full max-w-[1142px] px-4 pt-9">
+      <div className="flex h-full w-full flex-col items-center justify-start pt-24 md:pt-8 md:pl-60">
+        <section className="w-full px-4 max-w-page-content">
           <div className="flex items-center justify-between">
             <h1>Projekty</h1>
             <Button variant="icon" className="md:hidden">
               <SearchIcon />
             </Button>
             <Button
-              onClick={() => null}
               variant="defualt"
-              className="shadow-double hidden w-fit justify-start rounded-full border-0 bg-archi-purple px-5 py-2 font-medium text-white md:flex"
+              className="hidden w-fit justify-start rounded-full border-0 bg-archi-purple px-5 py-2 font-medium text-white shadow-double md:flex"
+              onClick={() => setAddProjectOpen(true)}
             >
               <Plus className="-ml-1 -mt-0.5 mr-2" />
               Dodaj projekt
             </Button>
           </div>
-          <div className="mt-5 flex w-full gap-x-4">
+          <div className="mt-5 flex w-full md:mb-10">
             <Input
               variant="default"
               placeholder="Wyszukaj..."
               icon={<SearchIcon />}
-              className="hidden md:flex"
+              className="hidden md:flex mr-4"
             />
             <Dropdown
               label="Sortuj"
@@ -116,6 +128,7 @@ const Projects: NextPage = () => {
               onSelect={handleSortSelect}
               selectedItems={sort as Array<SortDropdownItem>}
               icon={<ArrowDownUp strokeWidth={1.2} />}
+              className="mr-4"
             />
             <Dropdown
               label="Filtruj"
@@ -126,26 +139,16 @@ const Projects: NextPage = () => {
             />
           </div>
         </section>
+        <section className="flex flex-col gap-y-3 md:gap-y-5 mt-3 w-full px-4 pb-4 max-w-[1400px]">
+          {projects?.map((project) => <ProjectCard project={project} />)}
+        </section>
       </div>
     </div>
   );
 };
 
 export async function getServerSideProps(context: GetSessionParams) {
-  const session = await getSession(context);
-
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
-  }
-
-  return {
-    props: { session },
-  };
+  return protectRoute(context);
 }
 
 export default Projects;

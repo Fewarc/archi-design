@@ -12,3 +12,8 @@ export interface DropdownItem<T = string> {
   displayName: string;
   key: T;
 }
+
+export interface ContextMenuItem {
+  displayName: string;
+  onClick: Function;
+}

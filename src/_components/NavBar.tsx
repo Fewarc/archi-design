@@ -33,7 +33,7 @@ const NavBar: React.FC = () => {
   });
 
   return isMobile ? (
-    <section className="flex w-full items-center justify-between px-4 pt-9">
+    <section className="flex w-full items-center justify-between px-4 pt-7 pb-2 fixed bg-white z-50">
       <Button variant="icon">
         <MenuIcon className="h-8 w-8" strokeWidth={1.2} />
       </Button>
@@ -43,14 +43,14 @@ const NavBar: React.FC = () => {
       </Button>
     </section>
   ) : (
-    <section className="flex h-full min-w-60 flex-col items-center shadow-double">
+    <section className="flex h-full min-w-60 flex-col items-center shadow-double fixed bg-white">
       <LogoName className="mb-10 mt-10 h-[60px] w-[200px]" />
       <section className="w-full pl-2 pr-2">
         <p className="ml-2 w-full text-xs font-semibold leading-[18px]">
           MENU GŁÓWNE
         </p>
         <Button
-          onClick={() => null}
+          onClick={() => router.push("/projects")}
           variant="borderless"
           className={cn("mt-2 w-full justify-start py-2 pl-2 font-medium", {
             "bg-archi-purple-light font-bold": router.pathname === "/projects",
@@ -80,6 +80,7 @@ const NavBar: React.FC = () => {
             onClick={() => null}
             variant="borderless"
             className="mt-2 w-full justify-start py-2 pl-2 font-medium"
+            key={"key"}
           >
             <Folder />
             <h5 className="ml-2 mt-0.5">{project.name}</h5>

@@ -8,6 +8,7 @@ import {
 import GoogleProvider from "next-auth/providers/google";
 
 import { db } from "@/server/db";
+import { NextApiRequest, NextApiResponse } from "next";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -64,4 +65,4 @@ export const authOptions: NextAuthOptions = {
  *
  * @see https://next-auth.js.org/configuration/nextjs
  */
-export const getServerAuthSession = () => getServerSession(authOptions);
+export const getServerAuthSession = (req: NextApiRequest, res: NextApiResponse) => getServerSession(req, res, authOptions);

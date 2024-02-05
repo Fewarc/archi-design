@@ -11,8 +11,8 @@ import Input from "@/_components/Input";
 import Button from "@/_components/Button";
 
 const Home: React.FC = () => {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const { errors, validate } = useValidation(loginSchema);
 
@@ -24,7 +24,6 @@ const Home: React.FC = () => {
 
     if (!!validatedData) {
       // TODO: handle manual login here
-      console.log(validatedData);
     }
   }
 
@@ -70,7 +69,7 @@ const Home: React.FC = () => {
           <div className="flex w-full justify-end text-sm">
             <Button
               variant="link"
-              onClick={() => console.log("forgot password")}
+              onClick={() => null}
             >
               Nie pamiętasz hasła?
             </Button>
