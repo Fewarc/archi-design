@@ -5,7 +5,7 @@ import Input from "@/_components/Input";
 import NavBar from "@/_components/NavBar";
 import ProjectCard from "@/_components/ProjectCard";
 import { api } from "@/utils/api";
-import { DropdownItem } from "@/utils/types";
+import { DropdownItem, LayoutPage } from "@/utils/types";
 import { protectRoute } from "@/utils/validation";
 import { useQueryClient } from "@tanstack/react-query";
 import { ArrowDownUp, Filter, Plus, Search as SearchIcon } from "lucide-react";
@@ -54,7 +54,7 @@ const PROJECTS_FILTERS: FilterDropdownItem[][] = [
   ],
 ];
 
-const Projects: NextPage = () => {
+const Projects: LayoutPage = () => {
   const [sort, setSort] = useState<
     [SortDropdownItem | null, SortDropdownItem | null]
   >([null, null]);
@@ -89,7 +89,7 @@ const Projects: NextPage = () => {
   };
 
   return (
-    <div className="relative z-0 flex h-full w-full flex-col md:flex md:flex-row">
+    <>
       <AddProject open={addProjectOpen} onClose={() => setAddProjectOpen(false)}/>
       <Button
         className="fixed bottom-4 right-4 rounded-2xl bg-archi-purple p-4 md:hidden"
@@ -98,7 +98,6 @@ const Projects: NextPage = () => {
       >
         <Plus className="text-white" />
       </Button>
-      <NavBar />
       <div className="flex h-full w-full flex-col items-center justify-start pt-24 md:pt-8 md:pl-60">
         <section className="w-full px-4 max-w-page-content">
           <div className="flex items-center justify-between">
@@ -143,7 +142,7 @@ const Projects: NextPage = () => {
           {projects?.map((project) => <ProjectCard project={project} key={project.name + project.clientName}/>)}
         </section>
       </div>
-    </div>
+    </>
   );
 };
 
@@ -152,3 +151,4 @@ export async function getServerSideProps(context: GetSessionParams) {
 }
 
 export default Projects;
+Projects.Layout = "navbar";

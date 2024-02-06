@@ -8,6 +8,8 @@ import "@/styles/globals.css";
 
 import { Libre_Franklin } from "next/font/google";
 import { useEffect } from "react";
+import { CustomAppProps } from "@/utils/types";
+import { AllLayouts } from "@/_components/Layouts";
 
 const LF = Libre_Franklin({
   subsets: ["latin"],
@@ -20,19 +22,24 @@ export const metadata = {
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
-const MyApp: AppType<{ session: Session | null }> = ({
+function MyApp({
   Component,
   pageProps: { session, ...pageProps },
-}) => {
+}: CustomAppProps) {
   // TODO: fix
   useEffect(() => {
     window?.document?.querySelector("body")!.classList.add(`font-sans`);
     window?.document?.querySelector("body")!.classList.add(`${LF.variable}`);
   }, []);
 
+  console.log(Component.Layout)
+  const Layout = AllLayouts[Component.Layout] ?? ((page) => page);
+
   return (
     <SessionProvider session={session}>
-      <Component {...pageProps} />
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
     </SessionProvider>
   );
 };

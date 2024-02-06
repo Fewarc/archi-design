@@ -9,8 +9,9 @@ import GoogleSignIn from "@/_components/GoogleSignIn";
 import Divider from "@/_components/Divider";
 import Input from "@/_components/Input";
 import Button from "@/_components/Button";
+import { LayoutPage } from "@/utils/types";
 
-const Home: React.FC = () => {
+const Home: LayoutPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -84,3 +85,4 @@ const Home: React.FC = () => {
 };
 
 export default Home;
+Home.Layout = "default"
