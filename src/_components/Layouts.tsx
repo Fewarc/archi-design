@@ -20,7 +20,7 @@ const NavbarLayout: React.FC<LayoutProps> = ({ children, className }) => {
       )}
     >
       <NavBar />
-      <section className="h-full w-full">{children}</section>
+      <section className="h-full w-full pt-24 md:pt-8 md:pl-60">{children}</section>
     </main>
   );
 };

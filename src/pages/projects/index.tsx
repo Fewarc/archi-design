@@ -2,16 +2,12 @@ import AddProject from "@/_components/AddProject";
 import Button from "@/_components/Button";
 import Dropdown from "@/_components/Dropdown";
 import Input from "@/_components/Input";
-import NavBar from "@/_components/NavBar";
 import ProjectCard from "@/_components/ProjectCard";
 import { api } from "@/utils/api";
 import { DropdownItem, LayoutPage } from "@/utils/types";
 import { protectRoute } from "@/utils/validation";
-import { useQueryClient } from "@tanstack/react-query";
 import { ArrowDownUp, Filter, Plus, Search as SearchIcon } from "lucide-react";
-import { NextPage } from "next";
 import { GetSessionParams } from "next-auth/react";
-import { useRouter } from "next/router";
 import { useState } from "react";
 
 type SortDropdownItem = DropdownItem<"name" | "modified" | "asc" | "desc">;
@@ -98,7 +94,7 @@ const Projects: LayoutPage = () => {
       >
         <Plus className="text-white" />
       </Button>
-      <div className="flex h-full w-full flex-col items-center justify-start pt-24 md:pt-8 md:pl-60">
+      <div className="flex h-full w-full flex-col items-center justify-start">
         <section className="w-full px-4 max-w-page-content">
           <div className="flex items-center justify-between">
             <h1>Projekty</h1>
