@@ -20,10 +20,6 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { api } from "@/utils/api";
 
-type MockProject = {
-  name: string;
-};
-
 const NavBar: React.FC = () => {
   const isMobile = useMediaQuery("(max-width: 768px)");
   const router = useRouter();
@@ -34,7 +30,7 @@ const NavBar: React.FC = () => {
     api.project.getAll.useQuery();
 
   return isMobile ? (
-    <section className="flex w-full items-center justify-between px-4 pt-7 pb-2 fixed bg-white z-50">
+    <section className="flex w-full items-center justify-between px-4 pt-7 pb-2 fixed bg-white z-40">
       <Button variant="icon">
         <MenuIcon className="h-8 w-8" strokeWidth={1.2} />
       </Button>

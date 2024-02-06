@@ -9,6 +9,7 @@ import { initials } from "@dicebear/collection";
 import Image from "next/image";
 import { useMemo } from "react";
 import Button from "./Button";
+import { useRouter } from "next/router";
 
 interface ProjectCardProps {
   project: Project;
@@ -40,6 +41,8 @@ const PROJECT_AVATAR_DIM = 218;
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ project, className }) => {
   const isMobile = useMediaQuery("(max-width: 768px)");
+
+  const router = useRouter();
 
   const avatar = useMemo(
     () =>
@@ -75,7 +78,9 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, className }) => {
               <MoreHorizontal />
             </ContextMenu>
           </section>
-          <section className="text-2xl font-bold">{project.name}</section>
+          <Button variant="link" onClick={() => router.push(`/project/${project.id}`)}>
+            <section className="text-2xl font-bold">{project.name}</section>
+          </Button>
           <section className="mt-1 flex justify-between text-[12px] leading-[14px]">
             <div className="w-1/2">
               <p className="text-[10px] font-semibold leading-[18px]">DANE</p>
@@ -124,9 +129,11 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, className }) => {
           <div className="flex w-full flex-col">
             <div className="flex w-full justify-between pt-2">
               <div className="flex">
-                <h2 className="text-[34px] font-bold leading-[38px]">
-                  {project.name}
-                </h2>
+                <Button variant="link" onClick={() => router.push(`/project/${project.id}`)}>
+                  <h2 className="text-[34px] font-bold leading-[38px]">
+                    {project.name}
+                  </h2>
+                </Button>
                 <Button variant="icon" onClick={() => null}>
                   <Link strokeWidth={2} className="ml-4 h-7 w-7" />
                 </Button>
@@ -138,8 +145,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, className }) => {
                 <MoreHorizontal />
               </ContextMenu>
             </div>
-            <div className="w-full mt-2 flex">
-              <div className="flex flex-col gap-y-2">
+            <div className="w-full mt-2 grid grid-cols-12">
+              <div className="flex flex-col gap-y-2 col-span-4">
                 <div>
                   <p className="text-[10px] font-semibold leading-[18px]">
                     DANE
@@ -156,8 +163,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, className }) => {
                   <p>{project.city}</p>
                 </div>
               </div>
-              <div className="flex flex-col w-full">
-                <div className="flex justify-evenly">
+              <div className="flex flex-col w-full col-span-8">
+                <div className="flex justify-around">
                   <div>
                     <p className="text-[10px] font-semibold leading-[18px]">
                       DATA ROZPOCZĘCIA
