@@ -13,10 +13,12 @@ export const protectRoute = async (context: GetSessionParams) => {
     };
   }
 
+  const params = (context as { params: Object }).params;
+
   return {
-    props: { session },
+    props: { params: params ?? {} },
   };
-}
+};
 
 // login page
 export const loginSchema = z.object({

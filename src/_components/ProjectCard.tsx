@@ -25,14 +25,17 @@ const projectStatusMap = new Map<Project["status"], string>([
 const PROJECT_CONTEXT_MENU_ITEMS: ContextMenuItem[] = [
   {
     displayName: "Zmień nazwę",
+    key: "change_name",
     onClick: () => null,
   },
   {
     displayName: "Zarchiwizuj",
+    key: "archive",
     onClick: () => null,
   },
   {
     displayName: "Usuń",
+    key: "delete",
     onClick: () => null,
   },
 ];

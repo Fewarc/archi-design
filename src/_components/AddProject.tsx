@@ -1,13 +1,9 @@
-import { NextPage } from "next";
-import { GetSessionParams } from "next-auth/react";
 import { newProjectSchema, protectRoute } from "@/utils/validation";
-import NavBar from "@/_components/NavBar";
 import Input from "@/_components/Input";
 import { useState } from "react";
 import Button from "@/_components/Button";
 import { useMediaQuery, useValidation } from "@/utils/hooks";
 import { api } from "@/utils/api";
-import { useRouter } from "next/router";
 import { cn } from "@/utils/styleUtils";
 import { ArrowLeft, X } from "lucide-react";
 import Modal from "./Modal";
@@ -59,7 +55,7 @@ const AddProject: React.FC<AddProjectProps> = ({
   return isMobile ? (
     <div
       className={cn(
-        "fixed z-50 h-screen w-screen translate-x-full bg-white px-4 pb-6 pt-16 transition-transform duration-300",
+        "fixed z-50 h-screen w-screen translate-x-full bg-white px-4 pb-6 pt-16 transition-transform duration-300 top-0 left-0",
         {
           "translate-x-0 transform": open,
         },

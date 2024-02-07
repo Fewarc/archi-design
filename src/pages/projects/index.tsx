@@ -95,7 +95,7 @@ const Projects: LayoutPage = () => {
         <Plus className="text-white" />
       </Button>
       <div className="flex h-full w-full flex-col items-center justify-start">
-        <section className="w-full px-4 max-w-page-content">
+        <section className="w-full">
           <div className="flex items-center justify-between">
             <h1>Projekty</h1>
             <Button variant="icon" className="md:hidden">
@@ -134,7 +134,7 @@ const Projects: LayoutPage = () => {
             />
           </div>
         </section>
-        <section className="flex flex-col gap-y-3 md:gap-y-5 mt-3 w-full px-4 pb-4 max-w-page-content">
+        <section className="flex flex-col gap-y-3 md:gap-y-5 mt-3 w-full pb-4">
           {projects?.map((project) => <ProjectCard project={project} key={project.name + project.clientName}/>)}
         </section>
       </div>

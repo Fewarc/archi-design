@@ -13,7 +13,7 @@ const Modal: React.FC<ModalProps> = ({
   className
 }) => {
   return open && (
-    <section className={cn("w-screen h-screen fixed flex justify-center items-center bg-gray-900 bg-opacity-50 z-50", className)}>
+    <section className={cn("w-screen h-screen fixed flex justify-center items-center bg-gray-900 bg-opacity-50 z-50 top-0 left-0", className)}>
       <div className="bg-white rounded-lg px-10 py-9">
         {children}
       </div>
