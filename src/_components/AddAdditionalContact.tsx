@@ -35,6 +35,7 @@ const AddAdditionalContact: React.FC<AddAdditionalContactProps> = ({
       onSuccess: () => {
         // TODO: invalidate additional contacts
         onClose();
+        clearData();
       }
     });
 
@@ -52,6 +53,14 @@ const AddAdditionalContact: React.FC<AddAdditionalContactProps> = ({
 
     !!validatedData && createAdditionalContact(validatedData);
   };
+
+  function clearData() {
+    setName("");
+    setOccupation("");
+    setPhoneNumber("");
+    setEmail("");
+    setNote("");
+  }
 
   return isMobile ? (
     <div
@@ -120,6 +129,7 @@ const AddAdditionalContact: React.FC<AddAdditionalContactProps> = ({
       <div className="mt-4 flex flex-col gap-y-4">
         <TextArea
           variant="border_label"
+          value={note}
           label={
             <div className="text-xs font-semibold !leading-[6px]">Notatki</div>
           }
@@ -193,6 +203,7 @@ const AddAdditionalContact: React.FC<AddAdditionalContactProps> = ({
       <div className="mt-4 flex flex-col gap-y-4">
         <TextArea
           variant="border_label"
+          value={note}
           label={<div className="text-xs font-semibold">Notatki</div>}
           onChange={(e) => setNote(e.target.value)}
         />

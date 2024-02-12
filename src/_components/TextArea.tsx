@@ -17,6 +17,7 @@ const TextArea: React.FC<TextAreaProps> = ({
   icon,
   areaClassName,
   className,
+  spellCheck = false,
   ...props
 }) => {
   // TODO: support resize (?)
@@ -56,7 +57,7 @@ const TextArea: React.FC<TextAreaProps> = ({
               },
               areaClassName
               )}
-              spellCheck={false}
+              spellCheck={spellCheck}
               {...props}
           />
 
