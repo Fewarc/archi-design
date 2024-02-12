@@ -1,3 +1,4 @@
+import AddAdditionalContact from "@/_components/AddAdditionalContact";
 import Button from "@/_components/Button";
 import ContextMenu from "@/_components/ContextMenu";
 import ProjectDetailsMenu from "@/_components/ProjectDetailsMenu";
@@ -16,6 +17,7 @@ interface ProjectDetailsProps {
 const ProjectDetails: LayoutPage<ProjectDetailsProps> = (props: any) => {
   const [detailsState, setDetailsState] =
     useState<ProjectDetailsMenuKey>("client_profile");
+  const [addContactOpen, setAddContactOpen] = useState(false);
 
   const { data: project, isLoading } = api.project.find.useQuery({
     projectId: props.params.projectId,
@@ -23,6 +25,11 @@ const ProjectDetails: LayoutPage<ProjectDetailsProps> = (props: any) => {
 
   return (
     <>
+      <AddAdditionalContact
+        projectId={props.params.projectId}
+        open={addContactOpen}
+        onClose={() => setAddContactOpen(false)}
+      />
       <section className="flex flex-col">
         <h1>Projekt</h1>
         <h2 className="text-[24px] font-bold leading-[24px] md:text-[34px] md:leading-[38px]">
@@ -63,7 +70,7 @@ const ProjectDetails: LayoutPage<ProjectDetailsProps> = (props: any) => {
                 Dodatkowe dane kontaktowe
               </h3>
             </div>
-            <Button onClick={() => null} variant="icon">
+            <Button onClick={() => setAddContactOpen(true)} variant="icon">
               <Plus />
             </Button>
           </div>

@@ -35,3 +35,12 @@ export const newProjectSchema = z.object({
   phoneNumber: z.string().min(1, { message: "Pole wymagane." }),
   email: z.string().email({ message: "Nieprawidłowy adres e-mail." }),
 });
+
+// add additional contact
+export const newAdditionalContactSchema = z.object({
+  name: z.string(),
+  occupation: z.string(),
+  phoneNumber: z.string(),
+  email: z.string(),
+  note: z.string()
+})
