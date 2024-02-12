@@ -7,6 +7,7 @@ import { useState } from "react";
 import { ArrowLeft, X } from "lucide-react";
 import { newAdditionalContactSchema } from "@/utils/validation";
 import TextArea from "./TextArea";
+import { api } from "@/utils/api";
 
 interface AddAdditionalContactProps {
   projectId: string;
@@ -29,6 +30,14 @@ const AddAdditionalContact: React.FC<AddAdditionalContactProps> = ({
 
   const { validate, errors } = useValidation(newAdditionalContactSchema);
 
+  const { mutate: createAdditionalContact } =
+    api.additionalContact.create.useMutation({
+      onSuccess: () => {
+        // TODO: invalidate additional contacts
+        onClose();
+      }
+    });
+
   const isMobile = useMediaQuery("(max-width: 768px)");
 
   const handleAddContact = () => {
@@ -37,10 +46,11 @@ const AddAdditionalContact: React.FC<AddAdditionalContactProps> = ({
       occupation,
       phoneNumber,
       email,
-      note
+      note,
+      projectId,
     });
 
-    !!validatedData && null;
+    !!validatedData && createAdditionalContact(validatedData);
   };
 
   return isMobile ? (
@@ -108,7 +118,13 @@ const AddAdditionalContact: React.FC<AddAdditionalContactProps> = ({
       </div>
       <div className="mt-8 text-[11px]">INFORAMCJA DODATKOWE</div>
       <div className="mt-4 flex flex-col gap-y-4">
-        <TextArea variant="border_label" label={<div className="text-xs font-semibold !leading-[6px]">Notatki</div>} className="h-fit" areaClassName="h-fit"/>
+        <TextArea
+          variant="border_label"
+          label={
+            <div className="text-xs font-semibold !leading-[6px]">Notatki</div>
+          }
+          onChange={(e) => setNote(e.target.value)}
+        />
       </div>
       <Button
         onClick={() => handleAddContact()}
@@ -129,7 +145,7 @@ const AddAdditionalContact: React.FC<AddAdditionalContactProps> = ({
           <X />
         </Button>
         <div>
-          <h2 className="w-full text-left text-[24px] font-bold leading-[24px] mb-2">
+          <h2 className="mb-2 w-full text-left text-[24px] font-bold leading-[24px]">
             Dodaj
           </h2>
           <p>Dodatkowe dane kontaktowe</p>
@@ -174,7 +190,13 @@ const AddAdditionalContact: React.FC<AddAdditionalContactProps> = ({
         />
       </div>
       <div className="mt-8 text-[11px]">INFORMACJE DODATKOWE</div>
-      <div className="mt-4 flex flex-col gap-y-4"></div>
+      <div className="mt-4 flex flex-col gap-y-4">
+        <TextArea
+          variant="border_label"
+          label={<div className="text-xs font-semibold">Notatki</div>}
+          onChange={(e) => setNote(e.target.value)}
+        />
+      </div>
       <div className="flex w-full justify-end">
         <Button
           onClick={() => handleAddContact()}

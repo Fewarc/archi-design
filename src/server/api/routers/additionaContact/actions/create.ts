@@ -1,7 +1,15 @@
-export const createAdditionalContact = async (): Promise<void> => {
+import { newAdditionalContactSchema } from "@/utils/validation";
+import { PrismaClient } from "@prisma/client";
+
+const createAdditionalContactInput = newAdditionalContactSchema; 
+
+export const createAdditionalContact = async (
+  input: typeof createAdditionalContactInput._type,
+  prisma: PrismaClient
+): Promise<void> => {
   try {
-    
+    await prisma.additionalContact.create({data: input});
   } catch (error) {
-    
+    console.error(error);
   }
 }

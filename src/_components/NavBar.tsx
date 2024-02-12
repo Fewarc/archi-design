@@ -30,17 +30,21 @@ const NavBar: React.FC = () => {
     api.project.getAll.useQuery();
 
   return isMobile ? (
-    <section className="flex w-full items-center justify-between px-4 pt-7 pb-2 fixed bg-white z-40">
+    <section className="fixed z-40 flex w-full items-center justify-between bg-white px-4 pb-2 pt-7">
       <Button variant="icon">
         <MenuIcon className="h-8 w-8" strokeWidth={1.2} />
       </Button>
       <Logo className="h-[51px] w-[51px]" />
-      <Button variant="icon">
-        <CircleUserRound className="h-10 w-10" strokeWidth={1.2} />
-      </Button>
+      <Image
+        src={session?.user.image!}
+        alt="user google image"
+        width={40}
+        height={40}
+        className="max-h-10 max-w-10 flex-grow rounded-full"
+      />
     </section>
   ) : (
-    <section className="flex h-full min-w-60 flex-col items-center shadow-double fixed bg-white">
+    <section className="fixed flex h-full min-w-60 flex-col items-center bg-white shadow-double">
       <LogoName className="mb-10 mt-10 h-[60px] w-[200px]" />
       <section className="w-full pl-2 pr-2">
         <p className="ml-2 w-full text-xs font-semibold leading-[18px]">

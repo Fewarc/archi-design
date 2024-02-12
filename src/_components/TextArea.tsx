@@ -50,12 +50,13 @@ const TextArea: React.FC<TextAreaProps> = ({
         >
           <textarea 
             className={cn(
-              "h-full w-full rounded-lg px-4 py-2",
+              "h-full w-full rounded-lg px-4 py-2 resize-none outline-none",
               {
                 "outline-none": variant === "default",
               },
               areaClassName
               )}
+              spellCheck={false}
               {...props}
           />
 
