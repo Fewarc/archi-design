@@ -31,7 +31,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
           onClick={() => setOpen(false)}
         >
           {menuItems.map((item) => (
-            <div className="w-full text-right" onClick={() => item.onClick()}>
+            <div className="w-full text-right cursor-pointer" onClick={() => item.onClick()}>
               {item.displayName}
             </div>
           ))}

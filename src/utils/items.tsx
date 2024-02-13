@@ -1,5 +1,5 @@
 import { CalendarCheck, FolderOpenDot, Receipt, ShoppingBasketIcon, User } from "lucide-react";
-import { ProjectDetailsMenuItem } from "./types";
+import { ContextMenuItem, ProjectDetailsMenuItem } from "./types";
 
 export type ProjectDetailsMenuKey =
   | "client_profile"
@@ -33,5 +33,23 @@ export const projectDetailsMenuItems: ProjectDetailsMenuItem[] = [
     displayName: "Zakupy",
     key: "shopping_list",
     icon: <ShoppingBasketIcon />
+  },
+];
+
+export const projectCardContextMenuItems: ContextMenuItem[] = [
+  {
+    displayName: "Zmień nazwę",
+    key: "change_name",
+    onClick: () => null,
+  },
+  {
+    displayName: "Zarchiwizuj",
+    key: "archive",
+    onClick: () => null,
+  },
+  {
+    displayName: "Usuń",
+    key: "delete",
+    onClick: () => null,
   },
 ];

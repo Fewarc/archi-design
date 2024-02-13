@@ -43,3 +43,8 @@ export interface DropdownItem<KeyType = string> extends MenuItem<KeyType> {}
 export interface ContextMenuItem<KeyType = string> extends MenuItem<KeyType> {
   onClick: Function;
 }
+
+export interface ModalProps {
+  open: boolean;
+  onClose: Function;
+}

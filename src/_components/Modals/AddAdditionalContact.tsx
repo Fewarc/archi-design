@@ -1,68 +1,78 @@
-import { newProjectSchema, protectRoute } from "@/utils/validation";
-import Input from "@/_components/Input";
-import { useState } from "react";
-import Button from "@/_components/Button";
 import { useMediaQuery, useValidation } from "@/utils/hooks";
-import { api } from "@/utils/api";
 import { cn } from "@/utils/styleUtils";
+import Modal from "../Modal";
+import Button from "../Button";
+import Input from "../Input";
+import { useState } from "react";
 import { ArrowLeft, X } from "lucide-react";
-import Modal from "./Modal";
+import { additionalContactSchema } from "@/utils/validation";
+import TextArea from "../TextArea";
+import { api } from "@/utils/api";
 
-interface AddProjectProps {
+interface AddAdditionalContactProps {
+  projectId: string;
   open: boolean;
   onClose: Function;
   className?: string;
 }
 
-const AddProject: React.FC<AddProjectProps> = ({
+const AddAdditionalContact: React.FC<AddAdditionalContactProps> = ({
+  projectId,
   open,
   onClose,
   className,
 }) => {
   const [name, setName] = useState("");
-  const [clientName, setClientName] = useState("");
-  const [address, setAddress] = useState("");
-  const [city, setCity] = useState("");
+  const [occupation, setOccupation] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [email, setEmail] = useState("");
+  const [note, setNote] = useState("");
 
-  const utils = api.useUtils();
+  const { validate, errors } = useValidation(additionalContactSchema);
 
-  const { validate, errors } = useValidation(newProjectSchema);
-
-  const { mutate: createProject } = api.project.create.useMutation({
-    onSuccess: () => {
-      utils.project.getAll.invalidate();
-      onClose();
-    },
-  });
+  const { mutate: createAdditionalContact } =
+    api.additionalContact.create.useMutation({
+      onSuccess: () => {
+        // TODO: invalidate additional contacts
+        onClose();
+        clearData();
+      }
+    });
 
   const isMobile = useMediaQuery("(max-width: 768px)");
 
-  const handleAddProject = () => {
+  const handleAddContact = () => {
     const validatedData = validate({
       name,
-      clientName,
-      address,
-      city,
+      occupation,
       phoneNumber,
       email,
+      note,
+      projectId,
     });
 
-    !!validatedData && createProject(validatedData);
+    !!validatedData && createAdditionalContact(validatedData);
   };
+
+  function clearData() {
+    setName("");
+    setOccupation("");
+    setPhoneNumber("");
+    setEmail("");
+    setNote("");
+  }
 
   return isMobile ? (
     <div
       className={cn(
-        "fixed z-50 h-screen w-screen translate-x-full bg-white px-4 pb-6 pt-16 transition-transform duration-300 top-0 left-0",
+        "fixed left-0 top-0 z-50 h-screen w-screen translate-x-full bg-white px-4 pb-6 pt-16 transition-transform duration-300",
         {
           "translate-x-0 transform": open,
         },
         className,
       )}
     >
-      <section className="relative mb-10 flex">
+      <section className="relative mb-10 flex items-center">
         <Button
           variant="icon"
           onClick={() => onClose()}
@@ -70,9 +80,12 @@ const AddProject: React.FC<AddProjectProps> = ({
         >
           <ArrowLeft />
         </Button>
-        <h2 className="w-full text-center text-[24px] font-bold leading-[24px]">
-          Dodaj projekt
-        </h2>
+        <div className="w-full text-center">
+          <h2 className="w-full text-center text-[24px] font-bold leading-[24px]">
+            Dodaj
+          </h2>
+          <p>Dodatkowe dane kontaktowe</p>
+        </div>
       </section>
       <div className="text-[11px]">DANE PODSTAWOWE</div>
       <div className="mt-4 flex flex-col gap-y-4">
@@ -80,33 +93,17 @@ const AddProject: React.FC<AddProjectProps> = ({
           value={name}
           onChange={(e) => setName(e.target.value)}
           variant="border_label"
-          placeholder="imię, miasto"
-          label={<div className="text-xs font-semibold">Nazwa</div>}
+          placeholder="imię i nazwisko"
+          label={<div className="text-xs font-semibold">Imię i nazwisko</div>}
           error={errors?.name?._errors}
         />
         <Input
-          value={clientName}
-          onChange={(e) => setClientName(e.target.value)}
+          value={occupation}
+          onChange={(e) => setOccupation(e.target.value)}
           variant="border_label"
-          placeholder="imię i nazwisko"
-          label={<div className="text-xs font-semibold">Imię i nazwisko</div>}
-          error={errors?.clientName?._errors}
-        />
-        <Input
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-          variant="border_label"
-          placeholder="ul. Mickiewicza 14"
-          label={<div className="text-xs font-semibold">Adres projektu</div>}
-          error={errors?.address?._errors}
-        />
-        <Input
-          value={city}
-          onChange={(e) => setCity(e.target.value)}
-          variant="border_label"
-          placeholder="Gliwice"
-          label={<div className="text-xs font-semibold">Miasto</div>}
-          error={errors?.city?._errors}
+          placeholder="stolarz, wykonawca"
+          label={<div className="text-xs font-semibold">Funkcja</div>}
+          error={errors?.name?._errors}
         />
       </div>
       <div className="mt-8 text-[11px]">DANE KONTAKTOWE</div>
@@ -128,12 +125,23 @@ const AddProject: React.FC<AddProjectProps> = ({
           error={errors?.email?._errors}
         />
       </div>
+      <div className="mt-8 text-[11px]">INFORAMCJA DODATKOWE</div>
+      <div className="mt-4 flex flex-col gap-y-4">
+        <TextArea
+          variant="border_label"
+          value={note}
+          label={
+            <div className="text-xs font-semibold !leading-[6px]">Notatki</div>
+          }
+          onChange={(e) => setNote(e.target.value)}
+        />
+      </div>
       <Button
-        onClick={() => handleAddProject()}
+        onClick={() => handleAddContact()}
         variant="defualt"
         className="mt-9 w-full rounded-full border-0 bg-archi-purple px-5 py-2 text-center font-medium text-white shadow-double"
       >
-        Dodaj projekt
+        Dodaj
       </Button>
     </div>
   ) : (
@@ -146,9 +154,12 @@ const AddProject: React.FC<AddProjectProps> = ({
         >
           <X />
         </Button>
-        <h2 className="w-full text-left text-[24px] font-bold leading-[24px]">
-          Dodaj projekt
-        </h2>
+        <div>
+          <h2 className="mb-2 w-full text-left text-[24px] font-bold leading-[24px]">
+            Dodaj
+          </h2>
+          <p>Dodatkowe dane kontaktowe</p>
+        </div>
       </section>
       <div className="text-[11px]">DANE PODSTAWOWE</div>
       <div className="mt-4 flex flex-col gap-y-4">
@@ -156,33 +167,17 @@ const AddProject: React.FC<AddProjectProps> = ({
           value={name}
           onChange={(e) => setName(e.target.value)}
           variant="border_label"
-          placeholder="imię, miasto"
-          label={<div className="text-xs font-semibold">Nazwa</div>}
+          placeholder="imię i nazwisko"
+          label={<div className="text-xs font-semibold">Imię i nazwisko</div>}
           error={errors?.name?._errors}
         />
         <Input
-          value={clientName}
-          onChange={(e) => setClientName(e.target.value)}
+          value={occupation}
+          onChange={(e) => setOccupation(e.target.value)}
           variant="border_label"
-          placeholder="imię i nazwisko"
-          label={<div className="text-xs font-semibold">Imię i nazwisko</div>}
-          error={errors?.clientName?._errors}
-        />
-        <Input
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-          variant="border_label"
-          placeholder="ul. Mickiewicza 14"
-          label={<div className="text-xs font-semibold">Adres projektu</div>}
-          error={errors?.address?._errors}
-        />
-        <Input
-          value={city}
-          onChange={(e) => setCity(e.target.value)}
-          variant="border_label"
-          placeholder="Gliwice"
-          label={<div className="text-xs font-semibold">Miasto</div>}
-          error={errors?.city?._errors}
+          placeholder="stolarz, wykonawca"
+          label={<div className="text-xs font-semibold">Funkcja</div>}
+          error={errors?.name?._errors}
         />
       </div>
       <div className="mt-8 text-[11px]">DANE KONTAKTOWE</div>
@@ -204,17 +199,26 @@ const AddProject: React.FC<AddProjectProps> = ({
           error={errors?.email?._errors}
         />
       </div>
+      <div className="mt-8 text-[11px]">INFORMACJE DODATKOWE</div>
+      <div className="mt-4 flex flex-col gap-y-4">
+        <TextArea
+          variant="border_label"
+          value={note}
+          label={<div className="text-xs font-semibold">Notatki</div>}
+          onChange={(e) => setNote(e.target.value)}
+        />
+      </div>
       <div className="flex w-full justify-end">
         <Button
-          onClick={() => handleAddProject()}
+          onClick={() => handleAddContact()}
           variant="defualt"
           className="mt-9 w-fit rounded-full border-0 bg-archi-purple px-5 py-2 text-center font-medium text-white shadow-double"
         >
-          Dodaj projekt
+          Dodaj
         </Button>
       </div>
     </Modal>
   );
 };
 
-export default AddProject;
+export default AddAdditionalContact;

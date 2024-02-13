@@ -27,7 +27,7 @@ export const loginSchema = z.object({
 });
 
 // add project
-export const newProjectSchema = z.object({
+export const projectSchema = z.object({
   name: z.string().min(1, { message: "Pole wymagane." }),
   clientName: z.string().min(1, { message: "Pole wymagane." }),
   address: z.string().min(1, { message: "Pole wymagane." }),
@@ -37,11 +37,12 @@ export const newProjectSchema = z.object({
 });
 
 // add additional contact
-export const newAdditionalContactSchema = z.object({
+export const additionalContactSchema = z.object({
   name: z.string().min(1, { message: "Pole wymagane." }),
   occupation: z.string().min(1, { message: "Pole wymagane." }),
   phoneNumber: z.string().min(1, { message: "Pole wymagane." }),
   email: z.string().email({ message: "Nieprawidłowy adres e-mail." }),
   note: z.string(),
-  projectId: z.string()
+  projectId: z.string(),
+  id: z.string().optional()
 })

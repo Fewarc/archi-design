@@ -1,6 +1,7 @@
-import AddAdditionalContact from "@/_components/AddAdditionalContact";
+import AddAdditionalContact from "@/_components/Modals/AddAdditionalContact";
 import Button from "@/_components/Button";
 import ContextMenu from "@/_components/ContextMenu";
+import AdditionalContactCard from "@/_components/ProjectDetails/AdditionalContactCard";
 import ProjectDetailsMenu from "@/_components/ProjectDetailsMenu";
 import { api } from "@/utils/api";
 import { ProjectDetailsMenuKey } from "@/utils/items";
@@ -19,9 +20,17 @@ const ProjectDetails: LayoutPage<ProjectDetailsProps> = (props: any) => {
     useState<ProjectDetailsMenuKey>("client_profile");
   const [addContactOpen, setAddContactOpen] = useState(false);
 
-  const { data: project, isLoading } = api.project.find.useQuery({
-    projectId: props.params.projectId,
-  });
+  // TODO: create custom hook for data fetch
+
+  const { data: project, isLoading: projectLoading } =
+    api.project.find.useQuery({
+      projectId: props.params.projectId,
+    });
+
+  const { data: additionalContacts, isLoading: contactsLoading } =
+    api.additionalContact.find.useQuery({
+      projectId: props.params.projectId,
+    });
 
   return (
     <>
@@ -73,6 +82,13 @@ const ProjectDetails: LayoutPage<ProjectDetailsProps> = (props: any) => {
             <Button onClick={() => setAddContactOpen(true)} variant="icon">
               <Plus />
             </Button>
+          </div>
+          <div className="flex flex-col mt-4 gap-y-4">
+            {!additionalContacts
+              ? "Brak dodatkowych kontaktów"
+              : additionalContacts.map((contact) => (
+                  <AdditionalContactCard contact={contact} />
+                ))}
           </div>
         </section>
       </section>

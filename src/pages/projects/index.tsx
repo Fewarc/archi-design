@@ -1,4 +1,4 @@
-import AddProject from "@/_components/AddProject";
+import AddProject from "@/_components/Modals/AddProject";
 import Button from "@/_components/Button";
 import Dropdown from "@/_components/Dropdown";
 import Input from "@/_components/Input";

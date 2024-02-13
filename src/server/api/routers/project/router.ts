@@ -1,4 +1,4 @@
-import { newProjectSchema } from "@/utils/validation";
+import { projectSchema } from "@/utils/validation";
 import { createTRPCRouter, protectedProcedure } from "../../trpc";
 import { createProject } from "./actions/create";
 import { getAllProjects } from "./actions/getAll";
@@ -6,7 +6,7 @@ import { findProject, findProjectInput } from "./actions/find";
 
 export const projectRouter = createTRPCRouter({
   create: protectedProcedure
-    .input(newProjectSchema)
+    .input(projectSchema)
     .mutation(({ input, ctx }) => {
       return createProject(input, ctx.db);
     }),

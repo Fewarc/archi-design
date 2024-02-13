@@ -10,6 +10,7 @@ import Image from "next/image";
 import { useMemo } from "react";
 import Button from "./Button";
 import { useRouter } from "next/router";
+import { projectCardContextMenuItems } from "@/utils/items";
 
 interface ProjectCardProps {
   project: Project;
@@ -21,24 +22,6 @@ const projectStatusMap = new Map<Project["status"], string>([
   ["FINISHED", "ZAKOŃCZONY"],
   ["PAUSED", "WSTRZYMANY"],
 ]);
-
-const PROJECT_CONTEXT_MENU_ITEMS: ContextMenuItem[] = [
-  {
-    displayName: "Zmień nazwę",
-    key: "change_name",
-    onClick: () => null,
-  },
-  {
-    displayName: "Zarchiwizuj",
-    key: "archive",
-    onClick: () => null,
-  },
-  {
-    displayName: "Usuń",
-    key: "delete",
-    onClick: () => null,
-  },
-];
 
 const PROJECT_AVATAR_DIM = 218;
 
@@ -75,7 +58,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, className }) => {
               {projectStatusMap.get(project.status)}
             </div>
             <ContextMenu
-              menuItems={PROJECT_CONTEXT_MENU_ITEMS}
+              menuItems={projectCardContextMenuItems}
               className="mr-2"
             >
               <MoreHorizontal />
@@ -142,7 +125,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, className }) => {
                 </Button>
               </div>
               <ContextMenu
-                menuItems={PROJECT_CONTEXT_MENU_ITEMS}
+                menuItems={projectCardContextMenuItems}
                 className="mr-2"
               >
                 <MoreHorizontal />
