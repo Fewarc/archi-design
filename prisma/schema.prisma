@@ -71,6 +71,7 @@ model Project {
     email           String
     status          ProjectStatus       @default(ACTIVE)
     contacts        AdditionalContact[]
+    ProjectNote     ProjectNote[]
 }
 
 model AdditionalContact {
@@ -82,4 +83,12 @@ model AdditionalContact {
     phoneNumber String
     email       String
     note        String
+}
+
+model ProjectNote {
+    id        String  @id @default(cuid()) @map("_id")
+    project   Project @relation(fields: [projectId], references: [id])
+    projectId String
+    category  String
+    content   String
 }

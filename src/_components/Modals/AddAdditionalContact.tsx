@@ -1,4 +1,4 @@
-import { useMediaQuery, useValidation } from "@/utils/hooks";
+import { useValidation } from "@/utils/hooks";
 import Button from "../Button";
 import Input from "../Input";
 import { useState } from "react";
@@ -6,7 +6,6 @@ import { additionalContactSchema } from "@/utils/validation";
 import TextArea from "../TextArea";
 import { api } from "@/utils/api";
 import ActionModal from "../ActionModal";
-import { AdditionalContact } from "@prisma/client";
 
 interface AddAdditionalContactProps {
   projectId: string;
@@ -82,7 +81,7 @@ const AddAdditionalContact: React.FC<AddAdditionalContactProps> = ({
           variant="border_label"
           placeholder="stolarz, wykonawca"
           label={<div className="text-xs font-semibold">Funkcja</div>}
-          error={errors?.name?._errors}
+          error={errors?.occupation?._errors}
         />
       </div>
       <div className="mt-8 text-[11px]">DANE KONTAKTOWE</div>
@@ -121,13 +120,15 @@ const AddAdditionalContact: React.FC<AddAdditionalContactProps> = ({
           }
         />
       </div>
-      <Button
-        onClick={() => validate({ ...newContact, projectId })}
-        variant="defualt"
-        className="mt-9 w-full rounded-full border-0 bg-archi-purple px-5 py-2 text-center font-medium text-white shadow-double"
-      >
-        Dodaj
-      </Button>
+      <div className="flex justify-end gap-x-4">
+        <Button
+          onClick={() => validate({ ...newContact, projectId })}
+          variant="defualt"
+          className="mt-9 w-full md:w-fit rounded-full border-0 bg-archi-purple px-5 py-2 text-center font-medium text-white shadow-double"
+        >
+          Dodaj
+        </Button>
+      </div>
     </ActionModal>
   );
 };

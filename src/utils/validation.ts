@@ -56,3 +56,10 @@ export const editAdditionalContactSchema = z.object({
   projectId: z.string(),
   id: z.string()
 });
+
+// new note
+export const newNoteSchema = z.object({
+  projectId: z.string(),
+  category: z.string().min(1, { message: "Pole wymagane." }),
+  content: z.string()
+});

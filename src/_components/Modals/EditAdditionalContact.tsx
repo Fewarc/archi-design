@@ -59,7 +59,7 @@ const EditAdditionalContacts: React.FC<EditAdditionalContactsProps> = ({
           variant="border_label"
           placeholder="stolarz, wykonawca"
           label={<div className="text-xs font-semibold">Funkcja</div>}
-          error={errors?.name?._errors}
+          error={errors?.occupation?._errors}
         />
       </div>
       <div className="mt-8 text-[11px]">DANE KONTAKTOWE</div>

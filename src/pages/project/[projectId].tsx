@@ -7,9 +7,10 @@ import { api } from "@/utils/api";
 import { ProjectDetailsMenuKey } from "@/utils/items";
 import { LayoutPage } from "@/utils/types";
 import { protectRoute } from "@/utils/validation";
-import { AtSign, BookUser, Database, MoreHorizontal, Plus } from "lucide-react";
+import { BookUser, Database, MoreHorizontal, NotebookPen, Plus } from "lucide-react";
 import { GetSessionParams } from "next-auth/react";
 import { useState } from "react";
+import AddProjectNote from "@/_components/Modals/AddProjectNote";
 
 interface ProjectDetailsProps {
   projectId: string;
@@ -19,6 +20,7 @@ const ProjectDetails: LayoutPage<ProjectDetailsProps> = (props: any) => {
   const [detailsState, setDetailsState] =
     useState<ProjectDetailsMenuKey>("client_profile");
   const [addContactOpen, setAddContactOpen] = useState(false);
+  const [addNoteOpen, setAddNoteOpen] = useState(false);
 
   // TODO: create custom hook for data fetch
 
@@ -38,6 +40,11 @@ const ProjectDetails: LayoutPage<ProjectDetailsProps> = (props: any) => {
         projectId={props.params.projectId}
         open={addContactOpen}
         onClose={() => setAddContactOpen(false)}
+      />
+      <AddProjectNote 
+        projectId={props.params.projectId}
+        open={addNoteOpen}
+        onClose={() => setAddNoteOpen(false)}
       />
       <section className="flex flex-col">
         <h1>Projekt</h1>
@@ -87,8 +94,24 @@ const ProjectDetails: LayoutPage<ProjectDetailsProps> = (props: any) => {
             {!additionalContacts
               ? "Brak dodatkowych kontaktów"
               : additionalContacts.map((contact) => (
-                  <AdditionalContactCard contact={contact} />
+                  <AdditionalContactCard contact={contact} key={contact.id}/>
                 ))}
+          </div>
+        </section>
+        <section className="mt-6">
+        <div className="flex justify-between">
+            <div className="flex items-center gap-x-2">
+              <NotebookPen className="text-archi-purple" />
+              <h3 className="text-xl font-bold leading-5">
+                Notatki
+              </h3>
+            </div>
+            <Button onClick={() => setAddNoteOpen(true)} variant="icon">
+              <Plus />
+            </Button>
+          </div>
+          <div className="flex flex-col mt-4 gap-y-4">
+            {/* notes */}
           </div>
         </section>
       </section>
