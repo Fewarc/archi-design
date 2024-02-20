@@ -1,4 +1,4 @@
-import { useMediaQuery, useValidation, useValidation2 } from "@/utils/hooks";
+import { useValidation2 } from "@/utils/hooks";
 import { AdditionalContact } from "@prisma/client";
 import { useState } from "react";
 import ActionModal from "../ActionModal";
@@ -6,7 +6,7 @@ import { ModalProps } from "@/utils/types";
 import Input from "../Input";
 import TextArea from "../TextArea";
 import Button from "../Button";
-import { additionalContactSchema } from "@/utils/validation";
+import { editAdditionalContactSchema } from "@/utils/validation";
 import { api } from "@/utils/api";
 
 interface EditAdditionalContactsProps extends ModalProps {
@@ -18,7 +18,6 @@ const EditAdditionalContacts: React.FC<EditAdditionalContactsProps> = ({
   contact,
   open,
   onClose,
-  className,
 }) => {
   const [editContact, setEditContact] = useState(contact);
 
@@ -29,7 +28,7 @@ const EditAdditionalContacts: React.FC<EditAdditionalContactsProps> = ({
     onClose();
   }});
 
-  const { errors, validate } = useValidation2<typeof editContact>({schema: additionalContactSchema, onSuccess: (contact) => {
+  const { errors, validate } = useValidation2<typeof editContact>({schema: editAdditionalContactSchema, onSuccess: (contact) => {
     editAdditionalContact(contact);
   }});
 
