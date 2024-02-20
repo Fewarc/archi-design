@@ -1,4 +1,4 @@
-import { useMediaQuery, useValidation2 } from "@/utils/hooks";
+import { useMediaQuery, useValidation } from "@/utils/hooks";
 import Button from "../Button";
 import Input from "../Input";
 import { useState } from "react";
@@ -37,7 +37,7 @@ const AddAdditionalContact: React.FC<AddAdditionalContactProps> = ({
       },
     });
 
-  const { errors, validate } = useValidation2<typeof newContact>({
+  const { errors, validate } = useValidation<typeof newContact>({
     schema: additionalContactSchema,
     onSuccess: () => {
       createAdditionalContact(newContact);

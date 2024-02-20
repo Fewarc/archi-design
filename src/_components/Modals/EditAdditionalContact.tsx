@@ -1,4 +1,4 @@
-import { useValidation2 } from "@/utils/hooks";
+import { useValidation } from "@/utils/hooks";
 import { AdditionalContact } from "@prisma/client";
 import { useState } from "react";
 import ActionModal from "../ActionModal";
@@ -28,7 +28,7 @@ const EditAdditionalContacts: React.FC<EditAdditionalContactsProps> = ({
     onClose();
   }});
 
-  const { errors, validate } = useValidation2<typeof editContact>({schema: editAdditionalContactSchema, onSuccess: (contact) => {
+  const { errors, validate } = useValidation<typeof editContact>({schema: editAdditionalContactSchema, onSuccess: (contact) => {
     editAdditionalContact(contact);
   }});
 

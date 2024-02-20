@@ -2,7 +2,7 @@ import { projectSchema } from "@/utils/validation";
 import Input from "@/_components/Input";
 import { useState } from "react";
 import Button from "@/_components/Button";
-import { useValidation2 } from "@/utils/hooks";
+import { useValidation } from "@/utils/hooks";
 import { api } from "@/utils/api";
 import ActionModal from "../ActionModal";
 
@@ -31,7 +31,7 @@ const AddProject: React.FC<AddProjectProps> = ({ open, onClose }) => {
     },
   });
 
-  const { validate, errors } = useValidation2<typeof newProject>({
+  const { validate, errors } = useValidation<typeof newProject>({
     schema: projectSchema,
     onSuccess: (newProject) => {
       createProject(newProject);

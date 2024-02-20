@@ -1,41 +1,5 @@
 import { z } from "zod";
 import { RefObject, useEffect, useState } from "react";
-import { projectSchema } from "./validation";
-import { Project } from "@prisma/client";
-
-/**
- * hook to validate zod schemas and parse errors
- *
- * @param schema zod object
- * @returns data, errors and validate function
- */
-// TODO: refactor
-export function useValidation<T extends z.ZodRawShape>(schema: z.ZodObject<T>) {
-  const [data, setData] = useState<T>();
-  const [errors, setErrors] =
-    useState<
-      z.ZodFormattedError<
-        { [k in keyof z.baseObjectInputType<T>]: z.baseObjectInputType<T>[k] },
-        string
-      >
-    >();
-
-  function validate<TObject extends Object>(data: TObject) {
-    const result = schema.safeParse(data);
-
-    if (result.success) {
-      const resultData = result.data as unknown as T;
-      setData(resultData);
-      setErrors(undefined);
-      return resultData as unknown as TObject;
-    } else {
-      const formattedErrors = result.error.format();
-      setErrors(formattedErrors);
-    }
-  }
-
-  return { data, errors, validate };
-}
 
 /**
  * hook to validate zod schemas and parse errors
@@ -43,7 +7,7 @@ export function useValidation<T extends z.ZodRawShape>(schema: z.ZodObject<T>) {
  * @param props object with validation schema, onSuccess function and onError function
  * @returns data, errors and validate function
  */
-export function useValidation2<T>(props: {
+export function useValidation<T>(props: {
   schema: z.ZodType<T>;
   onSuccess?: (data: T) => void;
   onError?: () => void;
