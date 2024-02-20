@@ -37,6 +37,12 @@ export function useValidation<T extends z.ZodRawShape>(schema: z.ZodObject<T>) {
   return { data, errors, validate };
 }
 
+/**
+ * hook to validate zod schemas and parse errors
+ * 
+ * @param props object with validation schema, onSuccess function and onError function
+ * @returns data, errors and validate function
+ */
 export function useValidation2<T>(props: {
   schema: z.ZodType<T>;
   onSuccess?: (data: T) => void;

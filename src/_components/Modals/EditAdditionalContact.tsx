@@ -1,4 +1,4 @@
-import { useMediaQuery, useValidation } from "@/utils/hooks";
+import { useMediaQuery, useValidation, useValidation2 } from "@/utils/hooks";
 import { AdditionalContact } from "@prisma/client";
 import { useState } from "react";
 import ActionModal from "../ActionModal";
@@ -29,13 +29,9 @@ const EditAdditionalContacts: React.FC<EditAdditionalContactsProps> = ({
     onClose();
   }});
 
-  const { validate, errors } = useValidation(additionalContactSchema);
-
-  const handleEditContact = () => {
-    const validatedData = validate(editContact);
-
-    validatedData && editAdditionalContact(validatedData);
-  };
+  const { errors, validate } = useValidation2<typeof editContact>({schema: additionalContactSchema, onSuccess: (contact) => {
+    editAdditionalContact(contact);
+  }});
 
   return (
     <ActionModal
@@ -99,7 +95,7 @@ const EditAdditionalContacts: React.FC<EditAdditionalContactsProps> = ({
             <div className="text-xs font-semibold !leading-[6px]">Notatki</div>
           }
           onChange={(e) =>
-            setEditContact({ ...editContact, occupation: e.target.value })
+            setEditContact({ ...editContact, note: e.target.value })
           }
         />
       </div>
@@ -112,7 +108,7 @@ const EditAdditionalContacts: React.FC<EditAdditionalContactsProps> = ({
           Anuluj
         </Button>
         <Button
-          onClick={() => handleEditContact()}
+          onClick={() => validate(editContact)}
           variant="defualt"
           className="mt-9 w-full rounded-full border-0 bg-archi-purple px-5 py-2 text-center font-semibold text-white shadow-double md:w-fit"
         >
