@@ -1,12 +1,15 @@
 import { z } from "zod";
 import { RefObject, useEffect, useState } from "react";
+import { projectSchema } from "./validation";
+import { Project } from "@prisma/client";
 
 /**
  * hook to validate zod schemas and parse errors
- * 
+ *
  * @param schema zod object
  * @returns data, errors and validate function
  */
+// TODO: refactor
 export function useValidation<T extends z.ZodRawShape>(schema: z.ZodObject<T>) {
   const [data, setData] = useState<T>();
   const [errors, setErrors] =
@@ -28,6 +31,31 @@ export function useValidation<T extends z.ZodRawShape>(schema: z.ZodObject<T>) {
     } else {
       const formattedErrors = result.error.format();
       setErrors(formattedErrors);
+    }
+  }
+
+  return { data, errors, validate };
+}
+
+export function useValidation2<T>(props: {
+  schema: z.ZodType<T>;
+  onSuccess?: (data: T) => void;
+  onError?: () => void;
+}) {
+  const [data, setData] = useState<T>();
+  const [errors, setErrors] = useState<z.ZodFormattedError<T, string>>();
+
+  function validate(data: T) {
+    const result = props.schema.safeParse(data);
+
+    if (result.success) {
+      setData(result.data);
+      setErrors(undefined);
+      !!props.onSuccess && props.onSuccess(result.data);
+    } else {
+      const formattedErrors = result.error.format();
+      setErrors(formattedErrors);
+      !!props.onError && props.onError();
     }
   }
 
@@ -73,7 +101,7 @@ export const useMediaQuery = (query: string) => {
  */
 export const useOnClickOutside = (
   ref: RefObject<HTMLDivElement>,
-  handler: Function
+  handler: Function,
 ) => {
   useEffect(() => {
     const listener = (event: MouseEvent | TouchEvent) => {
