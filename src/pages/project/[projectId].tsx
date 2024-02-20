@@ -7,7 +7,13 @@ import { api } from "@/utils/api";
 import { ProjectDetailsMenuKey } from "@/utils/items";
 import { LayoutPage } from "@/utils/types";
 import { protectRoute } from "@/utils/validation";
-import { BookUser, Database, MoreHorizontal, NotebookPen, Plus } from "lucide-react";
+import {
+  BookUser,
+  Database,
+  MoreHorizontal,
+  NotebookPen,
+  Plus,
+} from "lucide-react";
 import { GetSessionParams } from "next-auth/react";
 import { useState } from "react";
 import AddProjectNote from "@/_components/Modals/AddProjectNote";
@@ -34,6 +40,10 @@ const ProjectDetails: LayoutPage<ProjectDetailsProps> = (props: any) => {
       projectId: props.params.projectId,
     });
 
+  const { data: notes, isLoading: notesLoading } = api.note.find.useQuery({
+    projectId: props.params.projectId,
+  });
+
   return (
     <>
       <AddAdditionalContact
@@ -41,12 +51,12 @@ const ProjectDetails: LayoutPage<ProjectDetailsProps> = (props: any) => {
         open={addContactOpen}
         onClose={() => setAddContactOpen(false)}
       />
-      <AddProjectNote 
+      <AddProjectNote
         projectId={props.params.projectId}
         open={addNoteOpen}
         onClose={() => setAddNoteOpen(false)}
       />
-      <section className="flex flex-col">
+      <section className="flex flex-col pb-20">
         <h1>Projekt</h1>
         <h2 className="text-[24px] font-bold leading-[24px] md:text-[34px] md:leading-[38px]">
           {project?.name}
@@ -90,28 +100,26 @@ const ProjectDetails: LayoutPage<ProjectDetailsProps> = (props: any) => {
               <Plus />
             </Button>
           </div>
-          <div className="flex flex-col mt-4 gap-y-4">
+          <div className="mt-4 flex flex-col gap-y-4">
             {!additionalContacts
               ? "Brak dodatkowych kontaktów"
               : additionalContacts.map((contact) => (
-                  <AdditionalContactCard contact={contact} key={contact.id}/>
+                  <AdditionalContactCard contact={contact} key={contact.id} />
                 ))}
           </div>
         </section>
         <section className="mt-6">
-        <div className="flex justify-between">
+          <div className="flex justify-between">
             <div className="flex items-center gap-x-2">
               <NotebookPen className="text-archi-purple" />
-              <h3 className="text-xl font-bold leading-5">
-                Notatki
-              </h3>
+              <h3 className="text-xl font-bold leading-5">Notatki</h3>
             </div>
             <Button onClick={() => setAddNoteOpen(true)} variant="icon">
               <Plus />
             </Button>
           </div>
-          <div className="flex flex-col mt-4 gap-y-4">
-            {/* notes */}
+          <div className="mt-4 flex flex-col gap-y-4">
+            {notes?.map((note) => <div>{note.category}</div>)}
           </div>
         </section>
       </section>
