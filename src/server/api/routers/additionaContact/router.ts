@@ -1,4 +1,4 @@
-import { additionalContactSchema } from "@/utils/validation";
+import { addAdditionalContactSchema } from "@/utils/validation";
 import { createTRPCRouter, protectedProcedure } from "../../trpc";
 import { createAdditionalContact } from "./actions/create";
 import {
@@ -12,7 +12,7 @@ import {
 
 export const additionalContactRouter = createTRPCRouter({
   create: protectedProcedure
-    .input(additionalContactSchema)
+    .input(addAdditionalContactSchema)
     .mutation(({ input, ctx }) => {
       return createAdditionalContact(input, ctx.db);
     }),

@@ -37,7 +37,7 @@ export const projectSchema = z.object({
 });
 
 // add additional contact
-export const additionalContactSchema = z.object({
+export const addAdditionalContactSchema = z.object({
   name: z.string().min(1, { message: "Pole wymagane." }),
   occupation: z.string().min(1, { message: "Pole wymagane." }),
   phoneNumber: z.string().min(1, { message: "Pole wymagane." }),
@@ -47,7 +47,7 @@ export const additionalContactSchema = z.object({
 });
 
 // edit additional contact
-export const editAdditionalContactSchema = z.object({
+export const additionalContactSchema = z.object({
   name: z.string().min(1, { message: "Pole wymagane." }),
   occupation: z.string().min(1, { message: "Pole wymagane." }),
   phoneNumber: z.string().min(1, { message: "Pole wymagane." }),
@@ -58,8 +58,16 @@ export const editAdditionalContactSchema = z.object({
 });
 
 // new note
-export const newNoteSchema = z.object({
+export const addNoteSchema = z.object({
   projectId: z.string(),
   category: z.string().min(1, { message: "Pole wymagane." }),
-  content: z.string()
+  content: z.string().min(1, { message: "Pole wymagane." })
+});
+
+// edit note
+export const noteSchema = z.object({
+  projectId: z.string(),
+  category: z.string().min(1, { message: "Pole wymagane." }),
+  content: z.string().min(1, { message: "Pole wymagane." }),
+  id: z.string()
 });

@@ -17,6 +17,7 @@ import {
 import { GetSessionParams } from "next-auth/react";
 import { useState } from "react";
 import AddProjectNote from "@/_components/Modals/AddProjectNote";
+import ProjectNoteCard from "@/_components/ProjectDetails/ProjectNoteCard";
 
 interface ProjectDetailsProps {
   projectId: string;
@@ -119,7 +120,7 @@ const ProjectDetails: LayoutPage<ProjectDetailsProps> = (props: any) => {
             </Button>
           </div>
           <div className="mt-4 flex flex-col gap-y-4">
-            {notes?.map((note) => <div>{note.category}</div>)}
+            {notes?.map((note) => <ProjectNoteCard note={note} key={note.id}/>)}
           </div>
         </section>
       </section>

@@ -6,7 +6,7 @@ import { ModalProps } from "@/utils/types";
 import Input from "../Input";
 import TextArea from "../TextArea";
 import Button from "../Button";
-import { editAdditionalContactSchema } from "@/utils/validation";
+import { additionalContactSchema } from "@/utils/validation";
 import { api } from "@/utils/api";
 
 interface EditAdditionalContactsProps extends ModalProps {
@@ -23,19 +23,31 @@ const EditAdditionalContacts: React.FC<EditAdditionalContactsProps> = ({
 
   const utils = api.useUtils();
 
-  const { mutate: editAdditionalContact } = api.additionalContact.edit.useMutation({ onSuccess: () => {
-    utils.additionalContact.invalidate();
-    onClose();
-  }});
+  const { mutate: editAdditionalContact } =
+    api.additionalContact.edit.useMutation({
+      onSuccess: (_data, newContactData) => {
+        utils.additionalContact.invalidate();
+        onClose();
+        setEditContact(newContactData);
+      },
+    });
 
-  const { errors, validate } = useValidation<typeof editContact>({schema: editAdditionalContactSchema, onSuccess: (contact) => {
-    editAdditionalContact(contact);
-  }});
+  const { errors, validate } = useValidation<typeof editContact>({
+    schema: additionalContactSchema,
+    onSuccess: (contact) => {
+      editAdditionalContact(contact);
+    },
+  });
+
+  const handleClose = () => {
+    onClose();
+    setEditContact(contact);
+  }
 
   return (
     <ActionModal
       open={open}
-      onClose={onClose}
+      onClose={handleClose}
       title="Edytuj"
       subtitle="Dodatkowe dane kontaktowe"
     >
@@ -100,7 +112,7 @@ const EditAdditionalContacts: React.FC<EditAdditionalContactsProps> = ({
       </div>
       <div className="flex justify-end gap-x-4">
         <Button
-          onClick={() => onClose()}
+          onClick={() => handleClose()}
           variant="defualt"
           className="mt-9 w-full rounded-full border-0 bg-archi-purple-light px-5 py-2 text-center font-semibold text-archi-purple shadow-double md:w-fit"
         >

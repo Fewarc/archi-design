@@ -2,7 +2,7 @@ import { useValidation } from "@/utils/hooks";
 import Button from "../Button";
 import Input from "../Input";
 import { useState } from "react";
-import { additionalContactSchema } from "@/utils/validation";
+import { addAdditionalContactSchema } from "@/utils/validation";
 import TextArea from "../TextArea";
 import { api } from "@/utils/api";
 import ActionModal from "../ActionModal";
@@ -27,17 +27,19 @@ const AddAdditionalContact: React.FC<AddAdditionalContactProps> = ({
     projectId: projectId,
   });
 
+  const utils = api.useUtils();
+
   const { mutate: createAdditionalContact } =
     api.additionalContact.create.useMutation({
       onSuccess: () => {
-        // TODO: invalidate additional contacts
+        utils.additionalContact.invalidate();
         onClose();
         clearData();
       },
     });
 
   const { errors, validate } = useValidation<typeof newContact>({
-    schema: additionalContactSchema,
+    schema: addAdditionalContactSchema,
     onSuccess: () => {
       createAdditionalContact(newContact);
     },

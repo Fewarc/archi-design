@@ -44,14 +44,14 @@ const AdditionalContactCard: React.FC<AdditionalContactCardProps> = ({
             <MoreHorizontal />
           </ContextMenu>
         </div>
-        <div className="text-[12px] leading-[14px]">
+        <div className="text-[14px] leading-[18px]">
           <p className="text-[10px] font-semibold leading-[18px]">DANE</p>
           <p>{contact.name}</p>
           <p>{contact.phoneNumber}</p>
           <p>{contact.email}</p>
         </div>
         {!!contact.note.length && (
-          <div className="mt-1 text-[12px] leading-[14px]">
+          <div className="mt-1 text-[14px] leading-[18px]">
             <p className="text-[10px] font-semibold leading-[18px]">NOTATKI</p>
             <p>{contact.note}</p>
           </div>

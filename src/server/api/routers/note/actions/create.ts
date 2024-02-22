@@ -1,7 +1,7 @@
-import { newNoteSchema } from "@/utils/validation";
+import { addNoteSchema } from "@/utils/validation";
 import { PrismaClient } from "@prisma/client";
 
-export const createProjectNoteInput = newNoteSchema;
+export const createProjectNoteInput = addNoteSchema;
 
 export const createProjectNote = async (
   input: typeof createProjectNoteInput._type,

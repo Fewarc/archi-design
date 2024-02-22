@@ -1,4 +1,4 @@
-import { additionalContactSchema } from "@/utils/validation";
+import { addAdditionalContactSchema, additionalContactSchema } from "@/utils/validation";
 import { PrismaClient } from "@prisma/client";
 
 export const editAdditionalContactInput = additionalContactSchema;

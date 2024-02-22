@@ -3,7 +3,7 @@ import ActionModal from "../ActionModal";
 import Input from "../Input";
 import TextArea from "../TextArea";
 import { useValidation } from "@/utils/hooks";
-import { newNoteSchema } from "@/utils/validation";
+import { addNoteSchema } from "@/utils/validation";
 import Button from "../Button";
 import { api } from "@/utils/api";
 
@@ -34,7 +34,7 @@ const AddProjectNote: React.FC<AddProjectNoteProps> = ({
   });
 
   const { errors, validate } = useValidation({
-    schema: newNoteSchema,
+    schema: addNoteSchema,
     onSuccess: () => {
       createNote(newNote);
     },
@@ -65,6 +65,7 @@ const AddProjectNote: React.FC<AddProjectNoteProps> = ({
             <div className="text-xs font-semibold !leading-[6px]">Notatka</div>
           }
           onChange={(e) => setNewNote({ ...newNote, content: e.target.value })}
+          error={errors?.content?._errors}
         />
       </div>
       <div className="flex justify-end gap-x-4">
