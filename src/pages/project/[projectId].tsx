@@ -5,7 +5,7 @@ import AdditionalContactCard from "@/_components/ProjectDetails/AdditionalContac
 import ProjectDetailsMenu from "@/_components/ProjectDetailsMenu";
 import { api } from "@/utils/api";
 import { ProjectDetailsMenuKey } from "@/utils/items";
-import { LayoutPage } from "@/utils/types";
+import { ContextMenuItem, LayoutPage } from "@/utils/types";
 import { protectRoute } from "@/utils/validation";
 import {
   BookUser,
@@ -15,9 +15,10 @@ import {
   Plus,
 } from "lucide-react";
 import { GetSessionParams } from "next-auth/react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import AddProjectNote from "@/_components/Modals/AddProjectNote";
 import ProjectNoteCard from "@/_components/ProjectDetails/ProjectNoteCard";
+import EditProjectDetials from "@/_components/Modals/EditProjectDetails";
 
 interface ProjectDetailsProps {
   projectId: string;
@@ -28,6 +29,8 @@ const ProjectDetails: LayoutPage<ProjectDetailsProps> = (props: any) => {
     useState<ProjectDetailsMenuKey>("client_profile");
   const [addContactOpen, setAddContactOpen] = useState(false);
   const [addNoteOpen, setAddNoteOpen] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
 
   // TODO: create custom hook for data fetch
 
@@ -45,6 +48,22 @@ const ProjectDetails: LayoutPage<ProjectDetailsProps> = (props: any) => {
     projectId: props.params.projectId,
   });
 
+  const projectContextMenuItems: ContextMenuItem[] = useMemo(
+    () => [
+      {
+        displayName: "Edytuj",
+        key: "edit",
+        onClick: () => setOpenEdit(true),
+      },
+      {
+        displayName: "Usuń",
+        key: "delete",
+        onClick: () => setOpenDelete(true),
+      },
+    ],
+    [],
+  );
+
   return (
     <>
       <AddAdditionalContact
@@ -57,6 +76,13 @@ const ProjectDetails: LayoutPage<ProjectDetailsProps> = (props: any) => {
         open={addNoteOpen}
         onClose={() => setAddNoteOpen(false)}
       />
+      {project && (
+        <EditProjectDetials
+          project={project}
+          open={openEdit}
+          onClose={() => setOpenEdit(false)}
+        />
+      )}
       <section className="flex flex-col pb-20">
         <h1>Projekt</h1>
         <h2 className="text-[24px] font-bold leading-[24px] md:text-[34px] md:leading-[38px]">
@@ -72,7 +98,7 @@ const ProjectDetails: LayoutPage<ProjectDetailsProps> = (props: any) => {
               <Database className="text-archi-purple" />
               <h3 className="text-xl font-bold leading-5">Dane podstawowe</h3>
             </div>
-            <ContextMenu menuItems={[]}>
+            <ContextMenu menuItems={projectContextMenuItems}>
               <MoreHorizontal />
             </ContextMenu>
           </div>
@@ -120,7 +146,9 @@ const ProjectDetails: LayoutPage<ProjectDetailsProps> = (props: any) => {
             </Button>
           </div>
           <div className="mt-4 flex flex-col gap-y-4">
-            {notes?.map((note) => <ProjectNoteCard note={note} key={note.id}/>)}
+            {notes?.map((note) => (
+              <ProjectNoteCard note={note} key={note.id} />
+            ))}
           </div>
         </section>
       </section>

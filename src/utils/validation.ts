@@ -1,5 +1,6 @@
+import { ProjectStatus } from "@prisma/client";
 import { GetSessionParams, getSession } from "next-auth/react";
-import { z } from "zod";
+import { string, z } from "zod";
 
 export const protectRoute = async (context: GetSessionParams) => {
   const session = await getSession(context);
@@ -34,6 +35,21 @@ export const projectSchema = z.object({
   city: z.string().min(1, { message: "Pole wymagane." }),
   phoneNumber: z.string().min(1, { message: "Pole wymagane." }),
   email: z.string().email({ message: "Nieprawidłowy adres e-mail." }),
+});
+
+// edit project
+export const editProjectSchema = z.object({
+  name: z.string().min(1, { message: "Pole wymagane." }),
+  clientName: z.string().min(1, { message: "Pole wymagane." }),
+  address: z.string().min(1, { message: "Pole wymagane." }),
+  city: z.string().min(1, { message: "Pole wymagane." }),
+  phoneNumber: z.string().min(1, { message: "Pole wymagane." }),
+  email: z.string().email({ message: "Nieprawidłowy adres e-mail." }),
+  startDate: z.date(),
+  updatedAt: z.date(),
+  plannedDeadline: z.date().nullable(),
+  status: z.nativeEnum(ProjectStatus),
+  id: z.string()
 });
 
 // add additional contact
