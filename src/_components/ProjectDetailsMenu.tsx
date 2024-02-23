@@ -11,7 +11,7 @@ const ProjectDetailsMenu: React.FC<ProjectDetailsMenuProps> = ({
   onStateChange,
 }) => {
   return (
-    <section className="fixed bottom-0 left-0 md:relative flex h-16 md:h-auto w-screen md:w-auto items-center justify-around bg-white shadow-archi md:shadow-none mt-8 z-50">
+    <section className="fixed bottom-0 left-0 md:relative flex h-16 md:h-auto w-screen md:w-auto items-center justify-around bg-white shadow-archi md:shadow-none mt-8 z-40">
       {projectDetailsMenuItems.map((item) => {
         const itemActive = item.key === state;
 

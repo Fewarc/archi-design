@@ -4,6 +4,7 @@ import { createProject } from "./actions/create";
 import { getAllProjects } from "./actions/getAll";
 import { findProject, findProjectInput } from "./actions/find";
 import { editProject, editProjectInput } from "./actions/edit";
+import { deleteProject, deleteProjectInput } from "./actions/delete";
 
 export const projectRouter = createTRPCRouter({
   create: protectedProcedure.input(projectSchema).mutation(({ input, ctx }) => {
@@ -19,5 +20,10 @@ export const projectRouter = createTRPCRouter({
     .input(editProjectInput)
     .mutation(({ input, ctx }) => {
       return editProject(input, ctx.db);
+    }),
+  delete: protectedProcedure
+    .input(deleteProjectInput)
+    .mutation(({ input, ctx }) => {
+      return deleteProject(input, ctx.db);
     }),
 });

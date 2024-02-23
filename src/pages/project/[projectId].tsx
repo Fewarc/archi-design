@@ -19,12 +19,13 @@ import { useMemo, useState } from "react";
 import AddProjectNote from "@/_components/Modals/AddProjectNote";
 import ProjectNoteCard from "@/_components/ProjectDetails/ProjectNoteCard";
 import EditProjectDetials from "@/_components/Modals/EditProjectDetails";
+import DeleteModal from "@/_components/Modals/DeleteModal";
 
 interface ProjectDetailsProps {
-  projectId: string;
+  params: { projectId: string };
 }
 
-const ProjectDetails: LayoutPage<ProjectDetailsProps> = (props: any) => {
+const ProjectDetails: LayoutPage<ProjectDetailsProps> = ({ ...props }) => {
   const [detailsState, setDetailsState] =
     useState<ProjectDetailsMenuKey>("client_profile");
   const [addContactOpen, setAddContactOpen] = useState(false);
@@ -46,6 +47,12 @@ const ProjectDetails: LayoutPage<ProjectDetailsProps> = (props: any) => {
 
   const { data: notes, isLoading: notesLoading } = api.note.find.useQuery({
     projectId: props.params.projectId,
+  });
+
+  const { mutate: deleteProject } = api.project.delete.useMutation({
+    onSuccess: () => {
+      // delete success
+    },
   });
 
   const projectContextMenuItems: ContextMenuItem[] = useMemo(
@@ -83,6 +90,15 @@ const ProjectDetails: LayoutPage<ProjectDetailsProps> = (props: any) => {
           onClose={() => setOpenEdit(false)}
         />
       )}
+      <DeleteModal
+        open={openDelete}
+        onClose={() => setOpenDelete(false)}
+        onDelete={() => deleteProject({ projectId: props.params.projectId })}
+        subtitle={`Czy na pewno chcesz usunąć projekt "${project?.name}"?`}
+      >
+        Zostanie on trwale usunięty ze wszystkich kont, które mają do niego
+        dostęp
+      </DeleteModal>
       <section className="flex flex-col pb-20">
         <h1>Projekt</h1>
         <h2 className="text-[24px] font-bold leading-[24px] md:text-[34px] md:leading-[38px]">
@@ -128,11 +144,15 @@ const ProjectDetails: LayoutPage<ProjectDetailsProps> = (props: any) => {
             </Button>
           </div>
           <div className="mt-4 flex flex-col gap-y-4">
-            {!additionalContacts
-              ? "Brak dodatkowych kontaktów"
-              : additionalContacts.map((contact) => (
-                  <AdditionalContactCard contact={contact} key={contact.id} />
-                ))}
+            {!additionalContacts?.length ? (
+              <div className="w-full text-center">
+                Brak dodatkowych kontaktów
+              </div>
+            ) : (
+              additionalContacts.map((contact) => (
+                <AdditionalContactCard contact={contact} key={contact.id} />
+              ))
+            )}
           </div>
         </section>
         <section className="mt-6">
@@ -146,9 +166,13 @@ const ProjectDetails: LayoutPage<ProjectDetailsProps> = (props: any) => {
             </Button>
           </div>
           <div className="mt-4 flex flex-col gap-y-4">
-            {notes?.map((note) => (
-              <ProjectNoteCard note={note} key={note.id} />
-            ))}
+            {!notes?.length ? (
+              <div className="w-full text-center">Brak notatek</div>
+            ) : (
+              notes?.map((note) => (
+                <ProjectNoteCard note={note} key={note.id} />
+              ))
+            )}
           </div>
         </section>
       </section>
