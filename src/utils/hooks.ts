@@ -1,7 +1,9 @@
 import { z } from "zod";
-import { RefObject, useEffect, useState } from "react";
+import { RefObject, useEffect, useMemo, useState } from "react";
 import { api } from "./api";
 import { useRouter } from "next/router";
+import { createAvatar } from "@dicebear/core";
+import { initials } from "@dicebear/collection";
 
 /**
  * hook to validate zod schemas and parse errors
@@ -123,3 +125,18 @@ export const useProjectDetailsData = (projectId: string) => {
     deleteProject: () => deleteProject({ projectId }),
   };
 };
+
+export const useProjectAvatar = (name: string) => {
+  const avatar = useMemo(
+    () =>
+      createAvatar(initials, {
+        seed: name,
+        backgroundColor: ["EDECF9"],
+        textColor: ["6C6AD0"],
+        fontWeight: 700,
+      }),
+    [],
+  );
+
+  return avatar;
+}

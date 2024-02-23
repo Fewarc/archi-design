@@ -2,12 +2,8 @@ import { cn } from "@/utils/styleUtils";
 import { Project } from "@prisma/client";
 import { Link, MoreHorizontal } from "lucide-react";
 import ContextMenu from "./ContextMenu";
-import { ContextMenuItem } from "@/utils/types";
-import { useMediaQuery } from "@/utils/hooks";
-import { createAvatar } from "@dicebear/core";
-import { initials } from "@dicebear/collection";
+import { useMediaQuery, useProjectAvatar } from "@/utils/hooks";
 import Image from "next/image";
-import { useMemo } from "react";
 import Button from "./Button";
 import { useRouter } from "next/router";
 import { projectCardContextMenuItems } from "@/utils/items";
@@ -30,16 +26,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, className }) => {
 
   const router = useRouter();
 
-  const avatar = useMemo(
-    () =>
-      createAvatar(initials, {
-        seed: project.clientName,
-        backgroundColor: ["EDECF9"],
-        textColor: ["6C6AD0"],
-        fontWeight: 700,
-      }),
-    [],
-  );
+  const avatar = useProjectAvatar(project.clientName);
 
   return (
     <div
@@ -107,7 +94,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, className }) => {
               width={PROJECT_AVATAR_DIM}
               height={PROJECT_AVATAR_DIM}
               className="rounded-xl"
-            ></Image>
+            />
             <div className="absolute left-2 top-2 h-fit rounded-full bg-archi-purple-dark px-3 text-xs font-medium leading-[18px] text-white">
               {projectStatusMap.get(project.status)}
             </div>
