@@ -1,9 +1,11 @@
 import { z } from "zod";
 import { RefObject, useEffect, useState } from "react";
+import { api } from "./api";
+import { useRouter } from "next/router";
 
 /**
  * hook to validate zod schemas and parse errors
- * 
+ *
  * @param props object with validation schema, onSuccess function and onError function
  * @returns data, errors and validate function
  */
@@ -86,4 +88,44 @@ export const useOnClickOutside = (
       document.removeEventListener("click", listener);
     };
   }, [ref, handler]);
+};
+
+/**
+ * hook for project details data fetching
+ *
+ * @param projectId project id as string
+ * @returns details, contacts, notes, loading boolean and delete project function
+ */
+export const useProjectDetailsData = (projectId: string) => {
+  const router = useRouter();
+  const utils = api.useUtils();
+
+  const { data: project, isLoading: projectLoading } =
+    api.project.find.useQuery({
+      projectId,
+    });
+
+  const { data: additionalContacts, isLoading: contactsLoading } =
+    api.additionalContact.find.useQuery({
+      projectId,
+    });
+
+  const { data: notes, isLoading: notesLoading } = api.note.find.useQuery({
+    projectId,
+  });
+
+  const { mutate: deleteProject } = api.project.delete.useMutation({
+    onSuccess: () => {
+      utils.project.invalidate();
+      router.push("/projects");
+    },
+  });
+
+  return {
+    project,
+    additionalContacts,
+    notes,
+    projectDataLoading: projectLoading || contactsLoading || notesLoading,
+    deleteProject: () => deleteProject({ projectId }),
+  };
 };

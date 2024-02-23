@@ -35,13 +35,15 @@ const NavBar: React.FC = () => {
         <MenuIcon className="h-8 w-8" strokeWidth={1.2} />
       </Button>
       <Logo className="h-[51px] w-[51px]" />
-      <Image
-        src={session?.user.image!}
-        alt="user google image"
-        width={40}
-        height={40}
-        className="max-h-10 max-w-10 flex-grow rounded-full"
-      />
+      {session?.user.image && (
+        <Image
+          src={session?.user.image}
+          alt="user google image"
+          width={40}
+          height={40}
+          className="max-h-10 max-w-10 flex-grow rounded-full"
+        />
+      )}
     </section>
   ) : (
     <section className="fixed flex h-full min-w-60 flex-col items-center bg-white shadow-double">
@@ -139,13 +141,15 @@ const NavBar: React.FC = () => {
       </div>
       <Divider className="mt-4 w-full px-4" />
       <section className="mb-4 mt-4 flex w-full items-center gap-x-2 pl-4">
-        <Image
-          src={session?.user.image!}
-          alt="user google image"
-          width={40}
-          height={40}
-          className="max-h-10 max-w-10 flex-grow rounded-full"
-        />
+        {session?.user.image && (
+          <Image
+            src={session?.user.image}
+            alt="user google image"
+            width={40}
+            height={40}
+            className="max-h-10 max-w-10 flex-grow rounded-full"
+          />
+        )}
         <div>
           <h5 className="font-medium">{session?.user.name}</h5>
           <h5 className="text-sm">{session?.user.email}</h5>

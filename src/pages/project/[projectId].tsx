@@ -20,6 +20,7 @@ import AddProjectNote from "@/_components/Modals/AddProjectNote";
 import ProjectNoteCard from "@/_components/ProjectDetails/ProjectNoteCard";
 import EditProjectDetials from "@/_components/Modals/EditProjectDetails";
 import DeleteModal from "@/_components/Modals/DeleteModal";
+import { useProjectDetailsData } from "@/utils/hooks";
 
 interface ProjectDetailsProps {
   params: { projectId: string };
@@ -35,25 +36,13 @@ const ProjectDetails: LayoutPage<ProjectDetailsProps> = ({ ...props }) => {
 
   // TODO: create custom hook for data fetch
 
-  const { data: project, isLoading: projectLoading } =
-    api.project.find.useQuery({
-      projectId: props.params.projectId,
-    });
-
-  const { data: additionalContacts, isLoading: contactsLoading } =
-    api.additionalContact.find.useQuery({
-      projectId: props.params.projectId,
-    });
-
-  const { data: notes, isLoading: notesLoading } = api.note.find.useQuery({
-    projectId: props.params.projectId,
-  });
-
-  const { mutate: deleteProject } = api.project.delete.useMutation({
-    onSuccess: () => {
-      // delete success
-    },
-  });
+ const {
+  project,
+  additionalContacts,
+  notes,
+  projectDataLoading,
+  deleteProject 
+ } = useProjectDetailsData(props.params.projectId);
 
   const projectContextMenuItems: ContextMenuItem[] = useMemo(
     () => [
@@ -93,7 +82,7 @@ const ProjectDetails: LayoutPage<ProjectDetailsProps> = ({ ...props }) => {
       <DeleteModal
         open={openDelete}
         onClose={() => setOpenDelete(false)}
-        onDelete={() => deleteProject({ projectId: props.params.projectId })}
+        onDelete={() => deleteProject()}
         subtitle={`Czy na pewno chcesz usunąć projekt "${project?.name}"?`}
       >
         Zostanie on trwale usunięty ze wszystkich kont, które mają do niego
