@@ -2,7 +2,7 @@ import { CalendarCheck, FolderOpenDot, Receipt, ShoppingBasketIcon, User } from 
 import { ContextMenuItem, ProjectDetailsMenuItem } from "./types";
 
 export type ProjectDetailsMenuKey =
-  | "client_profile"
+  | "details"
   | "project_submit"
   | "schedule"
   | "estimate"
@@ -11,7 +11,7 @@ export type ProjectDetailsMenuKey =
 export const projectDetailsMenuItems: ProjectDetailsMenuItem[] = [
   {
     displayName: "Dane",
-    key: "client_profile",
+    key: "details",
     icon: <User />
   },
   {

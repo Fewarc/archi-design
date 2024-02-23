@@ -100,11 +100,6 @@ export const useProjectDetailsData = (projectId: string) => {
   const router = useRouter();
   const utils = api.useUtils();
 
-  const { data: project, isLoading: projectLoading } =
-    api.project.find.useQuery({
-      projectId,
-    });
-
   const { data: additionalContacts, isLoading: contactsLoading } =
     api.additionalContact.find.useQuery({
       projectId,
@@ -122,10 +117,9 @@ export const useProjectDetailsData = (projectId: string) => {
   });
 
   return {
-    project,
     additionalContacts,
     notes,
-    projectDataLoading: projectLoading || contactsLoading || notesLoading,
+    projectDetailsLoading: contactsLoading || notesLoading,
     deleteProject: () => deleteProject({ projectId }),
   };
 };
