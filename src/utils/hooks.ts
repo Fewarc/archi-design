@@ -126,6 +126,12 @@ export const useProjectDetailsData = (projectId: string) => {
   };
 };
 
+/**
+ * hook for using avatar
+ *
+ * @param name account name
+ * @returns avatar src
+ */
 export const useProjectAvatar = (name: string) => {
   const avatar = useMemo(
     () =>
@@ -139,4 +145,33 @@ export const useProjectAvatar = (name: string) => {
   );
 
   return avatar;
-}
+};
+
+/**
+ * hook for monitoring if html element is line-clamped
+ * 
+ * @param ref html element ref object
+ * @returns boolean stating if div is clamped
+ */
+export const useIsClamped = (ref: RefObject<HTMLDivElement>) => {
+  const [isClamped, setIsClamped] = useState<boolean | undefined>(
+    (ref.current?.scrollHeight &&
+      ref.current?.clientHeight &&
+      ref.current?.clientHeight < ref.current?.scrollHeight) ||
+      undefined,
+  );
+
+  useEffect(() => {
+    if (
+      ref.current?.scrollHeight &&
+      ref.current?.clientHeight &&
+      ref.current?.clientHeight < ref.current?.scrollHeight
+    ) {
+      setIsClamped(true);
+    } else {
+      setIsClamped(false);
+    }
+  }, [ref.current?.clientHeight]);
+
+  return isClamped;
+};

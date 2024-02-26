@@ -30,14 +30,16 @@ const ProjectDetails: LayoutPage<ProjectDetailsProps> = ({ ...props }) => {
   return (
     <>
       <section className="flex flex-col pb-20">
-        <h1>Projekt</h1>
-        <h2 className="text-[24px] font-bold leading-[24px] md:text-[34px] md:leading-[38px]">
-          {project?.name}
-        </h2>
-        <ProjectDetailsMenu
-          state={detailsState}
-          onStateChange={setDetailsState}
-        />
+        <div className="sticky top-0 bg-white">
+          <h1>Projekt</h1>
+          <h2 className="text-[24px] font-bold leading-[24px] md:text-[34px] md:leading-[38px]">
+            {project?.name}
+          </h2>
+          <ProjectDetailsMenu
+            state={detailsState}
+            onStateChange={setDetailsState}
+          />
+        </div>
         {project && !projectLoading && getProjectView(project, detailsState)}
       </section>
     </>

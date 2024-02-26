@@ -164,15 +164,15 @@ const ProjectDetailsView: React.FC<ProjectDetailsViewProps> = ({ project }) => {
           <section className="mt-7">
             <h3 className="text-2xl font-bold leading-8">Dane podstawowe</h3>
             <div className="grid grid-cols-10">
-              <div className="col-span-5 flex">
+              <div className="col-span-5 flex overflow-hidden">
                 <Image
                   alt="project avatar"
                   src={avatar.toDataUriSync()}
                   width={175}
                   height={158}
-                  className="col-span-2 ml-5 mt-5 justify-self-center rounded-xl"
+                  className="col-span-2 ml-5 mt-5 hidden justify-self-center rounded-xl xl:inline"
                 />
-                <div className="px-10 mt-4">
+                <div className="mt-4 px-0 xl:px-10">
                   <h4 className="text-xl font-bold leading-6">
                     {project.clientName}
                   </h4>
@@ -192,7 +192,7 @@ const ProjectDetailsView: React.FC<ProjectDetailsViewProps> = ({ project }) => {
                 </div>
               </div>
               <div className="col-span-5">
-                <div className="mt-16">
+                <div className="mt-16 w-full">
                   <p className="text-[12px] font-semibold leading-[18px] text-archi-gray">
                     ADRES
                   </p>
@@ -206,22 +206,27 @@ const ProjectDetailsView: React.FC<ProjectDetailsViewProps> = ({ project }) => {
               </div>
             </div>
           </section>
-          <div className="grid grid-cols-10 mt-14">
-            <section className="col-span-4">
+          <div className="mt-14 grid grid-cols-10">
+            <section className="col-span-4 flex flex-col gap-y-6">
               <div className="flex gap-x-8">
                 <h3 className="text-2xl font-bold leading-8">Notatki</h3>
                 <Button variant="icon">
                   <Plus />
                 </Button>
-              </div>  
+              </div>
+              {notes?.map((note) => (
+                <ProjectNoteCard note={note} key={note.id} />
+              ))}
             </section>
             <section className="col-span-4 col-start-6">
-            <div className="flex gap-x-8">
-                <h3 className="text-2xl font-bold leading-8">Dodatkowe dane kontaktowe</h3>
+              <div className="flex gap-x-8">
+                <h3 className="text-2xl font-bold leading-8">
+                  Dodatkowe dane kontaktowe
+                </h3>
                 <Button variant="icon">
                   <Plus />
                 </Button>
-              </div>  
+              </div>
             </section>
           </div>
         </>
