@@ -57,11 +57,11 @@ const AdditionalContactCard: React.FC<AdditionalContactCardProps> = ({
             </p>
             <p className="md:hidden">{contact.name}</p>
             <div className="flex items-center gap-x-3">
-              <Phone />
+              <Phone className="hidden md:inline"/>
               <p>{contact.phoneNumber}</p>
             </div>
             <div className="flex items-center gap-x-3 md:mt-3">
-              <AtSign />
+              <AtSign className="hidden md:inline"/>
               <p>{contact.email}</p>
             </div>
           </div>
