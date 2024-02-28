@@ -210,7 +210,7 @@ const ProjectDetailsView: React.FC<ProjectDetailsViewProps> = ({ project }) => {
             <section className="col-span-4 flex flex-col gap-y-6">
               <div className="flex gap-x-8">
                 <h3 className="text-2xl font-bold leading-8">Notatki</h3>
-                <Button variant="icon">
+                <Button variant="icon" onClick={() => setAddNoteOpen(true)}>
                   <Plus />
                 </Button>
               </div>
@@ -218,15 +218,18 @@ const ProjectDetailsView: React.FC<ProjectDetailsViewProps> = ({ project }) => {
                 <ProjectNoteCard note={note} key={note.id} />
               ))}
             </section>
-            <section className="col-span-4 col-start-6">
+            <section className="col-span-4 col-start-6 flex flex-col gap-y-6">
               <div className="flex gap-x-8">
                 <h3 className="text-2xl font-bold leading-8">
                   Dodatkowe dane kontaktowe
                 </h3>
-                <Button variant="icon">
+                <Button variant="icon" onClick={() => setAddContactOpen(true)}>
                   <Plus />
                 </Button>
               </div>
+              {additionalContacts?.map((contact) => (
+                <AdditionalContactCard contact={contact} />
+              ))}
             </section>
           </div>
         </>

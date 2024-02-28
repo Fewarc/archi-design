@@ -52,7 +52,7 @@ const ProjectNoteCard: React.FC<ProjectNoteCardProps> = ({ note }) => {
           </ContextMenu>
         </div>
         <div
-          className={cn("text-[14px] leading-[18px]", {
+          className={cn("text-[14px] md:text-base leading-[18px]", {
             "line-clamp-6": !readMore,
           })}
           ref={contentRef}

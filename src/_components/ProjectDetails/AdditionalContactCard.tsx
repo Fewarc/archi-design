@@ -1,5 +1,5 @@
 import { AdditionalContact } from "@prisma/client";
-import { MoreHorizontal } from "lucide-react";
+import { AtSign, MoreHorizontal, Phone, PhoneCall } from "lucide-react";
 import ContextMenu from "../ContextMenu";
 import { useMemo, useState } from "react";
 import { ContextMenuItem } from "@/utils/types";
@@ -15,47 +15,65 @@ const AdditionalContactCard: React.FC<AdditionalContactCardProps> = ({
   const [openEdit, setOpenEdit] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
 
-  const additionalContactContextMenuItems: ContextMenuItem[] = useMemo(() => [
-    {
-      displayName: "Edytuj",
-      key: "edit",
-      onClick: () => setOpenEdit(true)
-    },
-    {
-      displayName: "Usuń",
-      key: "delete",
-      onClick: () => setOpenDelete(true)
-    }
-  ], []);
+  const additionalContactContextMenuItems: ContextMenuItem[] = useMemo(
+    () => [
+      {
+        displayName: "Edytuj",
+        key: "edit",
+        onClick: () => setOpenEdit(true),
+      },
+      {
+        displayName: "Usuń",
+        key: "delete",
+        onClick: () => setOpenDelete(true),
+      },
+    ],
+    [],
+  );
 
   return (
     <>
-      <EditAdditionalContacts 
+      <EditAdditionalContacts
         contact={contact}
         open={openEdit}
         onClose={() => setOpenEdit(false)}
       />
       <section>
         <div className="flex justify-between">
-          <p className="text-sm font-semibold leading-[14px] text-archi-purple">
+          <p className="text-sm font-semibold leading-[14px] text-archi-purple md:text-base md:leading-[18px]">
             {contact.occupation}
           </p>
           <ContextMenu menuItems={additionalContactContextMenuItems}>
             <MoreHorizontal />
           </ContextMenu>
         </div>
-        <div className="text-[14px] leading-[18px]">
-          <p className="text-[10px] font-semibold leading-[18px]">DANE</p>
-          <p>{contact.name}</p>
-          <p>{contact.phoneNumber}</p>
-          <p>{contact.email}</p>
-        </div>
-        {!!contact.note.length && (
-          <div className="mt-1 text-[14px] leading-[18px]">
-            <p className="text-[10px] font-semibold leading-[18px]">NOTATKI</p>
-            <p>{contact.note}</p>
+        <p className="hidden text-xl font-bold leading-6 md:inline">
+          {contact.name}
+        </p>
+        <div className="md:mt-3 md:flex">
+          <div className="text-[14px] md:text-base leading-[18px] md:w-1/2">
+            <p className="mb-2 text-[10px] font-semibold leading-[18px] text-archi-gray md:text-xs">
+              DANE
+            </p>
+            <p className="md:hidden">{contact.name}</p>
+            <div className="flex items-center gap-x-3">
+              <Phone />
+              <p>{contact.phoneNumber}</p>
+            </div>
+            <div className="flex items-center gap-x-3 md:mt-3">
+              <AtSign />
+              <p>{contact.email}</p>
+            </div>
           </div>
-        )}
+          {!!contact.note.length && (
+            <div className="mt-1 text-[14px] md:text-base leading-[18px] md:w-1/2">
+              <p className="mb-2 text-[10px] font-semibold leading-[18px] text-archi-gray md:text-xs">
+                NOTATKI
+              </p>
+              <p>{contact.note}</p>
+            </div>
+          )}
+        </div>
       </section>
     </>
   );
