@@ -85,7 +85,7 @@ const ProjectNoteCard: React.FC<ProjectNoteCardProps> = ({ note }) => {
           })}
           ref={contentRef}
         >
-          <p>{note.content}</p>
+          <p className="text-justify">{note.content}</p>
         </div>
         <div className="mt-4 flex justify-end">
           {(isClamped || readMore) && (

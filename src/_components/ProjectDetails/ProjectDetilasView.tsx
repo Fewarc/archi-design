@@ -228,7 +228,7 @@ const ProjectDetailsView: React.FC<ProjectDetailsViewProps> = ({ project }) => {
                 </Button>
               </div>
               {additionalContacts?.map((contact) => (
-                <AdditionalContactCard contact={contact} />
+                <AdditionalContactCard contact={contact} key={contact.id}/>
               ))}
             </section>
           </div>
