@@ -34,8 +34,12 @@ const ProjectNoteCard: React.FC<ProjectNoteCardProps> = ({ note }) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const isClamped = useIsClamped(contentRef);
 
+  const utils = api.useUtils();
+
   const { mutate: deleteNote } = api.note.delete.useMutation({
-    onSuccess: () => {},
+    onSuccess: () => {
+      utils.note.invalidate();
+    },
   });
 
   const noteContextMenuItems: ContextMenuItem[] = useMemo(

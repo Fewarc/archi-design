@@ -4,6 +4,8 @@ import ContextMenu from "../ContextMenu";
 import { useMemo, useState } from "react";
 import { ContextMenuItem } from "@/utils/types";
 import EditAdditionalContacts from "../Modals/EditAdditionalContact";
+import DeleteModal from "../Modals/DeleteModal";
+import { api } from "@/utils/api";
 
 interface AdditionalContactCardProps {
   contact: AdditionalContact;
@@ -14,6 +16,14 @@ const AdditionalContactCard: React.FC<AdditionalContactCardProps> = ({
 }) => {
   const [openEdit, setOpenEdit] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
+
+  const utils = api.useUtils();
+
+  const { mutate: deleteContact } = api.additionalContact.delete.useMutation({
+    onSuccess: () => {
+      utils.additionalContact.invalidate();
+    },
+  });
 
   const additionalContactContextMenuItems: ContextMenuItem[] = useMemo(
     () => [
@@ -38,6 +48,15 @@ const AdditionalContactCard: React.FC<AdditionalContactCardProps> = ({
         open={openEdit}
         onClose={() => setOpenEdit(false)}
       />
+      <DeleteModal
+        modalTitle={`Czy na pewno chcezs usunąć ten kontakt?`}
+        open={openDelete}
+        onClose={() => setOpenDelete(false)}
+        onDelete={() => deleteContact({ contactId: contact.id })}
+      >
+        Kontakt "{contact.name}" zostanie trwale usunięty ze wszystkich kont,
+        które mają do niej dostęp
+      </DeleteModal>
       <section>
         <div className="flex justify-between">
           <p className="text-sm font-semibold leading-[14px] text-archi-purple md:text-base md:leading-[18px]">
@@ -51,22 +70,22 @@ const AdditionalContactCard: React.FC<AdditionalContactCardProps> = ({
           {contact.name}
         </p>
         <div className="md:mt-3 md:flex">
-          <div className="text-[14px] md:text-base leading-[18px] md:w-1/2">
+          <div className="text-[14px] leading-[18px] md:w-1/2 md:text-base">
             <p className="mb-2 text-[10px] font-semibold leading-[18px] text-archi-gray md:text-xs">
               DANE
             </p>
             <p className="md:hidden">{contact.name}</p>
             <div className="flex items-center gap-x-3">
-              <Phone className="hidden md:inline"/>
+              <Phone className="hidden md:inline" />
               <p>{contact.phoneNumber}</p>
             </div>
             <div className="flex items-center gap-x-3 md:mt-3">
-              <AtSign className="hidden md:inline"/>
+              <AtSign className="hidden md:inline" />
               <p>{contact.email}</p>
             </div>
           </div>
           {!!contact.note.length && (
-            <div className="mt-1 text-[14px] md:text-base leading-[18px] md:w-1/2">
+            <div className="mt-1 text-[14px] leading-[18px] md:w-1/2 md:text-base">
               <p className="mb-2 text-[10px] font-semibold leading-[18px] text-archi-gray md:text-xs">
                 NOTATKI
               </p>

@@ -9,6 +9,10 @@ import {
   editAdditionalContact,
   editAdditionalContactInput,
 } from "./actions/edit";
+import {
+  deleteAdditionalContact,
+  deleteAdditionalContactInput,
+} from "./actions/delete";
 
 export const additionalContactRouter = createTRPCRouter({
   create: protectedProcedure
@@ -25,5 +29,10 @@ export const additionalContactRouter = createTRPCRouter({
     .input(editAdditionalContactInput)
     .mutation(({ input, ctx }) => {
       return editAdditionalContact(input, ctx.db);
+    }),
+  delete: protectedProcedure
+    .input(deleteAdditionalContactInput)
+    .mutation(({ input, ctx }) => {
+      return deleteAdditionalContact(input, ctx.db);
     }),
 });
