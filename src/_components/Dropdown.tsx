@@ -22,7 +22,7 @@ const Dropdown: React.FC<DropdownProps> = ({
   onSelect,
   itemsLabel,
   className,
-  icon
+  icon,
 }) => {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -30,13 +30,22 @@ const Dropdown: React.FC<DropdownProps> = ({
   useOnClickOutside(dropdownRef, () => setOpen(false));
 
   return (
-    <div className={cn("relative cursor-pointer md:border-b border-black md:pb-2 md:w-full md:max-w-48", className)} ref={dropdownRef}>
-      <div className="flex gap-x-4 justify-between" onClick={() => setOpen(!open)}>
+    <div
+      className={cn(
+        "relative cursor-pointer border-black md:w-full md:max-w-48 md:border-b md:pb-2",
+        className,
+      )}
+      ref={dropdownRef}
+    >
+      <div
+        className="flex justify-between gap-x-4"
+        onClick={() => setOpen(!open)}
+      >
         <div className="flex gap-x-4">
-          <div className="hidden md:inline">
-            {!!icon && icon}
-          </div>
-          <p className="text-sm md:text-base font-bold md:font-semibold">{label}</p>
+          <div className="hidden md:inline">{!!icon && icon}</div>
+          <p className="text-sm font-bold md:text-base md:font-semibold">
+            {label}
+          </p>
         </div>
         <ChevronDown
           className={cn("-mt-0.5 w-5 rotate-0 transition-all duration-300", {
@@ -45,11 +54,11 @@ const Dropdown: React.FC<DropdownProps> = ({
         />
       </div>
       {open && (
-        <section className="absolute flex w-full min-w-40 flex-col gap-y-1 rounded-lg p-1.5 text-sm font-bold shadow-archi z-50 bg-white">
+        <section className="absolute z-50 flex w-full min-w-40 flex-col gap-y-1 rounded-lg bg-white p-1.5 text-sm font-bold shadow-archi">
           {!!itemsLabel && itemsLabel}
           {itemGroups.map((items, index) => (
-            <>
-              {!!index && <Divider />}
+            <div>
+              {!!index && <Divider className={cn({ "mb-1": !!index })} />}
               {items.map((item) => (
                 <>
                   <div
@@ -60,6 +69,7 @@ const Dropdown: React.FC<DropdownProps> = ({
                       },
                     )}
                     onClick={() => onSelect(item)}
+                    key={item.key}
                   >
                     <Check
                       className={cn("invisible h-6 w-6", {
@@ -70,7 +80,7 @@ const Dropdown: React.FC<DropdownProps> = ({
                   </div>
                 </>
               ))}
-            </>
+            </div>
           ))}
         </section>
       )}

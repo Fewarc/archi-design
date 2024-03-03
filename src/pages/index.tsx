@@ -9,23 +9,16 @@ import GoogleSignIn from "@/_components/GoogleSignIn";
 import Divider from "@/_components/Divider";
 import Input from "@/_components/Input";
 import Button from "@/_components/Button";
+import { LayoutPage } from "@/utils/types";
 
-const Home: React.FC = () => {
+const Home: LayoutPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { errors, validate } = useValidation(loginSchema);
-
-  function handleLogin() {
-    const validatedData = validate({
-      email,
-      password,
-    });
-
-    if (!!validatedData) {
-      // TODO: handle manual login here
-    }
-  }
+  const { errors, validate } = useValidation({
+    schema: loginSchema,
+    onSuccess: () => {},
+  });
 
   return (
     <div className="mx-auto flex h-screen w-full items-center justify-center sm:max-w-[688px] sm:border-x sm:border-black">
@@ -67,14 +60,14 @@ const Home: React.FC = () => {
             error={errors?.password?._errors}
           />
           <div className="flex w-full justify-end text-sm">
-            <Button
-              variant="link"
-              onClick={() => null}
-            >
+            <Button variant="link" onClick={() => null}>
               Nie pamiętasz hasła?
             </Button>
           </div>
-          <Button className="text-base font-bold" onClick={handleLogin}>
+          <Button
+            className="text-base font-bold"
+            onClick={() => validate({ email, password })}
+          >
             Zaloguj się
           </Button>
         </div>
@@ -84,3 +77,4 @@ const Home: React.FC = () => {
 };
 
 export default Home;
+Home.Layout = "default";

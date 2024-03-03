@@ -1,33 +1,35 @@
 import { z } from "zod";
-import { RefObject, useEffect, useState } from "react";
+import { RefObject, useEffect, useMemo, useState } from "react";
+import { api } from "./api";
+import { useRouter } from "next/router";
+import { createAvatar } from "@dicebear/core";
+import { initials } from "@dicebear/collection";
 
 /**
  * hook to validate zod schemas and parse errors
- * 
- * @param schema zod object
+ *
+ * @param props object with validation schema, onSuccess function and onError function
  * @returns data, errors and validate function
  */
-export function useValidation<T extends z.ZodRawShape>(schema: z.ZodObject<T>) {
+export function useValidation<T>(props: {
+  schema: z.ZodType<T>;
+  onSuccess?: (data: T) => void;
+  onError?: () => void;
+}) {
   const [data, setData] = useState<T>();
-  const [errors, setErrors] =
-    useState<
-      z.ZodFormattedError<
-        { [k in keyof z.baseObjectInputType<T>]: z.baseObjectInputType<T>[k] },
-        string
-      >
-    >();
+  const [errors, setErrors] = useState<z.ZodFormattedError<T, string>>();
 
-  function validate<TObject extends Object>(data: TObject) {
-    const result = schema.safeParse(data);
+  function validate(data: T) {
+    const result = props.schema.safeParse(data);
 
     if (result.success) {
-      const resultData = result.data as unknown as T;
-      setData(resultData);
+      setData(result.data);
       setErrors(undefined);
-      return resultData as unknown as TObject;
+      !!props.onSuccess && props.onSuccess(result.data);
     } else {
       const formattedErrors = result.error.format();
       setErrors(formattedErrors);
+      !!props.onError && props.onError();
     }
   }
 
@@ -73,7 +75,7 @@ export const useMediaQuery = (query: string) => {
  */
 export const useOnClickOutside = (
   ref: RefObject<HTMLDivElement>,
-  handler: Function
+  handler: Function,
 ) => {
   useEffect(() => {
     const listener = (event: MouseEvent | TouchEvent) => {
@@ -88,4 +90,88 @@ export const useOnClickOutside = (
       document.removeEventListener("click", listener);
     };
   }, [ref, handler]);
+};
+
+/**
+ * hook for project details data fetching
+ *
+ * @param projectId project id as string
+ * @returns details, contacts, notes, loading boolean and delete project function
+ */
+export const useProjectDetailsData = (projectId: string) => {
+  const router = useRouter();
+  const utils = api.useUtils();
+
+  const { data: additionalContacts, isLoading: contactsLoading } =
+    api.additionalContact.find.useQuery({
+      projectId,
+    });
+
+  const { data: notes, isLoading: notesLoading } = api.note.find.useQuery({
+    projectId,
+  });
+
+  const { mutate: deleteProject } = api.project.delete.useMutation({
+    onSuccess: () => {
+      utils.project.invalidate();
+      router.push("/projects");
+    },
+  });
+
+  return {
+    additionalContacts,
+    notes,
+    projectDetailsLoading: contactsLoading || notesLoading,
+    deleteProject: () => deleteProject({ projectId }),
+  };
+};
+
+/**
+ * hook for using avatar
+ *
+ * @param name account name
+ * @returns avatar src
+ */
+export const useProjectAvatar = (name: string) => {
+  const avatar = useMemo(
+    () =>
+      createAvatar(initials, {
+        seed: name,
+        backgroundColor: ["EDECF9"],
+        textColor: ["6C6AD0"],
+        fontWeight: 700,
+      }),
+    [],
+  );
+
+  return avatar;
+};
+
+/**
+ * hook for monitoring if html element is line-clamped
+ * 
+ * @param ref html element ref object
+ * @returns boolean stating if div is clamped
+ */
+export const useIsClamped = (ref: RefObject<HTMLDivElement>) => {
+  const [isClamped, setIsClamped] = useState<boolean | undefined>(
+    (ref.current?.scrollHeight &&
+      ref.current?.clientHeight &&
+      ref.current?.clientHeight < ref.current?.scrollHeight) ||
+      undefined,
+  );
+
+  useEffect(() => {
+    if (
+      ref.current?.scrollHeight &&
+      ref.current?.clientHeight &&
+      ref.current?.clientHeight < ref.current?.scrollHeight
+    ) {
+      setIsClamped(true);
+    } else {
+      setIsClamped(false);
+    }
+  }, [ref.current?.clientHeight]);
+
+  return isClamped;
 };

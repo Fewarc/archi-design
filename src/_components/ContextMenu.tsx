@@ -27,11 +27,15 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
       </Button>
       {open && (
         <section
-          className="absolute right-0 z-50 flex min-w-36 flex-col gap-y-2 rounded-lg bg-white p-2 text-sm font-bold shadow-archi"
+          className="animate-in fade-in-10 absolute right-0 z-50 flex min-w-36 flex-col gap-y-2 rounded-lg bg-white p-2 text-sm font-bold shadow-archi duration-300"
           onClick={() => setOpen(false)}
         >
           {menuItems.map((item) => (
-            <div className="w-full text-right" onClick={() => item.onClick()}>
+            <div
+              className="w-full cursor-pointer text-right"
+              onClick={() => item.onClick()}
+              key={item.key}
+            >
               {item.displayName}
             </div>
           ))}

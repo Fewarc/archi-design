@@ -2,13 +2,11 @@ import { cn } from "@/utils/styleUtils";
 import { Project } from "@prisma/client";
 import { Link, MoreHorizontal } from "lucide-react";
 import ContextMenu from "./ContextMenu";
-import { ContextMenuItem } from "@/utils/types";
-import { useMediaQuery } from "@/utils/hooks";
-import { createAvatar } from "@dicebear/core";
-import { initials } from "@dicebear/collection";
+import { useMediaQuery, useProjectAvatar } from "@/utils/hooks";
 import Image from "next/image";
-import { useMemo } from "react";
 import Button from "./Button";
+import { useRouter } from "next/router";
+import { projectCardContextMenuItems } from "@/utils/items";
 
 interface ProjectCardProps {
   project: Project;
@@ -21,36 +19,14 @@ const projectStatusMap = new Map<Project["status"], string>([
   ["PAUSED", "WSTRZYMANY"],
 ]);
 
-const PROJECT_CONTEXT_MENU_ITEMS: ContextMenuItem[] = [
-  {
-    displayName: "Zmień nazwę",
-    onClick: () => null,
-  },
-  {
-    displayName: "Zarchiwizuj",
-    onClick: () => null,
-  },
-  {
-    displayName: "Usuń",
-    onClick: () => null,
-  },
-];
-
 const PROJECT_AVATAR_DIM = 218;
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ project, className }) => {
   const isMobile = useMediaQuery("(max-width: 768px)");
 
-  const avatar = useMemo(
-    () =>
-      createAvatar(initials, {
-        seed: project.clientName,
-        backgroundColor: ["EDECF9"],
-        textColor: ["6C6AD0"],
-        fontWeight: 700,
-      }),
-    [],
-  );
+  const router = useRouter();
+
+  const avatar = useProjectAvatar(project.clientName);
 
   return (
     <div
@@ -69,13 +45,15 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, className }) => {
               {projectStatusMap.get(project.status)}
             </div>
             <ContextMenu
-              menuItems={PROJECT_CONTEXT_MENU_ITEMS}
+              menuItems={projectCardContextMenuItems}
               className="mr-2"
             >
               <MoreHorizontal />
             </ContextMenu>
           </section>
-          <section className="text-2xl font-bold">{project.name}</section>
+          <Button variant="link" onClick={() => router.push(`/project/${project.id}`)}>
+            <section className="text-2xl font-bold">{project.name}</section>
+          </Button>
           <section className="mt-1 flex justify-between text-[12px] leading-[14px]">
             <div className="w-1/2">
               <p className="text-[10px] font-semibold leading-[18px]">DANE</p>
@@ -116,7 +94,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, className }) => {
               width={PROJECT_AVATAR_DIM}
               height={PROJECT_AVATAR_DIM}
               className="rounded-xl"
-            ></Image>
+            />
             <div className="absolute left-2 top-2 h-fit rounded-full bg-archi-purple-dark px-3 text-xs font-medium leading-[18px] text-white">
               {projectStatusMap.get(project.status)}
             </div>
@@ -124,22 +102,24 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, className }) => {
           <div className="flex w-full flex-col">
             <div className="flex w-full justify-between pt-2">
               <div className="flex">
-                <h2 className="text-[34px] font-bold leading-[38px]">
-                  {project.name}
-                </h2>
+                <Button variant="link" onClick={() => router.push(`/project/${project.id}`)}>
+                  <h2 className="text-[34px] font-bold leading-[38px]">
+                    {project.name}
+                  </h2>
+                </Button>
                 <Button variant="icon" onClick={() => null}>
                   <Link strokeWidth={2} className="ml-4 h-7 w-7" />
                 </Button>
               </div>
               <ContextMenu
-                menuItems={PROJECT_CONTEXT_MENU_ITEMS}
+                menuItems={projectCardContextMenuItems}
                 className="mr-2"
               >
                 <MoreHorizontal />
               </ContextMenu>
             </div>
-            <div className="w-full mt-2 flex">
-              <div className="flex flex-col gap-y-2">
+            <div className="w-full mt-2 grid grid-cols-12">
+              <div className="flex flex-col gap-y-2 col-span-4">
                 <div>
                   <p className="text-[10px] font-semibold leading-[18px]">
                     DANE
@@ -156,8 +136,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, className }) => {
                   <p>{project.city}</p>
                 </div>
               </div>
-              <div className="flex flex-col w-full">
-                <div className="flex justify-evenly">
+              <div className="flex flex-col w-full col-span-8">
+                <div className="flex justify-around">
                   <div>
                     <p className="text-[10px] font-semibold leading-[18px]">
                       DATA ROZPOCZĘCIA

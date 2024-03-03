@@ -18,32 +18,35 @@ import { cn } from "@/utils/styleUtils";
 import Divider from "./Divider";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-
-type MockProject = {
-  name: string;
-};
+import { api } from "@/utils/api";
 
 const NavBar: React.FC = () => {
   const isMobile = useMediaQuery("(max-width: 768px)");
   const router = useRouter();
+
   const { data: session } = useSession();
 
-  const mockActiveProjects: MockProject[] = Array(3).fill({
-    name: "Kasia, Gliwice",
-  });
+  const { data: activeProjects, isLoading: _projectsLoading } =
+    api.project.getAll.useQuery();
 
   return isMobile ? (
-    <section className="flex w-full items-center justify-between px-4 pt-7 pb-2 fixed bg-white z-50">
+    <section className="fixed z-40 flex w-full items-center justify-between bg-white px-4 pb-2 pt-7">
       <Button variant="icon">
         <MenuIcon className="h-8 w-8" strokeWidth={1.2} />
       </Button>
       <Logo className="h-[51px] w-[51px]" />
-      <Button variant="icon">
-        <CircleUserRound className="h-10 w-10" strokeWidth={1.2} />
-      </Button>
+      {session?.user.image && (
+        <Image
+          src={session?.user.image}
+          alt="user google image"
+          width={40}
+          height={40}
+          className="max-h-10 max-w-10 flex-grow rounded-full"
+        />
+      )}
     </section>
   ) : (
-    <section className="flex h-full min-w-60 flex-col items-center shadow-double fixed bg-white">
+    <section className="fixed flex h-full min-w-60 flex-col items-center bg-white shadow-double">
       <LogoName className="mb-10 mt-10 h-[60px] w-[200px]" />
       <section className="w-full pl-2 pr-2">
         <p className="ml-2 w-full text-xs font-semibold leading-[18px]">
@@ -75,12 +78,12 @@ const NavBar: React.FC = () => {
         <p className="ml-2 w-full text-xs font-semibold leading-[18px]">
           PROJEKTY
         </p>
-        {mockActiveProjects.map((project) => (
+        {activeProjects?.slice(0, 3).map((project) => (
           <Button
             onClick={() => null}
             variant="borderless"
             className="mt-2 w-full justify-start py-2 pl-2 font-medium"
-            key={"key"}
+            key={project.name + project.clientName}
           >
             <Folder />
             <h5 className="ml-2 mt-0.5">{project.name}</h5>
@@ -138,13 +141,15 @@ const NavBar: React.FC = () => {
       </div>
       <Divider className="mt-4 w-full px-4" />
       <section className="mb-4 mt-4 flex w-full items-center gap-x-2 pl-4">
-        <Image
-          src={session?.user.image!}
-          alt="user google image"
-          width={40}
-          height={40}
-          className="max-h-10 max-w-10 flex-grow rounded-full"
-        />
+        {session?.user.image && (
+          <Image
+            src={session?.user.image}
+            alt="user google image"
+            width={40}
+            height={40}
+            className="max-h-10 max-w-10 flex-grow rounded-full"
+          />
+        )}
         <div>
           <h5 className="font-medium">{session?.user.name}</h5>
           <h5 className="text-sm">{session?.user.email}</h5>

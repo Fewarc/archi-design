@@ -1,17 +1,13 @@
-import AddProject from "@/_components/AddProject";
+import AddProject from "@/_components/Modals/AddProject";
 import Button from "@/_components/Button";
 import Dropdown from "@/_components/Dropdown";
 import Input from "@/_components/Input";
-import NavBar from "@/_components/NavBar";
 import ProjectCard from "@/_components/ProjectCard";
 import { api } from "@/utils/api";
-import { DropdownItem } from "@/utils/types";
+import { DropdownItem, LayoutPage } from "@/utils/types";
 import { protectRoute } from "@/utils/validation";
-import { useQueryClient } from "@tanstack/react-query";
 import { ArrowDownUp, Filter, Plus, Search as SearchIcon } from "lucide-react";
-import { NextPage } from "next";
 import { GetSessionParams } from "next-auth/react";
-import { useRouter } from "next/router";
 import { useState } from "react";
 
 type SortDropdownItem = DropdownItem<"name" | "modified" | "asc" | "desc">;
@@ -54,7 +50,7 @@ const PROJECTS_FILTERS: FilterDropdownItem[][] = [
   ],
 ];
 
-const Projects: NextPage = () => {
+const Projects: LayoutPage = () => {
   const [sort, setSort] = useState<
     [SortDropdownItem | null, SortDropdownItem | null]
   >([null, null]);
@@ -89,7 +85,7 @@ const Projects: NextPage = () => {
   };
 
   return (
-    <div className="relative z-0 flex h-full w-full flex-col md:flex md:flex-row">
+    <>
       <AddProject open={addProjectOpen} onClose={() => setAddProjectOpen(false)}/>
       <Button
         className="fixed bottom-4 right-4 rounded-2xl bg-archi-purple p-4 md:hidden"
@@ -98,9 +94,8 @@ const Projects: NextPage = () => {
       >
         <Plus className="text-white" />
       </Button>
-      <NavBar />
-      <div className="flex h-full w-full flex-col items-center justify-start pt-24 md:pt-8 md:pl-60">
-        <section className="w-full px-4 max-w-page-content">
+      <div className="flex h-full w-full flex-col items-center justify-start">
+        <section className="w-full">
           <div className="flex items-center justify-between">
             <h1>Projekty</h1>
             <Button variant="icon" className="md:hidden">
@@ -139,11 +134,11 @@ const Projects: NextPage = () => {
             />
           </div>
         </section>
-        <section className="flex flex-col gap-y-3 md:gap-y-5 mt-3 w-full px-4 pb-4 max-w-[1400px]">
-          {projects?.map((project) => <ProjectCard project={project} />)}
+        <section className="flex flex-col gap-y-3 md:gap-y-5 mt-3 w-full pb-4">
+          {projects?.map((project) => <ProjectCard project={project} key={project.name + project.clientName}/>)}
         </section>
       </div>
-    </div>
+    </>
   );
 };
 
@@ -152,3 +147,4 @@ export async function getServerSideProps(context: GetSessionParams) {
 }
 
 export default Projects;
+Projects.Layout = "navbar";
