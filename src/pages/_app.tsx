@@ -30,7 +30,7 @@ function MyApp({
     window?.document?.querySelector("body")!.classList.add(`${LF.variable}`);
   }, []);
 
-  const Layout = AllLayouts[Component.Layout] ?? ((page) => page);
+  const Layout = AllLayouts[Component.Layout] ?? AllLayouts["default"];
 
   return (
     <SessionProvider session={session}>
