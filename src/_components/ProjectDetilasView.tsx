@@ -10,12 +10,12 @@ import {
   Home,
 } from "lucide-react";
 import { props } from "node_modules/cypress/types/bluebird";
-import Button from "../Button";
-import ContextMenu from "../ContextMenu";
-import AddAdditionalContact from "../Modals/AddAdditionalContact";
-import AddProjectNote from "../Modals/AddProjectNote";
-import DeleteModal from "../Modals/DeleteModal";
-import EditProjectDetials from "../Modals/EditProjectDetails";
+import Button from "./Button";
+import ContextMenu from "./ContextMenu";
+import AddAdditionalContact from "./Modals/AddAdditionalContact";
+import AddProjectNote from "./Modals/AddProjectNote";
+import DeleteModal from "./Modals/DeleteModal";
+import EditProjectDetials from "./Modals/EditProjectDetails";
 import AdditionalContactCard from "./AdditionalContactCard";
 import ProjectNoteCard from "./ProjectNoteCard";
 import { useMemo, useState } from "react";
@@ -25,14 +25,10 @@ import {
   useProjectAvatar,
   useProjectDetailsData,
 } from "@/utils/hooks";
-import { ContextMenuItem } from "@/utils/types";
+import { ContextMenuItem, ProjectViewProps } from "@/utils/types";
 import Image from "next/image";
 
-interface ProjectDetailsViewProps {
-  project: Project;
-}
-
-const ProjectDetailsView: React.FC<ProjectDetailsViewProps> = ({ project }) => {
+const ProjectDetailsView: React.FC<ProjectViewProps> = ({ project }) => {
   const [addContactOpen, setAddContactOpen] = useState(false);
   const [addNoteOpen, setAddNoteOpen] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);

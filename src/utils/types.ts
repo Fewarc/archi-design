@@ -6,6 +6,7 @@ import { AppInitialProps } from "next/app";
 import { Router } from "next/router";
 import { ProjectDetailsMenuKey } from "./items";
 import { ReactNode } from "react";
+import { Project } from "@prisma/client";
 
 export type LayoutPage<P = {}, IP = P> = NextPage<P, IP> & {
   Layout?: LayoutKeys;
@@ -34,7 +35,8 @@ export interface MenuItem<KeyType = string> {
   key: KeyType;
 }
 
-export interface ProjectDetailsMenuItem extends MenuItem<ProjectDetailsMenuKey> {
+export interface ProjectDetailsMenuItem
+  extends MenuItem<ProjectDetailsMenuKey> {
   icon: ReactNode;
 }
 
@@ -47,4 +49,8 @@ export interface ContextMenuItem<KeyType = string> extends MenuItem<KeyType> {
 export interface ModalProps {
   open: boolean;
   onClose: Function;
+}
+
+export interface ProjectViewProps {
+  project: Project;
 }

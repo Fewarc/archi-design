@@ -1,13 +1,13 @@
 import { ContextMenuItem } from "@/utils/types";
 import { ProjectNote } from "@prisma/client";
 import { useMemo, useRef, useState } from "react";
-import ContextMenu from "../ContextMenu";
+import ContextMenu from "./ContextMenu";
 import { MoreHorizontal } from "lucide-react";
-import EditProjectNote from "../Modals/EditProjectNote";
-import Button from "../Button";
+import EditProjectNote from "./Modals/EditProjectNote";
+import Button from "./Button";
 import { cn } from "@/utils/styleUtils";
 import { useIsClamped } from "@/utils/hooks";
-import DeleteModal from "../Modals/DeleteModal";
+import DeleteModal from "./Modals/DeleteModal";
 import { api } from "@/utils/api";
 
 interface ProjectNoteCardProps {

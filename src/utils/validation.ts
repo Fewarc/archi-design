@@ -87,3 +87,9 @@ export const noteSchema = z.object({
   content: z.string().min(1, { message: "Pole wymagane." }),
   id: z.string()
 });
+
+// new stage
+export const addStageSchema = z.object({
+  projectId: z.string(),
+  name: z.string().min(1, { message: "Pole wymagane." })
+});
