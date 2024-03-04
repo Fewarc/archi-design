@@ -2,6 +2,7 @@ import { createTRPCRouter } from "@/server/api/trpc";
 import { projectRouter } from "./routers/project/router";
 import { additionalContactRouter } from "./routers/additionaContact/router";
 import { noteRouter } from "./routers/note/router";
+import { projectStageRouter } from "./routers/projectStage/router";
 
 /**
  * This is the primary router for your server.
@@ -11,7 +12,8 @@ import { noteRouter } from "./routers/note/router";
 export const appRouter = createTRPCRouter({
   project: projectRouter,
   additionalContact: additionalContactRouter,
-  note: noteRouter
+  note: noteRouter,
+  projectStage: projectStageRouter
 });
 
 // export type definition of API
