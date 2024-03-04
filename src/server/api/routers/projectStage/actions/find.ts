@@ -8,7 +8,7 @@ export const findProjectStage = async (
   prisma: PrismaClient,
 ) => {
   try {
-    await prisma.projectStage.findMany({ where: { id: input.projectId } });
+    return await prisma.projectStage.findMany({ where: { projectId: input.projectId } });
   } catch (error) {
     console.error(error);
   }

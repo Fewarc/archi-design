@@ -3,9 +3,14 @@ import ContextMenu from "./ContextMenu";
 import { MoreHorizontal } from "lucide-react";
 import { useMemo, useState } from "react";
 import AddProjectStage from "./Modals/AddProjectStage";
+import { api } from "@/utils/api";
 
 const ProjectSubmitView: React.FC<ProjectViewProps> = ({ project }) => {
   const [addStageOpen, setAddStageOpen] = useState(false);
+
+  const { data: stages } = api.projectStage.find.useQuery({
+    projectId: project.id,
+  });
 
   const projectStageContextMenuItems: ContextMenuItem[] = useMemo(
     () => [
@@ -35,6 +40,7 @@ const ProjectSubmitView: React.FC<ProjectViewProps> = ({ project }) => {
               <MoreHorizontal />
             </ContextMenu>
           </div>
+          <div>{stages?.map((stage) => <div key={stage.id}>{stage.name}</div>)}</div>
         </section>
       </>
     </>
