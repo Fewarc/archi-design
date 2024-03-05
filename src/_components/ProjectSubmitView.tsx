@@ -4,9 +4,12 @@ import { MoreHorizontal } from "lucide-react";
 import { useMemo, useState } from "react";
 import AddProjectStage from "./Modals/AddProjectStage";
 import { api } from "@/utils/api";
+import { ProjectStage } from "@prisma/client";
+import AddStageFile from "./Modals/AddStageFile";
 
 const ProjectSubmitView: React.FC<ProjectViewProps> = ({ project }) => {
   const [addStageOpen, setAddStageOpen] = useState(false);
+  const [addFile, setAddFile] = useState<ProjectStage | null>(null);
 
   const { data: stages } = api.projectStage.find.useQuery({
     projectId: project.id,
@@ -23,12 +26,37 @@ const ProjectSubmitView: React.FC<ProjectViewProps> = ({ project }) => {
     [],
   );
 
+  const getStageContextMenuItems = (stage: ProjectStage): ContextMenuItem[] => {
+    return [
+      {
+        displayName: "Dodaj plik",
+        key: "add_file",
+        onClick: () => setAddFile(stage)
+      },
+      {
+        displayName: "Zmień nazwę",
+        key: "change_name",
+        onClick: () => null
+      },
+      {
+        displayName: "Delete",
+        key: "delete",
+        onClick: () => null
+      },
+    ]
+  }
+
   return (
     <>
       <AddProjectStage
         open={addStageOpen}
         onClose={() => setAddStageOpen(false)}
         projectId={project.id}
+      />
+      <AddStageFile 
+        open={!!addFile}
+        onClose={() => setAddFile(null)}
+        stage={addFile}
       />
       <>
         <section className="mt-9">
@@ -40,7 +68,18 @@ const ProjectSubmitView: React.FC<ProjectViewProps> = ({ project }) => {
               <MoreHorizontal />
             </ContextMenu>
           </div>
-          <div>{stages?.map((stage) => <div key={stage.id}>{stage.name}</div>)}</div>
+          <div className="mt-6 flex flex-col gap-y-6">
+            {stages?.map((stage) => (
+              <div key={stage.id} className="flex justify-between">
+                <div className="text-base font-bold leading-[18px]">
+                  {stage.name}
+                </div>
+                <ContextMenu menuItems={getStageContextMenuItems(stage)}>
+                  <MoreHorizontal />
+                </ContextMenu>
+              </div>
+            ))}
+          </div>
         </section>
       </>
     </>
