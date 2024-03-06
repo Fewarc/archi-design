@@ -2,18 +2,17 @@ import { cn } from "@/utils/styleUtils";
 import { useState } from "react";
 import FileInput from "./FileInput";
 
-interface FileDropzoneProps {}
+interface FileDropzoneProps {
+  onFileChange: (files: File[]) => void;
+}
 
-const FileDropzone: React.FC<FileDropzoneProps> = () => {
-  const [fileList, setFileList] = useState<File[] | null>(null);
+const FileDropzone: React.FC<FileDropzoneProps> = ({ onFileChange }) => {
   const [shouldHighlight, setShouldHighlight] = useState(false);
 
   const preventDefaultHandler = (e: React.DragEvent<HTMLElement>) => {
     e.preventDefault();
     e.stopPropagation();
   };
-
-  console.log(fileList);
 
   return (
     <div
@@ -40,14 +39,16 @@ const FileDropzone: React.FC<FileDropzoneProps> = () => {
       onDrop={(e) => {
         preventDefaultHandler(e);
         const files = Array.from(e.dataTransfer.files);
-        setFileList(files);
+        onFileChange(files);
         setShouldHighlight(false);
       }}
     >
       {shouldHighlight ? (
-        <div className="font-semibold text-archi-purple">Upuść pliki tutaj</div>
+        <div className="font-semibold text-archi-purple">Upuść pliki tutaj...</div>
       ) : (
-        <FileInput handleFiles={() => null}>Dodaj pliki</FileInput>
+        <FileInput handleFiles={(files) => onFileChange(files)}>
+          Dodaj pliki
+        </FileInput>
       )}
     </div>
   );

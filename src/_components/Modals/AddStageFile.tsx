@@ -3,17 +3,61 @@ import { ProjectStage } from "@prisma/client";
 import ActionModal from "../ActionModal";
 import Button from "../Button";
 import FileDropzone from "../FileDropzone";
+import { useState } from "react";
+import { File, Trash } from "lucide-react";
 
 interface AddStageFileProps extends ModalProps {
   stage: ProjectStage | null;
 }
 
-const AddStageFile: React.FC<AddStageFileProps> = ({ open, onClose, stage }) => {
-  return (
-    <ActionModal open={open} onClose={onClose} title="Dodaj plik" className="flex flex-col justify-between">
-      <div className="h-full flex flex-col justify-start">
-      <FileDropzone />
+const AddStageFile: React.FC<AddStageFileProps> = ({
+  open,
+  onClose,
+  stage,
+}) => {
+  const [files, setFiles] = useState<File[]>([]);
 
+  const removeFile = (removed: File) => {
+    setFiles([...files.filter((file) => file !== removed)]);
+  };
+
+  return (
+    <ActionModal
+      open={open}
+      onClose={onClose}
+      title="Dodaj plik"
+      subtitle={stage?.name}
+      className="flex flex-col justify-between"
+    >
+      <div className="flex h-full flex-col justify-start">
+        <FileDropzone onFileChange={setFiles} />
+        {!!files.length && (
+          <div className="mt-8 text-sm font-bold leading-[14px]">
+            Dodane pliki
+          </div>
+        )}
+        {files.map((file) => (
+          <div className="mt-3 flex justify-between">
+            <div className="flex items-center gap-x-2">
+              <File
+                height={40}
+                width={40}
+                strokeWidth={1.4}
+                className="text-archi-purple"
+              />
+              <div className="text-sm leading-[14px]">{file.name}</div>
+            </div>
+            <Button
+              variant="icon"
+              onClick={() =>
+                setFiles([...files.filter((savedFile) => savedFile !== file)])
+              }
+              className="text-archi-purple"
+            >
+              <Trash />
+            </Button>
+          </div>
+        ))}
       </div>
       <div className="flex justify-end gap-x-4">
         <Button
