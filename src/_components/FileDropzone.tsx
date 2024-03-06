@@ -17,10 +17,14 @@ const FileDropzone: React.FC<FileDropzoneProps> = () => {
 
   return (
     <div
-      className={cn("flex justify-center items-center", 
-      "rounded-md border-2 border-dashed border-archi-purple-light h-60", {
-        "border-archi-purple bg-archi-purple-light bg-opacity-30": shouldHighlight
-      })}
+      className={cn(
+        "flex items-center justify-center",
+        "h-60 rounded-md border-2 border-dashed border-archi-purple-light",
+        {
+          "border-archi-purple bg-archi-purple-light bg-opacity-30":
+            shouldHighlight,
+        },
+      )}
       onDragOver={(e) => {
         preventDefaultHandler(e);
         setShouldHighlight(true);
@@ -40,13 +44,11 @@ const FileDropzone: React.FC<FileDropzoneProps> = () => {
         setShouldHighlight(false);
       }}
     >
-      <div className="flex flex-col">
-        <div className="w-full text-center text-archi-purple-light">Upuśc tutaj</div>
-        <div className="w-full text-center text-archi-purple-light">lub</div>
-        <FileInput handleFiles={() => null}>
-          Dodaj pliki
-        </FileInput>
-      </div>
+      {shouldHighlight ? (
+        <div className="font-semibold text-archi-purple">Upuść pliki tutaj</div>
+      ) : (
+        <FileInput handleFiles={() => null}>Dodaj pliki</FileInput>
+      )}
     </div>
   );
 };

@@ -23,7 +23,14 @@ const FileInput: React.FC<FileInputProps> = ({
 
   return (
     <>
-      <Button className={cn("rounded-full bg-archi-purple-light px-3 py-1 font-semibold", className)} variant="borderless" onClick={() => inputRef?.current?.click()}>
+      <Button
+        className={cn(
+          "rounded-full bg-archi-purple-light px-3 py-1 font-semibold text-white",
+          className,
+        )}
+        variant="borderless"
+        onClick={() => inputRef?.current?.click()}
+      >
         {children}
       </Button>
       <input
