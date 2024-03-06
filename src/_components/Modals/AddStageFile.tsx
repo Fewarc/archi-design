@@ -11,7 +11,10 @@ interface AddStageFileProps extends ModalProps {
 const AddStageFile: React.FC<AddStageFileProps> = ({ open, onClose, stage }) => {
   return (
     <ActionModal open={open} onClose={onClose} title="Dodaj plik" className="flex flex-col justify-between">
+      <div className="h-full flex flex-col justify-start">
       <FileDropzone />
+
+      </div>
       <div className="flex justify-end gap-x-4">
         <Button
           onClick={() => onClose()}
