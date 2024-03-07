@@ -8,6 +8,7 @@ import { Project } from "@prisma/client";
 import { GetSessionParams } from "next-auth/react";
 import { ReactNode, useState } from "react";
 import ProjectSubmitView from "@/_components/ProjectSubmitView";
+import GoogleDriveService from "@/services/GoogleDriveService";
 
 interface ProjectDetailsProps {
   params: { projectId: string };
@@ -52,5 +53,6 @@ export default ProjectDetails;
 ProjectDetails.Layout = "navbar";
 
 export async function getServerSideProps(context: GetSessionParams) {
+  new GoogleDriveService().createFolder()
   return protectRoute(context);
 }

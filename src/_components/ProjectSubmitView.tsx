@@ -1,7 +1,7 @@
 import { ContextMenuItem, ProjectViewProps } from "@/utils/types";
 import ContextMenu from "./ContextMenu";
 import { MoreHorizontal } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import AddProjectStage from "./Modals/AddProjectStage";
 import { api } from "@/utils/api";
 import { ProjectStage } from "@prisma/client";
