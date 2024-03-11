@@ -53,6 +53,6 @@ export default ProjectDetails;
 ProjectDetails.Layout = "navbar";
 
 export async function getServerSideProps(context: GetSessionParams) {
-  new GoogleDriveService().createFolder()
+  GoogleDriveService.listAll()
   return protectRoute(context);
 }
