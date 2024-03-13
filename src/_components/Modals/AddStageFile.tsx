@@ -5,6 +5,7 @@ import Button from "../Button";
 import FileDropzone from "../FileDropzone";
 import { useState } from "react";
 import { File, Trash } from "lucide-react";
+import { useUploadStageFiles } from "@/utils/hooks";
 
 interface AddStageFileProps extends ModalProps {
   stage: ProjectStage | null;
@@ -17,9 +18,7 @@ const AddStageFile: React.FC<AddStageFileProps> = ({
 }) => {
   const [files, setFiles] = useState<File[]>([]);
 
-  const removeFile = (removed: File) => {
-    setFiles([...files.filter((file) => file !== removed)]);
-  };
+  const { uploadFiles } = useUploadStageFiles(stage);
 
   return (
     <ActionModal
@@ -37,7 +36,7 @@ const AddStageFile: React.FC<AddStageFileProps> = ({
           </div>
         )}
         {files.map((file) => (
-          <div className="mt-3 flex justify-between">
+          <div className="mt-3 flex justify-between" key={file.name}>
             <div className="flex items-center gap-x-2">
               <File
                 height={40}
@@ -68,7 +67,7 @@ const AddStageFile: React.FC<AddStageFileProps> = ({
           Anuluj
         </Button>
         <Button
-          onClick={() => null}
+          onClick={() => uploadFiles(files)}
           variant="defualt"
           className="mt-9 w-full rounded-full border-0 bg-archi-purple px-5 py-2 text-center font-semibold text-white shadow-double md:w-fit"
         >

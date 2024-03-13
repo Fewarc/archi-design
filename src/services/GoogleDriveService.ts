@@ -5,38 +5,23 @@ class GoogleDriveService {
 
   SCOPE = ["https://www.googleapis.com/auth/drive"];
 
-  getAuthClient = async () => {
-    const jwtClient = new this.google.auth.JWT(
-      this.apiKey.client_email,
-      null,
-      this.apiKey.private_key,
-      this.SCOPE,
-    );
+  auth = new this.googleAuth({
+    credentials: this.apiKey,
+    scopes: "https://www.googleapis.com/auth/drive",
+  });
 
-    await jwtClient.authorize();
+  service = this.google.drive({ version: "v3", auth: this.auth });
 
-    return jwtClient;
-  };
-
-  createFolder = async () => {
-    const { GoogleAuth } = require("google-auth-library");
-    const { google } = require("googleapis");
-
-    const auth = new GoogleAuth({
-      credentials: this.apiKey,
-      scopes: "https://www.googleapis.com/auth/drive",
-    });
-    const service = google.drive({ version: "v3", auth });
+  createFolder = async (name: string) => {
     const fileMetadata = {
-      name: "Invoices",
+      name,
       mimeType: "application/vnd.google-apps.folder",
     };
     try {
-      const file = await service.files.create({
+      const file = await this.service.files.create({
         resource: fileMetadata,
         fields: "id",
       });
-      console.log("Folder Id:", file.data.id);
       return file.data.id;
     } catch (error) {
       console.error(error);
@@ -44,20 +29,15 @@ class GoogleDriveService {
   };
 
   listAll = async () => {
-
-    const auth = new this.googleAuth({
-      credentials: this.apiKey,
-      scopes: "https://www.googleapis.com/auth/drive",
-    });
-    const service = this.google.drive({ version: "v3", auth });
-    
     try {
-      const files = await service.files.list();
+      const files = await this.service.files.list();
       console.log(files.data.files);
     } catch (error) {
       console.error(error);
     }
-  }
+  };
+
+  
 }
 
-export default new GoogleDriveService;
+export default new GoogleDriveService();

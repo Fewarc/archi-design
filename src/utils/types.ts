@@ -54,3 +54,5 @@ export interface ModalProps {
 export interface ProjectViewProps {
   project: Project;
 }
+
+export type FileUploadStatus = "default" | "loading" | "success" | "error";

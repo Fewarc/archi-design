@@ -4,6 +4,8 @@ import { api } from "./api";
 import { useRouter } from "next/router";
 import { createAvatar } from "@dicebear/core";
 import { initials } from "@dicebear/collection";
+import { ProjectStage } from "@prisma/client";
+import { FileUploadStatus } from "./types";
 
 /**
  * hook to validate zod schemas and parse errors
@@ -175,3 +177,31 @@ export const useIsClamped = (ref: RefObject<HTMLDivElement>) => {
 
   return isClamped;
 };
+
+export const useUploadStageFiles = (stage: ProjectStage | null) => {
+  const [uploadStatus, setUploadStatus] = useState<FileUploadStatus>();
+
+  const uploadSingleFile = (file: File) => {
+    console.log(file);
+    const reader = new FileReader();
+
+    reader.onload = async () => {
+      // Get the base64 string after the comma
+      const base64String = reader.result?.toString().split(',')[1];
+      if (base64String) {
+        // file upload
+      }
+    }
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  }
+
+  const uploadFiles = (files: File[]) => {
+    files.forEach(file => uploadSingleFile(file));
+  }
+
+  return {
+    uploadFiles
+  }
+}

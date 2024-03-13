@@ -37,6 +37,7 @@ const FileInput: React.FC<FileInputProps> = ({
         className="hidden"
         type="file"
         ref={inputRef}
+        multiple
         onChange={handleFileUpload}
         {...inputProps}
       />
