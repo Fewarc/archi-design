@@ -12,6 +12,15 @@ class GoogleDriveService {
 
   service = this.google.drive({ version: "v3", auth: this.auth });
 
+  listAll = async () => {
+    try {
+      const files = await this.service.files.list();
+      console.log(files.data.files);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   createFolder = async (name: string) => {
     const fileMetadata = {
       name,
@@ -28,16 +37,7 @@ class GoogleDriveService {
     }
   };
 
-  listAll = async () => {
-    try {
-      const files = await this.service.files.list();
-      console.log(files.data.files);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  
+  uploadBase64File = async () => {};
 }
 
 export default new GoogleDriveService();

@@ -178,14 +178,8 @@ export const useIsClamped = (ref: RefObject<HTMLDivElement>) => {
   return isClamped;
 };
 
-export const useUploadStageFiles = (stage: ProjectStage | null) => {
+export const useUploadStageFiles = (stage: ProjectStage) => {
   const [uploadStatus, setUploadStatus] = useState<FileUploadStatus[]>([]);
-
-  const { mutate: addFile } = api.projectStage.addFile.useMutation({
-    onSuccess: (i) => {
-      updateFileStatus(i!, "finished");
-    },
-  });
 
   const updateFileStatus = (i: number, uploadStatus: FileUploadStatus) => {
     setUploadStatus((status) => {
@@ -194,28 +188,18 @@ export const useUploadStageFiles = (stage: ProjectStage | null) => {
     });
   };
 
-  const getReaderOnload = (file: File, reader: FileReader, i: number) => {
-    return async () => {
-      // Get the base64 string after the comma
-      const base64String = reader.result?.toString().split(",")[1];
-      if (base64String) {
-        addFile({
-          base64: base64String,
-          lastModified: file.lastModified,
-          name: file.name,
-          size: file.size,
-          type: file.type,
-          webkitRelativePath: file.webkitRelativePath,
-          statusIndex: i
-        });
-      }
-    };
-  };
-
   const uploadSingleFile = async (file: File, i: number) => {
-    const reader = new FileReader();
-    reader.onload = getReaderOnload(file, reader, i);
-    reader.readAsDataURL(file);
+    const form = new FormData();
+    form.append("file", file);
+
+    const formData = Object.fromEntries(form.entries());
+
+    const res = await fetch("/api/add-file", {
+      method: "POST",
+      body: JSON.stringify(formData),
+    });
+
+    console.log(formData);
   };
 
   const uploadFiles = (files: File[]) => {

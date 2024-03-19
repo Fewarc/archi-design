@@ -18,7 +18,7 @@ const AddStageFile: React.FC<AddStageFileProps> = ({
 }) => {
   const [files, setFiles] = useState<File[]>([]);
 
-  const { uploadFiles, uploadStatus } = useUploadStageFiles(stage);
+  const { uploadFiles, uploadStatus } = useUploadStageFiles(stage!);
 
   return (
     <ActionModal

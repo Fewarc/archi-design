@@ -55,5 +55,4 @@ export interface ProjectViewProps {
   project: Project;
 }
 
-// export type FileUploadStatus = "default" | "loading" | "success" | "error";
-export type FileUploadStatus = "default" | "loading" | "finished";
+export type FileUploadStatus = "default" | "loading" | "success" | "error";
