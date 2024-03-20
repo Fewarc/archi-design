@@ -1,12 +1,36 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import { IncomingForm } from "formidable";
+import fs from "fs";
 
 type ResponseData = {
-  message: string;
+  message?: string;
+  error?: string;
+};
+
+export const config = {
+  api: {
+    bodyParser: false,
+  },
 };
 
 export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseData>,
 ) {
-  res.status(200).json({ message: `File received` });
+  const form = new IncomingForm();
+
+  form.parse(req, (err, _fields, files) => {
+    if (err) {
+      return res.status(500).json({ error: "Error parsing form" });
+    }
+
+    if (files.file && files.file[0]) {
+      const filePath = files.file[0].filepath;
+      const file = fs.createReadStream(filePath);
+
+      return res.status(200).json({ message: "OK" });
+    } else {
+      return res.status(500).json({ error: "File not found" });
+    }
+  });
 }
