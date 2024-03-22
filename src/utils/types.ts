@@ -56,3 +56,10 @@ export interface ProjectViewProps {
 }
 
 export type FileUploadStatus = "default" | "loading" | "success" | "error";
+
+export type ListedFile = {
+  kind: string;
+  mimeType: string;
+  id: string;
+  name: string;
+};
