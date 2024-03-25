@@ -4,8 +4,8 @@ import fs from "fs";
 
 type RequestBody = { [key: string]: any };
 
-// 5mb
-const CHUNK_SIZE = 262144;
+// ~5mb
+const CHUNK_SIZE = 256 * 1024 * 2;
 
 class GoogleDriveService {
   googleAuth = require("google-auth-library").GoogleAuth;
