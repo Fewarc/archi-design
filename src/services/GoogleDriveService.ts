@@ -1,10 +1,11 @@
+import { ListedFile } from "@/utils/types";
 import { File } from "formidable";
 import fs from "fs";
 
 type RequestBody = { [key: string]: any };
 
 // 5mb
-const CHUNK_SIZE = 5000000;
+const CHUNK_SIZE = 262144;
 
 class GoogleDriveService {
   googleAuth = require("google-auth-library").GoogleAuth;
@@ -85,10 +86,10 @@ class GoogleDriveService {
       highWaterMark: chunkSize,
     });
 
-    fileStream.on("data", async (chunk) => {
+    for await (const chunk of fileStream) {
       await this.uploadChunk(uploadUrl, chunk, offset, chunk.length, fileSize);
       offset += chunk.length;
-    });
+    }
   };
 
   uploadChunk = async (
@@ -98,7 +99,7 @@ class GoogleDriveService {
     chunkSize: number,
     fileSize: number,
   ) => {
-    const res = await fetch(uploadUrl, {
+    const req = {
       method: "PUT",
       headers: {
         "Content-Length": `${chunkSize}`,
@@ -107,9 +108,9 @@ class GoogleDriveService {
         }/${fileSize}`,
       },
       body: chunk,
-    });
-
-    return res;
+    };
+    const res = await fetch(uploadUrl, req);
+    // TODO: handle chunk upload error
   };
 
   resumableUpload = async (file: File, parentFolderId?: string[]) => {
@@ -130,15 +131,15 @@ class GoogleDriveService {
     }
   };
 
-  // mexicanDrop = async () => {
-  //   const allFiles: ListedFile[] = await this.listAll();
+  mexicanDrop = async () => {
+    const allFiles: ListedFile[] = await this.listAll();
 
-  //   for (const file of allFiles) {
-  //     await this.service.files.delete({
-  //       fileId: file.id,
-  //     });
-  //   }
-  // };
+    for (const file of allFiles) {
+      await this.service.files.delete({
+        fileId: file.id,
+      });
+    }
+  };
 
   downloadFile = async (fileId: string) => {
     const file = await this.service.files.get(

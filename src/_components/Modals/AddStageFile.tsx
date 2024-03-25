@@ -24,7 +24,7 @@ const AddStageFile: React.FC<AddStageFileProps> = ({
     const res = await fetch("/api/download-file", {
       method: "POST",
       body: JSON.stringify({
-        fileId: "1IYbPqkPWWyb9rFWipjhcYaQTZ1TtLpIp",
+        fileId: "1CP0Az1trovWuOlA0RUrjRiIXsQ1SNXz6",
       }),
     });
 
