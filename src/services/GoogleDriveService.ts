@@ -1,4 +1,3 @@
-import { ListedFile } from "@/utils/types";
 import { File } from "formidable";
 import fs from "fs";
 
@@ -22,12 +21,8 @@ class GoogleDriveService {
   service = this.google.drive({ version: "v3", auth: this.auth });
 
   listAll = async () => {
-    try {
-      const files = await this.service.files.list();
-      return files.data.files;
-    } catch (error) {
-      console.error(error);
-    }
+    const files = await this.service.files.list();
+    return files.data.files;
   };
 
   createFolder = async (name: string, parentFolderId?: string[]) => {
@@ -40,15 +35,11 @@ class GoogleDriveService {
       fileMetadata.parents = parentFolderId;
     }
 
-    try {
-      const file = await this.service.files.create({
-        requestBody: fileMetadata,
-        fields: "id",
-      });
-      return file.data.id;
-    } catch (error) {
-      console.error(error);
-    }
+    const file = await this.service.files.create({
+      requestBody: fileMetadata,
+      fields: "id",
+    });
+    return file.data.id;
   };
 
   initiateResumableUpload = async (
@@ -125,20 +116,16 @@ class GoogleDriveService {
     const filePath = file.filepath;
 
     if (!!file.originalFilename && !!file.mimetype) {
-      try {
-        const uploadUrl = await this.initiateResumableUpload(
-          file.originalFilename,
-          file.mimetype,
-          parentFolderId,
-        );
+      const uploadUrl = await this.initiateResumableUpload(
+        file.originalFilename,
+        file.mimetype,
+        parentFolderId,
+      );
 
-        if (!!uploadUrl) {
-          await this.readAndUpload(uploadUrl, filePath, CHUNK_SIZE);
-        } else {
-          throw new Error("Resumable upload URL was not found");
-        }
-      } catch (error) {
-        console.error(error);
+      if (!!uploadUrl) {
+        await this.readAndUpload(uploadUrl, filePath, CHUNK_SIZE);
+      } else {
+        throw new Error("Resumable upload URL was not found");
       }
     }
   };
@@ -152,6 +139,18 @@ class GoogleDriveService {
   //     });
   //   }
   // };
+
+  downloadFile = async (fileId: string) => {
+    const file = await this.service.files.get(
+      {
+        fileId,
+        alt: "media",
+      },
+      { responseType: "stream" },
+    );
+
+    return file;
+  };
 }
 
 export default new GoogleDriveService();
