@@ -1,4 +1,5 @@
 import GoogleDriveService from "@/services/GoogleDriveService";
+import { ProjectWithFiles } from "@/utils/types";
 import { PrismaClient } from "@prisma/client";
 import { z } from "zod";
 
@@ -9,7 +10,17 @@ export const findProjectStage = async (
   prisma: PrismaClient,
 ) => {
   try {
-    return await prisma.projectStage.findMany({ where: { projectId: input.projectId } });
+    let stages = await prisma.projectStage.findMany({
+      where: { projectId: input.projectId },
+    });
+    let stagesWithFiles: ProjectWithFiles[] = [];
+
+    for await (const stage of stages) {
+      const files = await GoogleDriveService.listFilesInFolder(stage.folderId);
+      stagesWithFiles.push({ ...stage, files });
+    }
+
+    return stagesWithFiles;
   } catch (error) {
     console.error(error);
   }

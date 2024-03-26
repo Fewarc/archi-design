@@ -1,11 +1,12 @@
 import { ContextMenuItem, ProjectViewProps } from "@/utils/types";
 import ContextMenu from "./ContextMenu";
 import { MoreHorizontal } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import AddProjectStage from "./Modals/AddProjectStage";
 import { api } from "@/utils/api";
 import { ProjectStage } from "@prisma/client";
 import AddStageFile from "./Modals/AddStageFile";
+import ProjectStageSection from "./ProjectStageSection";
 
 const ProjectSubmitView: React.FC<ProjectViewProps> = ({ project }) => {
   const [addStageOpen, setAddStageOpen] = useState(false);
@@ -26,26 +27,6 @@ const ProjectSubmitView: React.FC<ProjectViewProps> = ({ project }) => {
     [],
   );
 
-  const getStageContextMenuItems = (stage: ProjectStage): ContextMenuItem[] => {
-    return [
-      {
-        displayName: "Dodaj plik",
-        key: "add_file",
-        onClick: () => setAddFile(stage)
-      },
-      {
-        displayName: "Zmień nazwę",
-        key: "change_name",
-        onClick: () => null
-      },
-      {
-        displayName: "Delete",
-        key: "delete",
-        onClick: () => null
-      },
-    ]
-  }
-
   return (
     <>
       <AddProjectStage
@@ -53,7 +34,7 @@ const ProjectSubmitView: React.FC<ProjectViewProps> = ({ project }) => {
         onClose={() => setAddStageOpen(false)}
         projectId={project.id}
       />
-      <AddStageFile 
+      <AddStageFile
         open={!!addFile}
         onClose={() => setAddFile(null)}
         stage={addFile}
@@ -70,14 +51,11 @@ const ProjectSubmitView: React.FC<ProjectViewProps> = ({ project }) => {
           </div>
           <div className="mt-6 flex flex-col gap-y-6">
             {stages?.map((stage) => (
-              <div key={stage.id} className="flex justify-between">
-                <div className="text-base font-bold leading-[18px]">
-                  {stage.name}
-                </div>
-                <ContextMenu menuItems={getStageContextMenuItems(stage)}>
-                  <MoreHorizontal />
-                </ContextMenu>
-              </div>
+              <ProjectStageSection
+                stage={stage}
+                setAddFile={setAddFile}
+                key={stage.id}
+              />
             ))}
           </div>
         </section>

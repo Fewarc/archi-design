@@ -6,7 +6,7 @@ import { AppInitialProps } from "next/app";
 import { Router } from "next/router";
 import { ProjectDetailsMenuKey } from "./items";
 import { ReactNode } from "react";
-import { Project } from "@prisma/client";
+import { Project, ProjectStage } from "@prisma/client";
 
 export type LayoutPage<P = {}, IP = P> = NextPage<P, IP> & {
   Layout?: LayoutKeys;
@@ -62,4 +62,8 @@ export type DriveFile = {
   mimeType: string;
   id: string;
   name: string;
+  size: string;
+  createdTime: string;
 };
+
+export type ProjectWithFiles = ProjectStage & { files: DriveFile[] };

@@ -29,7 +29,9 @@ class GoogleDriveService {
   listFilesInFolder = async (folderId: string): Promise<DriveFile[]> => {
     const files = await this.service.files.list({
       q: `'${folderId}' in parents and trashed=false`,
+      fields: "files(id, name, mimeType, kind, createdTime, size)",
     });
+
     return files.data.files;
   };
 
