@@ -1,3 +1,4 @@
+import GoogleDriveService from "@/services/GoogleDriveService";
 import { addStageSchema } from "@/utils/validation";
 import { PrismaClient } from "@prisma/client";
 
@@ -8,7 +9,8 @@ export const createProjectStage = async (
   prisma: PrismaClient,
 ) => {
   try {
-    await prisma.projectStage.create({ data: input });
+    const folderId = await GoogleDriveService.createFolder(input.name);
+    await prisma.projectStage.create({ data: { ...input, folderId } });
   } catch (error) {
     console.error(error);
   }

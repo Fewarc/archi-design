@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import GoogleDriveService from "@/services/GoogleDriveService";
+import { getServerAuthSession } from "@/server/auth";
 
 type ResponseData = {
   message?: string;
@@ -11,6 +12,12 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseData>,
 ) {
+  const session = await getServerAuthSession(req, res);
+
+  if (!session || !session?.user) {
+    res.status(401).json({ error: "Unauthorized." });
+  }
+
   try {
     const file = await new Promise<any>(async (resolve, reject) => {
       try {
@@ -33,8 +40,6 @@ export default async function handler(
         res.status(500).json({ error: "Error downloading file" });
       })
       .pipe(res);
-
-    // return res.status(200).json({ file });
   } catch (error) {
     return res.status(500).json({ error: (error as Error).message });
   }

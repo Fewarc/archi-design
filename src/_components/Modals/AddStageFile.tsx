@@ -28,19 +28,19 @@ const AddStageFile: React.FC<AddStageFileProps> = ({
       }),
     });
 
-    try {
-      const blob = await res.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "test.pdf";
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
-    } catch (error) {
-      console.error("Error:", error);
-    }
+    // try {
+    //   const blob = await res.blob();
+    //   const url = window.URL.createObjectURL(blob);
+    //   const a = document.createElement("a");
+    //   a.href = url;
+    //   a.download = "test.pdf";
+    //   document.body.appendChild(a);
+    //   a.click();
+    //   window.URL.revokeObjectURL(url);
+    //   document.body.removeChild(a);
+    // } catch (error) {
+    //   console.error("Error:", error);
+    // }
   };
 
   return (

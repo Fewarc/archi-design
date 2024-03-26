@@ -57,7 +57,7 @@ export interface ProjectViewProps {
 
 export type FileUploadStatus = "default" | "loading" | "success" | "error";
 
-export type ListedFile = {
+export type DriveFile = {
   kind: string;
   mimeType: string;
   id: string;

@@ -1,4 +1,4 @@
-import { ListedFile } from "@/utils/types";
+import { DriveFile } from "@/utils/types";
 import { File } from "formidable";
 import fs from "fs";
 
@@ -21,8 +21,15 @@ class GoogleDriveService {
 
   service = this.google.drive({ version: "v3", auth: this.auth });
 
-  listAll = async () => {
+  listAll = async (): Promise<DriveFile[]> => {
     const files = await this.service.files.list();
+    return files.data.files;
+  };
+
+  listFilesInFolder = async (folderId: string): Promise<DriveFile[]> => {
+    const files = await this.service.files.list({
+      q: `'${folderId}' in parents and trashed=false`,
+    });
     return files.data.files;
   };
 
@@ -40,6 +47,7 @@ class GoogleDriveService {
       requestBody: fileMetadata,
       fields: "id",
     });
+
     return file.data.id;
   };
 
@@ -48,28 +56,22 @@ class GoogleDriveService {
     mimeType: string,
     parentFolderId?: string[],
   ) => {
-    const requestBody: RequestBody = {
-      name: fileName,
+    const req = {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${await this.auth.getAccessToken()}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: fileName,
+        mimeType,
+        parents: parentFolderId ? parentFolderId : [],
+      }),
     };
-
-    if (parentFolderId) {
-      requestBody.parents = parentFolderId;
-    }
 
     const res = await fetch(
       "https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable",
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${await this.auth.getAccessToken()}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: fileName,
-          mimeType,
-          parents: parentFolderId ? parentFolderId : [],
-        }),
-      },
+      req,
     );
 
     return (res.headers as unknown as Map<string, string>).get("location");
@@ -132,7 +134,7 @@ class GoogleDriveService {
   };
 
   mexicanDrop = async () => {
-    const allFiles: ListedFile[] = await this.listAll();
+    const allFiles: DriveFile[] = await this.listAll();
 
     for (const file of allFiles) {
       await this.service.files.delete({

@@ -193,11 +193,14 @@ export const useUploadStageFiles = (stage: ProjectStage) => {
     form.append("file", file);
     form.append("stageId", stage.id);
     form.append("uploadId", i.toString());
+    form.append("folderId", stage.folderId);
 
     const res = await fetch("/api/add-file", {
       method: "POST",
       body: form,
     });
+
+    console.log(res.body);
   };
 
   const uploadFiles = (files: File[]) => {
