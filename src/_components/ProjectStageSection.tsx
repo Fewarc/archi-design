@@ -60,6 +60,7 @@ const ProjectStageSection: React.FC<ProjectStageSectionProps> = ({
           {!!stage.files.length ? (
             stage.files.map((file) => (
               <StageFile
+                key={file.id}
                 file={file}
                 checkedFiles={checkedFiles}
                 handleCheckChange={handleCheckChange}

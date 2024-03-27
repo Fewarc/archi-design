@@ -3,10 +3,14 @@ import { useState } from "react";
 import FileInput from "./FileInput";
 
 interface FileDropzoneProps {
+  className?: string;
   onFileChange: (files: File[]) => void;
 }
 
-const FileDropzone: React.FC<FileDropzoneProps> = ({ onFileChange }) => {
+const FileDropzone: React.FC<FileDropzoneProps> = ({
+  className,
+  onFileChange,
+}) => {
   const [shouldHighlight, setShouldHighlight] = useState(false);
 
   const preventDefaultHandler = (e: React.DragEvent<HTMLElement>) => {
@@ -18,11 +22,12 @@ const FileDropzone: React.FC<FileDropzoneProps> = ({ onFileChange }) => {
     <div
       className={cn(
         "flex items-center justify-center",
-        "h-60 rounded-md border-2 border-dashed border-archi-purple-light",
+        "h-14 rounded-md border-2 border-dashed border-archi-purple-light md:h-40",
         {
           "border-archi-purple bg-archi-purple-light bg-opacity-30":
             shouldHighlight,
         },
+        className,
       )}
       onDragOver={(e) => {
         preventDefaultHandler(e);
@@ -44,9 +49,14 @@ const FileDropzone: React.FC<FileDropzoneProps> = ({ onFileChange }) => {
       }}
     >
       {shouldHighlight ? (
-        <div className="font-semibold text-archi-purple">Upuść pliki tutaj...</div>
+        <div className="font-semibold text-archi-purple">
+          Upuść pliki tutaj...
+        </div>
       ) : (
-        <FileInput handleFiles={(files) => onFileChange(files)}>
+        <FileInput
+          handleFiles={(files) => onFileChange(files)}
+          className="bg-archi-purple-light"
+        >
           Dodaj pliki
         </FileInput>
       )}

@@ -18,14 +18,14 @@ const FileInput: React.FC<FileInputProps> = ({
 
   const handleFileUpload = (e: ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
-    handleFiles(files);
+    handleFiles(new Array<File>(...files));
   };
 
   return (
     <>
       <Button
         className={cn(
-          "rounded-full bg-archi-purple-light px-3 py-1 font-semibold text-white",
+          "rounded-full bg-archi-purple  px-3 py-1 font-semibold text-white",
           className,
         )}
         variant="borderless"

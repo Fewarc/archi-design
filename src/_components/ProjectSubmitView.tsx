@@ -51,6 +51,7 @@ const ProjectSubmitView: React.FC<ProjectViewProps> = ({ project }) => {
         open={!!addFile}
         onClose={() => setAddFile(null)}
         stage={addFile}
+        onFinish={() => utils.projectStage.invalidate()}
       />
       <DeleteModal
         open={!!deleteFile}
@@ -60,8 +61,8 @@ const ProjectSubmitView: React.FC<ProjectViewProps> = ({ project }) => {
         }
         subtitle={`Czy na pewno chcesz usunąć plik "${deleteFile?.name}"?`}
       >
-        Zostanie on trwale usunięty ze wszystkich kont, które mają do niego
-        dostęp
+        Plik "{deleteFile?.name}" zostanie trwale usunięty ze wszystkich kont,
+        które mają do niego dostęp
       </DeleteModal>
       <>
         <section className="mt-9">

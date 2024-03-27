@@ -1,31 +1,37 @@
 import { cn } from "@/utils/styleUtils";
+import { MoonLoader } from "react-spinners";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "defualt" | "link" | "icon" | "borderless";
+  loading?: boolean;
   className?: string;
 }
 
 const Button: React.FC<ButtonProps> = ({
   variant = "default",
+  loading,
   className,
   children,
   ...props
 }) => {
   return (
     <button
+      disabled={props.disabled}
       className={cn(
-        "py-4 w-full flex justify-center items-center",
-        "border border-black rounded-lg", 
+        "flex w-full items-center justify-center py-4",
+        "rounded-lg border border-black",
         {
-          "border-0 p-0 w-fit": variant === "link",
-          "border-0 p-0 w-fit ...": variant === "icon",
-          "border-0 p-0 w-fit hover:bg-archi-purple-light": variant === "borderless",
+          "w-fit border-0 p-0": variant === "link",
+          "... w-fit border-0 p-0": variant === "icon",
+          "w-fit border-0 p-0 hover:bg-archi-purple-light":
+            variant === "borderless",
+          "opacity-50": props.disabled,
         },
         className,
       )}
       {...props}
     >
-      {children}
+      {loading ? <MoonLoader color="#fff" size={20} /> : children}
     </button>
   );
 };

@@ -178,8 +178,13 @@ export const useIsClamped = (ref: RefObject<HTMLDivElement>) => {
   return isClamped;
 };
 
-export const useUploadStageFiles = (stage: ProjectStage) => {
+export const useUploadStageFiles = (
+  stage: ProjectStage,
+  files: File[],
+  onFinish: () => void,
+) => {
   const [uploadStatus, setUploadStatus] = useState<FileUploadStatus[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const updateFileStatus = (i: number, uploadStatus: FileUploadStatus) => {
     setUploadStatus((status) => {
@@ -188,34 +193,47 @@ export const useUploadStageFiles = (stage: ProjectStage) => {
     });
   };
 
-  const uploadSingleFile = async (file: File, i: number) => {
-    const form = new FormData();
-    form.append("file", file);
-    form.append("stageId", stage.id);
-    form.append("folderId", stage.folderId);
-
-    const res = await fetch("/api/add-file", {
-      method: "POST",
-      body: form,
-    });
-
-    if (res.status === 200) {
-      updateFileStatus(i, "success");
-    } else {
-      updateFileStatus(i, "error");
-    }
+  const resetUploadStatus = () => {
+    setUploadStatus([]);
   };
 
-  const uploadFiles = (files: File[]) => {
-    setUploadStatus(Array<FileUploadStatus>(files.length).fill("default"));
-    files.forEach(async (file, i) => {
+  const uploadSingleFile = async (file: File, i: number) =>
+    new Promise<FileUploadStatus>(async (resolve, _reject) => {
       updateFileStatus(i, "loading");
-      uploadSingleFile(file, i);
+      const form = new FormData();
+      form.append("file", file);
+      form.append("folderId", stage.folderId);
+
+      const res = await fetch("/api/add-file", {
+        method: "POST",
+        body: form,
+      });
+
+      if (res.status === 200) {
+        updateFileStatus(i, "success");
+        resolve("success");
+      } else {
+        updateFileStatus(i, "error");
+        resolve("error");
+      }
     });
+
+  const uploadFiles = async (files: File[]) => {
+    setLoading(true);
+    setUploadStatus(Array<FileUploadStatus>(files.length).fill("default"));
+    await Promise.all(files.map((file, i) => uploadSingleFile(file, i)));
+    setLoading(false);
+    onFinish();
   };
+
+  useEffect(() => {
+    files && setUploadStatus(new Array(files.length).fill("default"));
+  }, [files]);
 
   return {
     uploadFiles,
     uploadStatus,
+    loading,
+    resetUploadStatus,
   };
 };

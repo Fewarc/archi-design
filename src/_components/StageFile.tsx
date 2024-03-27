@@ -22,7 +22,7 @@ const StageFile: React.FC<StageFileProps> = ({
       {
         displayName: "Pobierz plik",
         key: "download_file",
-        onClick: () => downloadFile(file.id),
+        onClick: () => downloadFile(file),
       },
       {
         displayName: "Zmień nazwę pliku",
