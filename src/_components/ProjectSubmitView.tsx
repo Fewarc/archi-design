@@ -11,6 +11,7 @@ import ProjectStageSection from "./ProjectStageSection";
 const ProjectSubmitView: React.FC<ProjectViewProps> = ({ project }) => {
   const [addStageOpen, setAddStageOpen] = useState(false);
   const [addFile, setAddFile] = useState<ProjectStage | null>(null);
+  const [checkedFiles, setCheckedFiles] = useState<string[]>([]);
 
   const { data: stages } = api.projectStage.find.useQuery({
     projectId: project.id,
@@ -52,9 +53,11 @@ const ProjectSubmitView: React.FC<ProjectViewProps> = ({ project }) => {
           <div className="mt-6 flex flex-col gap-y-6">
             {stages?.map((stage) => (
               <ProjectStageSection
+                key={stage.id}
                 stage={stage}
                 setAddFile={setAddFile}
-                key={stage.id}
+                checkedFiles={checkedFiles}
+                setCheckedFiles={setCheckedFiles}
               />
             ))}
           </div>
