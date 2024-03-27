@@ -1,4 +1,4 @@
-import { ContextMenuItem, ProjectViewProps } from "@/utils/types";
+import { ContextMenuItem, DriveFile, ProjectViewProps } from "@/utils/types";
 import ContextMenu from "./ContextMenu";
 import { MoreHorizontal } from "lucide-react";
 import { useMemo, useState } from "react";
@@ -7,14 +7,26 @@ import { api } from "@/utils/api";
 import { ProjectStage } from "@prisma/client";
 import AddStageFile from "./Modals/AddStageFile";
 import ProjectStageSection from "./ProjectStageSection";
+import DeleteModal from "./Modals/DeleteModal";
 
 const ProjectSubmitView: React.FC<ProjectViewProps> = ({ project }) => {
   const [addStageOpen, setAddStageOpen] = useState(false);
   const [addFile, setAddFile] = useState<ProjectStage | null>(null);
+  const [deleteFile, setDeleteFile] = useState<DriveFile | null>(null);
   const [checkedFiles, setCheckedFiles] = useState<string[]>([]);
+
+  const utils = api.useUtils();
 
   const { data: stages } = api.projectStage.find.useQuery({
     projectId: project.id,
+  });
+
+  const { mutate: deleteFromDrive } = api.file.delete.useMutation({
+    onSuccess: () => {
+      // TODO: handle file delete success
+      utils.projectStage.invalidate();
+      setDeleteFile(null);
+    },
   });
 
   const projectStageContextMenuItems: ContextMenuItem[] = useMemo(
@@ -40,6 +52,17 @@ const ProjectSubmitView: React.FC<ProjectViewProps> = ({ project }) => {
         onClose={() => setAddFile(null)}
         stage={addFile}
       />
+      <DeleteModal
+        open={!!deleteFile}
+        onClose={() => setDeleteFile(null)}
+        onDelete={() =>
+          deleteFile && deleteFromDrive({ fileId: deleteFile?.id })
+        }
+        subtitle={`Czy na pewno chcesz usunąć plik "${deleteFile?.name}"?`}
+      >
+        Zostanie on trwale usunięty ze wszystkich kont, które mają do niego
+        dostęp
+      </DeleteModal>
       <>
         <section className="mt-9">
           <div className="flex justify-between">
@@ -56,6 +79,7 @@ const ProjectSubmitView: React.FC<ProjectViewProps> = ({ project }) => {
                 key={stage.id}
                 stage={stage}
                 setAddFile={setAddFile}
+                setDeleteFile={setDeleteFile}
                 checkedFiles={checkedFiles}
                 setCheckedFiles={setCheckedFiles}
               />

@@ -33,7 +33,7 @@ const ActionModal: React.FC<ActionModalProps> = ({
         className,
       )}
     >
-      <section className="relative mb-10 flex justify-center items-center">
+      <section className="relative mb-10 flex items-center justify-center">
         <Button
           variant="icon"
           onClick={() => onClose()}
@@ -41,7 +41,7 @@ const ActionModal: React.FC<ActionModalProps> = ({
         >
           <ArrowLeft />
         </Button>
-        <div className="w-full text-center max-w-[85%]">
+        <div className="w-full max-w-[85%] text-center">
           <h2 className="w-full text-center text-[24px] font-bold leading-[24px]">
             {title}
           </h2>

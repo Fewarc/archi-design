@@ -1,12 +1,13 @@
 import { ProjectStage } from "@prisma/client";
 import ContextMenu from "./ContextMenu";
-import { ContextMenuItem, ProjectWithFiles } from "@/utils/types";
+import { ContextMenuItem, DriveFile, ProjectWithFiles } from "@/utils/types";
 import { MoreHorizontal } from "lucide-react";
 import StageFile from "./StageFile";
 
 interface ProjectStageSectionProps {
   stage: ProjectWithFiles;
   setAddFile: (stage: ProjectStage) => void;
+  setDeleteFile: (file: DriveFile) => void;
   checkedFiles: string[];
   setCheckedFiles: (files: string[]) => void;
 }
@@ -14,6 +15,7 @@ interface ProjectStageSectionProps {
 const ProjectStageSection: React.FC<ProjectStageSectionProps> = ({
   stage,
   setAddFile,
+  setDeleteFile,
   checkedFiles,
   setCheckedFiles,
 }) => {
@@ -61,6 +63,7 @@ const ProjectStageSection: React.FC<ProjectStageSectionProps> = ({
                 file={file}
                 checkedFiles={checkedFiles}
                 handleCheckChange={handleCheckChange}
+                setDeleteFile={setDeleteFile}
               />
             ))
           ) : (

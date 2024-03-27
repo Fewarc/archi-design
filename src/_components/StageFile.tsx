@@ -8,12 +8,14 @@ interface StageFileProps {
   file: DriveFile;
   checkedFiles: string[];
   handleCheckChange: (fileId: string) => void;
+  setDeleteFile: (file: DriveFile) => void;
 }
 
 const StageFile: React.FC<StageFileProps> = ({
   file,
   checkedFiles,
   handleCheckChange,
+  setDeleteFile,
 }) => {
   const getFileContextMenuItems = (file: DriveFile): ContextMenuItem[] => {
     return [
@@ -30,7 +32,7 @@ const StageFile: React.FC<StageFileProps> = ({
       {
         displayName: "Usuń plik",
         key: "delete_file",
-        onClick: () => null,
+        onClick: () => setDeleteFile(file),
       },
     ];
   };

@@ -159,7 +159,12 @@ class GoogleDriveService {
 
   deleteFile = async (fileId: string) => {
     const res = await this.service.files.delete({ fileId });
-    console.log(res);
+
+    if (res.status !== 204) {
+      throw new Error(
+        `Error occured while trying to delete file: ${res.headers.statusText}`,
+      );
+    }
   };
 }
 
