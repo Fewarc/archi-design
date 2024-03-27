@@ -20,29 +20,6 @@ const AddStageFile: React.FC<AddStageFileProps> = ({
 
   const { uploadFiles, uploadStatus } = useUploadStageFiles(stage!);
 
-  const testDownload = async () => {
-    const res = await fetch("/api/download-file", {
-      method: "POST",
-      body: JSON.stringify({
-        fileId: "1CP0Az1trovWuOlA0RUrjRiIXsQ1SNXz6",
-      }),
-    });
-
-    // try {
-    //   const blob = await res.blob();
-    //   const url = window.URL.createObjectURL(blob);
-    //   const a = document.createElement("a");
-    //   a.href = url;
-    //   a.download = "test.pdf";
-    //   document.body.appendChild(a);
-    //   a.click();
-    //   window.URL.revokeObjectURL(url);
-    //   document.body.removeChild(a);
-    // } catch (error) {
-    //   console.error("Error:", error);
-    // }
-  };
-
   return (
     <ActionModal
       open={open}
@@ -95,13 +72,6 @@ const AddStageFile: React.FC<AddStageFileProps> = ({
           className="mt-9 w-full rounded-full border-0 bg-archi-purple px-5 py-2 text-center font-semibold text-white shadow-double md:w-fit"
         >
           Zapisz
-        </Button>
-        <Button
-          onClick={() => testDownload()}
-          variant="defualt"
-          className="mt-9 w-full rounded-full border-0 bg-archi-purple px-5 py-2 text-center font-semibold text-white shadow-double md:w-fit"
-        >
-          TEST
         </Button>
       </div>
     </ActionModal>

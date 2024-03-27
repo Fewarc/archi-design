@@ -26,7 +26,7 @@ export default async function handler(
   }
 
   try {
-    const uploadId = await new Promise<string>((resolve, reject) => {
+    await new Promise<void>((resolve, reject) => {
       const form = new IncomingForm();
 
       form.parse(req, async (err, fields, files) => {
@@ -35,23 +35,22 @@ export default async function handler(
         }
 
         const file = files?.file && files?.file[0];
-        const uploadId = fields.uploadId && fields.uploadId[0];
         const folderId = fields.folderId && fields.folderId[0];
 
-        if (file && uploadId && folderId) {
+        if (file && folderId) {
           try {
             await GoogleDriveService.resumableUpload(file, [folderId]);
           } catch (error) {
             reject(new Error("Error performing resumable upload."));
           }
-          resolve(uploadId);
+          resolve();
         } else {
           reject(new Error("Upload data is missing."));
         }
       });
     });
 
-    return res.status(200).json({ message: "OK", uploadId });
+    return res.status(200).json({ message: "OK" });
   } catch (error) {
     return res.status(500).json({ error: (error as Error).message });
   }

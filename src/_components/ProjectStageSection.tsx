@@ -1,8 +1,8 @@
 import { ProjectStage } from "@prisma/client";
 import ContextMenu from "./ContextMenu";
-import { ContextMenuItem, DriveFile, ProjectWithFiles } from "@/utils/types";
-import { Check, MoreHorizontal } from "lucide-react";
-import { displayFileSize, formatDate } from "@/utils/stringUtils";
+import { ContextMenuItem, ProjectWithFiles } from "@/utils/types";
+import { MoreHorizontal } from "lucide-react";
+import StageFile from "./StageFile";
 
 interface ProjectStageSectionProps {
   stage: ProjectWithFiles;
@@ -37,7 +37,7 @@ const ProjectStageSection: React.FC<ProjectStageSectionProps> = ({
     ];
   };
 
-  const handleFileChange = (fileId: string) => {
+  const handleCheckChange = (fileId: string) => {
     if (checkedFiles.includes(fileId)) {
       setCheckedFiles([...checkedFiles.filter((id) => id !== fileId)]);
     } else {
@@ -54,25 +54,21 @@ const ProjectStageSection: React.FC<ProjectStageSectionProps> = ({
         </ContextMenu>
       </div>
       <div>
-        {stage.files.map((file) => (
-          <div key={file.id} className="flex items-center gap-x-4">
-            <div
-              className="h-12 w-12 bg-archi-gray-light"
-              onClick={() => handleFileChange(file.id)}
-            >
-              {checkedFiles.includes(file.id) && (
-                <Check className="h-12 w-12 text-white" />
-              )}
+        <div className="flex flex-col gap-y-2">
+          {!!stage.files.length ? (
+            stage.files.map((file) => (
+              <StageFile
+                file={file}
+                checkedFiles={checkedFiles}
+                handleCheckChange={handleCheckChange}
+              />
+            ))
+          ) : (
+            <div className="mt-2 w-full text-center text-xs text-archi-gray-light">
+              Brak plików w tym etapie
             </div>
-            <div className="flex flex-col gap-y-[6px]">
-              <div className="text-sm leading-[14px]">{file.name}</div>
-              <div className="flex gap-x-5 text-[11px] leading-[14px]">
-                <p>{formatDate(new Date(file.createdTime))}</p>
-                <p>{displayFileSize(Number(file.size))}</p>
-              </div>
-            </div>
-          </div>
-        ))}
+          )}
+        </div>
       </div>
     </section>
   );

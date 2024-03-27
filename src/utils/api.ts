@@ -66,3 +66,26 @@ export type RouterInputs = inferRouterInputs<AppRouter>;
  * @example type HelloOutput = RouterOutputs['example']['hello']
  */
 export type RouterOutputs = inferRouterOutputs<AppRouter>;
+
+export const downloadFile = async (fileId: string) => {
+  const res = await fetch("/api/download-file", {
+    method: "POST",
+    body: JSON.stringify({
+      fileId,
+    }),
+  });
+
+  try {
+    const blob = await res.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "test.pdf";
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};

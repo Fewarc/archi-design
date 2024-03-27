@@ -156,6 +156,11 @@ class GoogleDriveService {
 
     return file;
   };
+
+  deleteFile = async (fileId: string) => {
+    const res = await this.service.files.delete({ fileId });
+    console.log(res);
+  };
 }
 
 export default new GoogleDriveService();
