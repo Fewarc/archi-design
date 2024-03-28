@@ -8,11 +8,13 @@ import { ProjectStage } from "@prisma/client";
 import AddStageFile from "./Modals/AddStageFile";
 import ProjectStageSection from "./ProjectStageSection";
 import DeleteModal from "./Modals/DeleteModal";
+import EditFileName from "./Modals/EditFileName";
 
 const ProjectSubmitView: React.FC<ProjectViewProps> = ({ project }) => {
   const [addStageOpen, setAddStageOpen] = useState(false);
   const [addFile, setAddFile] = useState<ProjectStage | null>(null);
   const [deleteFile, setDeleteFile] = useState<DriveFile | null>(null);
+  const [editFile, setEditFile] = useState<DriveFile | null>(null);
   const [checkedFiles, setCheckedFiles] = useState<string[]>([]);
 
   const utils = api.useUtils();
@@ -64,6 +66,11 @@ const ProjectSubmitView: React.FC<ProjectViewProps> = ({ project }) => {
         Plik "{deleteFile?.name}" zostanie trwale usunięty ze wszystkich kont,
         które mają do niego dostęp
       </DeleteModal>
+      <EditFileName
+        open={!!editFile}
+        file={editFile}
+        onClose={() => setEditFile(null)}
+      />
       <>
         <section className="mt-9">
           <div className="flex justify-between">
@@ -81,6 +88,7 @@ const ProjectSubmitView: React.FC<ProjectViewProps> = ({ project }) => {
                 stage={stage}
                 setAddFile={setAddFile}
                 setDeleteFile={setDeleteFile}
+                setEditFile={setEditFile}
                 checkedFiles={checkedFiles}
                 setCheckedFiles={setCheckedFiles}
               />

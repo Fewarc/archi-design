@@ -8,6 +8,7 @@ interface ProjectStageSectionProps {
   stage: ProjectWithFiles;
   setAddFile: (stage: ProjectStage) => void;
   setDeleteFile: (file: DriveFile) => void;
+  setEditFile: (file: DriveFile) => void;
   checkedFiles: string[];
   setCheckedFiles: (files: string[]) => void;
 }
@@ -16,6 +17,7 @@ const ProjectStageSection: React.FC<ProjectStageSectionProps> = ({
   stage,
   setAddFile,
   setDeleteFile,
+  setEditFile,
   checkedFiles,
   setCheckedFiles,
 }) => {
@@ -65,6 +67,7 @@ const ProjectStageSection: React.FC<ProjectStageSectionProps> = ({
                 checkedFiles={checkedFiles}
                 handleCheckChange={handleCheckChange}
                 setDeleteFile={setDeleteFile}
+                setEditFile={setEditFile}
               />
             ))
           ) : (

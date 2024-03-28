@@ -13,6 +13,8 @@ interface ActionModalProps extends ModalProps {
   className?: string;
 }
 
+// TODO: refactor with flex flex-col justify-between
+
 const ActionModal: React.FC<ActionModalProps> = ({
   children,
   open,

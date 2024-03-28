@@ -9,6 +9,7 @@ interface StageFileProps {
   checkedFiles: string[];
   handleCheckChange: (fileId: string) => void;
   setDeleteFile: (file: DriveFile) => void;
+  setEditFile: (file: DriveFile) => void;
 }
 
 const StageFile: React.FC<StageFileProps> = ({
@@ -16,6 +17,7 @@ const StageFile: React.FC<StageFileProps> = ({
   checkedFiles,
   handleCheckChange,
   setDeleteFile,
+  setEditFile,
 }) => {
   const getFileContextMenuItems = (file: DriveFile): ContextMenuItem[] => {
     return [
@@ -27,7 +29,7 @@ const StageFile: React.FC<StageFileProps> = ({
       {
         displayName: "Zmień nazwę pliku",
         key: "change_file_name",
-        onClick: () => null,
+        onClick: () => setEditFile(file),
       },
       {
         displayName: "Usuń plik",
