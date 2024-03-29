@@ -5,6 +5,7 @@ import { DriveFile, ModalProps } from "@/utils/types";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { api } from "@/utils/api";
 
 interface EditFileNameProps extends ModalProps {
   file: DriveFile | null;
@@ -17,6 +18,15 @@ const fileRenameSchema = z.object({
 type FileRenameSchemaType = z.infer<typeof fileRenameSchema>;
 
 const EditFileName: React.FC<EditFileNameProps> = ({ file, open, onClose }) => {
+  const utils = api.useUtils();
+
+  const { mutate: renameFile } = api.file.rename.useMutation({
+    onSuccess: () => {
+      utils.projectStage.invalidate();
+      onClose();
+    },
+  });
+
   const {
     register,
     handleSubmit,
@@ -28,12 +38,9 @@ const EditFileName: React.FC<EditFileNameProps> = ({ file, open, onClose }) => {
     },
     resolver: zodResolver(fileRenameSchema),
   });
-  const onSubmit: SubmitHandler<FileRenameSchemaType> = (data) => {
-    console.log(errors);
-    console.log("SUCCESS", data);
-  };
+  const onSubmit: SubmitHandler<FileRenameSchemaType> = (data) =>
+    renameFile({ fileId: file?.id!, fileName: data.fileName });
 
-  console.log(errors);
   return (
     <ActionModal
       open={open}
@@ -46,6 +53,7 @@ const EditFileName: React.FC<EditFileNameProps> = ({ file, open, onClose }) => {
           <div className="text-[11px]">NOWA NAZWA PLIKU</div>
           <div className="mt-4 flex flex-col gap-y-4">
             <Input
+              defaultValue={file?.name}
               variant="border_label"
               placeholder="example.pdf"
               label={<div className="text-xs font-semibold">Nazwa</div>}

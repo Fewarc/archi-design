@@ -166,6 +166,21 @@ class GoogleDriveService {
       );
     }
   };
+
+  renameFile = async (fileId: string, fileName: string) => {
+    const res = await this.service.files.update({
+      fileId: fileId,
+      requestBody: {
+        name: fileName,
+      },
+    });
+
+    if (res.status !== 200) {
+      throw new Error(
+        `Error occured while trying to rename file: ${res.headers.statusText}`,
+      );
+    }
+  };
 }
 
 export default new GoogleDriveService();
