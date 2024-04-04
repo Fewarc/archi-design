@@ -1,26 +1,31 @@
+import { ProjectStage } from "@prisma/client";
 import ActionModal from "../ActionModal";
+import { ModalProps } from "@/utils/types";
+import { z } from "zod";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "../Input";
 import Button from "../Button";
-import { DriveFile, ModalProps } from "@/utils/types";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { api } from "@/utils/api";
 
-interface EditFileNameProps extends ModalProps {
-  file: DriveFile | null;
+interface EditProjectStageProps extends ModalProps {
+  stage: ProjectStage | null;
 }
 
-const fileRenameSchema = z.object({
-  fileName: z.string().min(1, { message: "Pole wymagane." }),
+const stageRenameSchema = z.object({
+  stageName: z.string().min(1, { message: "Pole wymagane." }),
 });
 
-type FileRenameSchemaType = z.infer<typeof fileRenameSchema>;
+type StageRenameSchemaType = z.infer<typeof stageRenameSchema>;
 
-const EditFileName: React.FC<EditFileNameProps> = ({ file, open, onClose }) => {
+const EditProjectStage: React.FC<EditProjectStageProps> = ({
+  stage,
+  open,
+  onClose,
+}) => {
   const utils = api.useUtils();
 
-  const { mutate: renameFile } = api.file.rename.useMutation({
+  const { mutate: renameStage } = api.projectStage.rename.useMutation({
     onSuccess: () => {
       utils.projectStage.invalidate();
       onClose();
@@ -32,30 +37,30 @@ const EditFileName: React.FC<EditFileNameProps> = ({ file, open, onClose }) => {
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<FileRenameSchemaType>({
-    resolver: zodResolver(fileRenameSchema),
+  } = useForm<StageRenameSchemaType>({
+    resolver: zodResolver(stageRenameSchema),
   });
 
-  const onSubmit: SubmitHandler<FileRenameSchemaType> = (data) =>
-    renameFile({ fileId: file?.id!, fileName: data.fileName });
+  const onSubmit: SubmitHandler<StageRenameSchemaType> = (data) =>
+    renameStage({ stageId: stage?.id!, stageName: data.stageName });
 
   return (
     <ActionModal
       open={open}
       onClose={onClose}
       title="Edytuj"
-      subtitle="Nazwa pliku"
+      subtitle={`Nazwa etapu ${stage?.name}`}
     >
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="h-full">
-          <div className="text-[11px]">NOWA NAZWA PLIKU</div>
+          <div className="text-[11px]">NOWA NAZWA ETAPU</div>
           <div className="mt-4 flex flex-col gap-y-4">
             <Input
               variant="border_label"
-              placeholder="example.pdf"
+              placeholder="nazwa etapu"
               label={<div className="text-xs font-semibold">Nazwa</div>}
-              error={errors.fileName?.message}
-              {...register("fileName")}
+              error={errors.stageName?.message}
+              {...register("stageName")}
             />
           </div>
         </div>
@@ -80,4 +85,4 @@ const EditFileName: React.FC<EditFileNameProps> = ({ file, open, onClose }) => {
   );
 };
 
-export default EditFileName;
+export default EditProjectStage;

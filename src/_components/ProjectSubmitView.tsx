@@ -9,9 +9,11 @@ import AddStageFile from "./Modals/AddStageFile";
 import ProjectStageSection from "./ProjectStageSection";
 import DeleteModal from "./Modals/DeleteModal";
 import EditFileName from "./Modals/EditFileName";
+import EditProjectStage from "./Modals/EditProjectStage";
 
 const ProjectSubmitView: React.FC<ProjectViewProps> = ({ project }) => {
   const [addStageOpen, setAddStageOpen] = useState(false);
+  const [editStage, setEditStage] = useState<ProjectStage | null>(null);
   const [addFile, setAddFile] = useState<ProjectStage | null>(null);
   const [deleteFile, setDeleteFile] = useState<DriveFile | null>(null);
   const [editFile, setEditFile] = useState<DriveFile | null>(null);
@@ -71,6 +73,11 @@ const ProjectSubmitView: React.FC<ProjectViewProps> = ({ project }) => {
         file={editFile}
         onClose={() => setEditFile(null)}
       />
+      <EditProjectStage
+        open={!!editStage}
+        stage={editStage}
+        onClose={() => setEditStage(null)}
+      />
       <>
         <section className="mt-9">
           <div className="flex justify-between">
@@ -91,6 +98,7 @@ const ProjectSubmitView: React.FC<ProjectViewProps> = ({ project }) => {
                 setEditFile={setEditFile}
                 checkedFiles={checkedFiles}
                 setCheckedFiles={setCheckedFiles}
+                setEditStage={setEditStage}
               />
             ))}
           </div>

@@ -7,6 +7,7 @@ import StageFile from "./StageFile";
 interface ProjectStageSectionProps {
   stage: ProjectWithFiles;
   setAddFile: (stage: ProjectStage) => void;
+  setEditStage: (stage: ProjectStage) => void;
   setDeleteFile: (file: DriveFile) => void;
   setEditFile: (file: DriveFile) => void;
   checkedFiles: string[];
@@ -20,6 +21,7 @@ const ProjectStageSection: React.FC<ProjectStageSectionProps> = ({
   setEditFile,
   checkedFiles,
   setCheckedFiles,
+  setEditStage,
 }) => {
   const getStageContextMenuItems = (stage: ProjectStage): ContextMenuItem[] => {
     return [
@@ -31,7 +33,7 @@ const ProjectStageSection: React.FC<ProjectStageSectionProps> = ({
       {
         displayName: "Zmień nazwę",
         key: "change_name",
-        onClick: () => null,
+        onClick: () => setEditStage(stage),
       },
       {
         displayName: "Usuń",

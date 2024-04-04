@@ -7,7 +7,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   variant?: "default" | "border_label";
   label?: React.ReactNode;
   password?: boolean;
-  error?: string[];
+  error?: string[] | string;
   icon?: ReactNode;
   inputClassName?: string;
   className?: string;
