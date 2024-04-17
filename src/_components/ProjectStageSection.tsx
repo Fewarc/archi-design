@@ -3,6 +3,8 @@ import ContextMenu from "./ContextMenu";
 import { ContextMenuItem, DriveFile, ProjectWithFiles } from "@/utils/types";
 import { MoreHorizontal } from "lucide-react";
 import StageFile from "./StageFile";
+import Checkbox from "./Checkbox";
+import StageFileTable from "./StageFileTable";
 
 interface ProjectStageSectionProps {
   stage: ProjectWithFiles;
@@ -55,31 +57,35 @@ const ProjectStageSection: React.FC<ProjectStageSectionProps> = ({
 
   return (
     <section>
-      <div key={stage.id} className="flex justify-between">
+      <div
+        key={stage.id}
+        className="flex items-center justify-between md:justify-start md:gap-x-8"
+      >
         <div className="text-base font-bold leading-[18px]">{stage.name}</div>
         <ContextMenu menuItems={getStageContextMenuItems(stage)}>
           <MoreHorizontal />
         </ContextMenu>
       </div>
-      <div>
-        <div className="flex flex-col gap-y-2">
-          {!!stage.files.length ? (
-            stage.files.map((file) => (
-              <StageFile
-                key={file.id}
-                file={file}
-                checkedFiles={checkedFiles}
-                handleCheckChange={handleCheckChange}
-                setDeleteFile={setDeleteFile}
-                setEditFile={setEditFile}
-              />
-            ))
-          ) : (
-            <div className="mt-2 w-full text-center text-xs text-archi-gray-light">
-              Brak plików w tym etapie
-            </div>
-          )}
-        </div>
+      <div className="flex flex-col gap-y-2 md:hidden">
+        {!!stage.files.length ? (
+          stage.files.map((file) => (
+            <StageFile
+              key={file.id}
+              file={file}
+              checkedFiles={checkedFiles}
+              handleCheckChange={handleCheckChange}
+              setDeleteFile={setDeleteFile}
+              setEditFile={setEditFile}
+            />
+          ))
+        ) : (
+          <div className="mt-2 w-full text-center text-xs text-archi-gray-light">
+            Brak plików w tym etapie
+          </div>
+        )}
+      </div>
+      <div className="mt-6">
+        <StageFileTable stage={stage} files={stage.files} />
       </div>
     </section>
   );

@@ -103,9 +103,11 @@ const ProjectSubmitView: React.FC<ProjectViewProps> = ({ project }) => {
       </DeleteModal>
       <>
         <section className="mt-9">
-          <div className="flex justify-between">
+          <div className="flex items-center justify-between md:justify-start md:gap-x-8">
             <div className="flex items-center gap-x-2">
-              <h3 className="text-xl font-bold leading-5">Etapy projektu</h3>
+              <h3 className="text-xl font-bold leading-5 md:text-2xl md:leading-8">
+                Etapy projektu
+              </h3>
             </div>
             <ContextMenu menuItems={projectStageContextMenuItems}>
               <MoreHorizontal />
