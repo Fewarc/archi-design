@@ -12,6 +12,7 @@ interface ProjectStageSectionProps {
   setEditFile: (file: DriveFile) => void;
   checkedFiles: string[];
   setCheckedFiles: (files: string[]) => void;
+  setDeleteStage: (stage: ProjectStage) => void;
 }
 
 const ProjectStageSection: React.FC<ProjectStageSectionProps> = ({
@@ -22,6 +23,7 @@ const ProjectStageSection: React.FC<ProjectStageSectionProps> = ({
   checkedFiles,
   setCheckedFiles,
   setEditStage,
+  setDeleteStage,
 }) => {
   const getStageContextMenuItems = (stage: ProjectStage): ContextMenuItem[] => {
     return [
@@ -38,7 +40,7 @@ const ProjectStageSection: React.FC<ProjectStageSectionProps> = ({
       {
         displayName: "Usuń",
         key: "delete",
-        onClick: () => null,
+        onClick: () => setDeleteStage(stage),
       },
     ];
   };

@@ -15,6 +15,7 @@ const ProjectSubmitView: React.FC<ProjectViewProps> = ({ project }) => {
   const [addStageOpen, setAddStageOpen] = useState(false);
   const [editStage, setEditStage] = useState<ProjectStage | null>(null);
   const [addFile, setAddFile] = useState<ProjectStage | null>(null);
+  const [deleteStage, setDeleteStage] = useState<ProjectStage | null>(null);
   const [deleteFile, setDeleteFile] = useState<DriveFile | null>(null);
   const [editFile, setEditFile] = useState<DriveFile | null>(null);
   const [checkedFiles, setCheckedFiles] = useState<string[]>([]);
@@ -30,6 +31,13 @@ const ProjectSubmitView: React.FC<ProjectViewProps> = ({ project }) => {
       // TODO: handle file delete success
       utils.projectStage.invalidate();
       setDeleteFile(null);
+    },
+  });
+
+  const { mutate: deleteProjectStage } = api.projectStage.delete.useMutation({
+    onSuccess: () => {
+      utils.projectStage.invalidate();
+      setDeleteStage(null);
     },
   });
 
@@ -78,6 +86,21 @@ const ProjectSubmitView: React.FC<ProjectViewProps> = ({ project }) => {
         stage={editStage}
         onClose={() => setEditStage(null)}
       />
+      <DeleteModal
+        open={!!deleteStage}
+        onClose={() => setDeleteStage(null)}
+        onDelete={() =>
+          deleteStage &&
+          deleteProjectStage({
+            id: deleteStage.id,
+            folderId: deleteStage.folderId,
+          })
+        }
+        subtitle={`Czy na pewno chcesz usunąć etap "${deleteStage?.name}"?`}
+      >
+        Etap "{deleteStage?.name}" zostanie trwale usunięty ze wszystkich kont,
+        które mają do niego dostęp
+      </DeleteModal>
       <>
         <section className="mt-9">
           <div className="flex justify-between">
@@ -99,6 +122,7 @@ const ProjectSubmitView: React.FC<ProjectViewProps> = ({ project }) => {
                 checkedFiles={checkedFiles}
                 setCheckedFiles={setCheckedFiles}
                 setEditStage={setEditStage}
+                setDeleteStage={setDeleteStage}
               />
             ))}
           </div>

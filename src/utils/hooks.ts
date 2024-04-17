@@ -178,6 +178,14 @@ export const useIsClamped = (ref: RefObject<HTMLDivElement>) => {
   return isClamped;
 };
 
+/**
+ * uploads files to google drive using resumable upload on the backend
+ *
+ * @param stage project stage
+ * @param files array of files
+ * @param onFinish function called on finish
+ * @returns uploadFiles and resetUploadStatus functions, uploadStatus and loading
+ */
 export const useUploadStageFiles = (
   stage: ProjectStage,
   files: File[],
