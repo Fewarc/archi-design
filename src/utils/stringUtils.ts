@@ -1,9 +1,16 @@
-export const formatDate = (date: Date) => {
-  const day = date.getDay();
-  const month = date.getDate();
-  return `${day < 10 ? "0" + day : day}.${
+export const formatDate = (date: Date, time?: boolean) => {
+  const day = date.getDate();
+  const month = date.getDay();
+
+  let formattedDate = `${day < 10 ? "0" + day : day}.${
     month < 10 ? "0" + month : month
   }.${date.getFullYear()}`;
+
+  if (time) {
+    formattedDate += ` ${date.getHours()}:${date.getMinutes()}`;
+  }
+
+  return formattedDate;
 };
 
 export const displayFileSize = (fileSize: number) => {

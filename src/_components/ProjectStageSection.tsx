@@ -55,6 +55,16 @@ const ProjectStageSection: React.FC<ProjectStageSectionProps> = ({
     }
   };
 
+  const handleCheckAll = (fileIds: string[]) => {
+    if (fileIds.every((id) => checkedFiles.includes(id))) {
+      setCheckedFiles([
+        ...checkedFiles.filter((fileId) => !fileIds.includes(fileId)),
+      ]);
+    } else {
+      setCheckedFiles([...checkedFiles, ...fileIds]);
+    }
+  };
+
   return (
     <section>
       <div
@@ -84,8 +94,22 @@ const ProjectStageSection: React.FC<ProjectStageSectionProps> = ({
           </div>
         )}
       </div>
-      <div className="mt-6">
-        <StageFileTable stage={stage} files={stage.files} />
+      <div className="mt-6 hidden md:block">
+        {!!stage.files.length ? (
+          <StageFileTable
+            stage={stage}
+            files={stage.files}
+            checkedIds={checkedFiles}
+            onCheckFile={handleCheckChange}
+            onCheckAll={handleCheckAll}
+            setDeleteFile={setDeleteFile}
+            setEditFile={setEditFile}
+          />
+        ) : (
+          <div className="text-md mt-2 w-full text-center text-archi-gray-light">
+            Brak plików w tym etapie
+          </div>
+        )}
       </div>
     </section>
   );
