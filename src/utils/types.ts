@@ -64,6 +64,7 @@ export type DriveFile = {
   name: string;
   size: string;
   createdTime: string;
+  webViewLink: string;
 };
 
 export type ProjectWithFiles = ProjectStage & { files: DriveFile[] };

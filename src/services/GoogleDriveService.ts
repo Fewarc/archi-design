@@ -29,7 +29,7 @@ class GoogleDriveService {
   listFilesInFolder = async (folderId: string): Promise<DriveFile[]> => {
     const files = await this.service.files.list({
       q: `'${folderId}' in parents and trashed=false`,
-      fields: "files(id, name, mimeType, kind, createdTime, size)",
+      fields: "files(id, name, mimeType, kind, createdTime, size, webViewLink)",
     });
 
     return files.data.files;
@@ -117,8 +117,24 @@ class GoogleDriveService {
     // TODO: handle chunk upload error
   };
 
-  resumableUpload = async (file: File, parentFolderId?: string[]) => {
+  resumableUpload = async (
+    file: File,
+    writers: string[],
+    parentFolderId?: string[],
+  ) => {
     const filePath = file.filepath;
+
+    if (parentFolderId) {
+      const foundFiles = await this.findFiles(
+        file.originalFilename!,
+        file.mimetype!,
+        parentFolderId[0],
+      );
+
+      if (!!foundFiles.length) {
+        throw new Error("File already exists in this folder.");
+      }
+    }
 
     if (!!file.originalFilename && !!file.mimetype) {
       const uploadUrl = await this.initiateResumableUpload(
@@ -129,10 +145,40 @@ class GoogleDriveService {
 
       if (!!uploadUrl) {
         await this.readAndUpload(uploadUrl, filePath, CHUNK_SIZE);
+
+        const uploadedFile = await this.findFiles(
+          file.originalFilename!,
+          file.mimetype!,
+          parentFolderId && parentFolderId[0],
+        );
+
+        await this.service.permissions.create({
+          fileId: uploadedFile[0].id,
+          requestBody: {
+            role: "writer", // 'reader', 'writer', or 'owner'
+            type: "user",
+            emailAddress: writers, // Pass an array of email addresses
+          },
+        });
       } else {
         throw new Error("Resumable upload URL was not found");
       }
     }
+  };
+
+  findFiles = async (name: string, mimeType: string, folderId?: string) => {
+    let q = `name='${name}' and mimeType='${mimeType}'`;
+
+    if (!!folderId) {
+      q += ` and '${folderId}' in parents`;
+    }
+
+    const foundFiles = await this.service.files.list({
+      q,
+      fields: "files(id, name, mimeType, kind, createdTime, size, webViewLink)",
+    });
+
+    return foundFiles.data.files;
   };
 
   mexicanDrop = async () => {
