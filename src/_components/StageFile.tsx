@@ -51,7 +51,13 @@ const StageFile: React.FC<StageFileProps> = ({
           )}
         </div>
         <div className="flex flex-col gap-y-[6px]">
-          <div className="text-sm leading-[14px]">{file.name}</div>
+          <a
+            target="_blank"
+            href={file.webViewLink}
+            className="text-sm leading-[14px]"
+          >
+            {file.name}
+          </a>
           <div className="flex gap-x-5 text-[11px] leading-[14px]">
             <p>{formatDate(new Date(file.createdTime))}</p>
             <p>{displayFileSize(Number(file.size))}</p>
