@@ -79,10 +79,14 @@ const StageFileTable: React.FC<StageFileTableProps> = ({
               />
             </td>
             <td colSpan={16} className="pt-2">
-              <div className="flex items-center gap-x-2">
+              <a
+                className="flex cursor-pointer items-center gap-x-2"
+                target="_blank"
+                href={file.webViewLink}
+              >
                 <File />
                 <div>{file.name}</div>
-              </div>
+              </a>
             </td>
             <td colSpan={6} className="pt-2">
               {formatDate(new Date(file.createdTime), true)}
