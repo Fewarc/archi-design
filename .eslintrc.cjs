@@ -9,7 +9,7 @@ const config = {
     "plugin:@next/next/recommended",
     "plugin:@typescript-eslint/recommended-type-checked",
     "plugin:@typescript-eslint/stylistic-type-checked",
-    "plugin:cypress/recommended"
+    "plugin:cypress/recommended",
   ],
   rules: {
     // These opinionated rules are enabled in stylistic-type-checked above.
@@ -18,14 +18,15 @@ const config = {
     "@typescript-eslint/consistent-type-definitions": "off",
     "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/no-unused-imports": "warn",
     "no-empty-function": "off",
     "@typescript-eslint/no-empty-function": "warn",
     "@typescript-eslint/consistent-indexed-object-style": "off",
     "@typescript-eslint/no-explicit-any": "warn",
-    "@typescript-eslint/no-misused-promises": "off", 
-    "@typescript-eslint/no-unsafe-assignment": "off", 
-    "@typescript-eslint/no-unsafe-argument": "off", 
-    "@typescript-eslint/no-unsafe-member-access": "off", 
+    "@typescript-eslint/no-misused-promises": "off",
+    "@typescript-eslint/no-unsafe-assignment": "off",
+    "@typescript-eslint/no-unsafe-argument": "off",
+    "@typescript-eslint/no-unsafe-member-access": "off",
     // "@typescript-eslint/consistent-type-imports": [
     //   "warn",
     //   {

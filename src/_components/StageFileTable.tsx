@@ -1,10 +1,10 @@
-import { ProjectStage } from "@prisma/client";
-import Checkbox from "./Checkbox";
-import { ContextMenuItem, DriveFile } from "@/utils/types";
-import { displayFileSize, formatDate } from "@/utils/stringUtils";
-import ContextMenu from "./ContextMenu";
-import { File, MoreHorizontal } from "lucide-react";
 import { downloadFile } from "@/utils/api";
+import { displayFileSize, formatDate } from "@/utils/stringUtils";
+import { ContextMenuItem, DriveFile } from "@/utils/types";
+import { ProjectStage } from "@prisma/client";
+import { File, MoreHorizontal } from "lucide-react";
+import Checkbox from "./Checkbox";
+import ContextMenu from "./ContextMenu";
 
 interface StageFileTableProps {
   stage: ProjectStage;

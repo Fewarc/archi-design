@@ -120,6 +120,7 @@ class GoogleDriveService {
   resumableUpload = async (
     file: File,
     writers: string[],
+    readers: string[],
     parentFolderId?: string[],
   ) => {
     const filePath = file.filepath;
@@ -155,9 +156,18 @@ class GoogleDriveService {
         await this.service.permissions.create({
           fileId: uploadedFile[0].id,
           requestBody: {
-            role: "writer", // 'reader', 'writer', or 'owner'
+            role: "writer",
             type: "user",
-            emailAddress: writers, // Pass an array of email addresses
+            emailAddress: writers,
+          },
+        });
+
+        await this.service.permissions.create({
+          fileId: uploadedFile[0].id,
+          requestBody: {
+            role: "reader",
+            type: "user",
+            emailAddress: readers,
           },
         });
       } else {

@@ -34,6 +34,13 @@ model Session {
     user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+model Team {
+    id      String    @id @default(cuid()) @map("_id")
+    name    String
+    members User[]
+    Project Project[]
+}
+
 model User {
     id            String    @id @default(cuid()) @map("_id")
     name          String?
@@ -42,6 +49,8 @@ model User {
     emailVerified DateTime?
     accounts      Account[]
     sessions      Session[]
+    Team          Team?     @relation(fields: [teamId], references: [id])
+    teamId        String?
 }
 
 enum ProjectStatus {
@@ -65,6 +74,8 @@ model Project {
     contacts        AdditionalContact[]
     notes           ProjectNote[]
     stages          ProjectStage[]
+    Team            Team?               @relation(fields: [teamId], references: [id], onDelete: Cascade)
+    teamId          String?
 }
 
 model AdditionalContact {

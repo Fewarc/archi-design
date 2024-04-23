@@ -211,8 +211,7 @@ export const useUploadStageFiles = (
       const form = new FormData();
       form.append("file", file);
       form.append("folderId", stage.folderId);
-      // TODO: change to actual writers and add readers
-      form.append("writers", JSON.stringify(["berezkapiotr@gmail.com"]));
+      form.append("stageId", stage.id);
 
       const res = await fetch("/api/add-file", {
         method: "POST",

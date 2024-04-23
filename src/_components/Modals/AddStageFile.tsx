@@ -1,11 +1,10 @@
+import { useUploadStageFiles } from "@/utils/hooks";
 import { ModalProps } from "@/utils/types";
 import { ProjectStage } from "@prisma/client";
+import { useState } from "react";
 import ActionModal from "../ActionModal";
 import Button from "../Button";
 import FileDropzone from "../FileDropzone";
-import { useState } from "react";
-import { File, Trash } from "lucide-react";
-import { useUploadStageFiles } from "@/utils/hooks";
 import UploadFile from "../UploadFile";
 
 interface AddStageFileProps extends ModalProps {
