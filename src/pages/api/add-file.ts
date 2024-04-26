@@ -41,11 +41,11 @@ export default async function handler(
         const readers =
           fields.readers && fields.readers[0] && JSON.parse(fields.readers[0]);
 
-        console.log(writers, readers);
-
-        if (file && folderId && writers & readers) {
+        if (file && folderId && writers && readers) {
           try {
-            await GoogleDriveService.resumableUpload(file, [], [], [folderId]);
+            await GoogleDriveService.resumableUpload(file, writers, readers, [
+              folderId,
+            ]);
           } catch (error) {
             reject(new Error(`Error performing resumable upload. ${error}`));
           }
