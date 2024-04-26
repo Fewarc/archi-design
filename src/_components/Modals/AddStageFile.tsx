@@ -6,6 +6,7 @@ import ActionModal from "../ActionModal";
 import Button from "../Button";
 import FileDropzone from "../FileDropzone";
 import UploadFile from "../UploadFile";
+import { api } from "@/utils/api";
 
 interface AddStageFileProps extends ModalProps {
   stage: ProjectStage | null;
@@ -20,11 +21,21 @@ const AddStageFile: React.FC<AddStageFileProps> = ({
 }) => {
   const [files, setFiles] = useState<File[]>([]);
 
+  const { data: users } = api.project.getUsers.useQuery({
+    projectId: stage?.projectId!,
+  });
+
   const { uploadFiles, uploadStatus, loading, resetUploadStatus } =
-    useUploadStageFiles(stage!, files, () => {
-      onFinish();
-      handleClose();
-    });
+    useUploadStageFiles(
+      stage!,
+      files,
+      () => {
+        onFinish();
+        handleClose();
+      },
+      users?.writers,
+      users?.readers,
+    );
 
   const handleClose = () => {
     onClose();

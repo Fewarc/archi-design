@@ -190,6 +190,8 @@ export const useUploadStageFiles = (
   stage: ProjectStage,
   files: File[],
   onFinish: () => void,
+  writers?: string[],
+  readers?: string[],
 ) => {
   const [uploadStatus, setUploadStatus] = useState<FileUploadStatus[]>([]);
   const [loading, setLoading] = useState(false);
@@ -212,6 +214,8 @@ export const useUploadStageFiles = (
       form.append("file", file);
       form.append("folderId", stage.folderId);
       form.append("stageId", stage.id);
+      form.append("writers", JSON.stringify(writers));
+      form.append("readers", JSON.stringify(readers));
 
       const res = await fetch("/api/add-file", {
         method: "POST",

@@ -36,8 +36,14 @@ export default async function handler(
 
         const file = files?.file && files?.file[0];
         const folderId = fields.folderId && fields.folderId[0];
+        const writers =
+          fields.writers && fields.writers[0] && JSON.parse(fields.writers[0]);
+        const readers =
+          fields.readers && fields.readers[0] && JSON.parse(fields.readers[0]);
 
-        if (file && folderId) {
+        console.log(writers, readers);
+
+        if (file && folderId && writers & readers) {
           try {
             await GoogleDriveService.resumableUpload(file, [], [], [folderId]);
           } catch (error) {
