@@ -28,6 +28,15 @@ export const loginSchema = z.object({
 });
 
 // add project
+export const addProjectSchema = z.object({
+  name: z.string().min(1, { message: "Pole wymagane." }),
+  clientName: z.string().min(1, { message: "Pole wymagane." }),
+  address: z.string().min(1, { message: "Pole wymagane." }),
+  city: z.string().min(1, { message: "Pole wymagane." }),
+  phoneNumber: z.string().min(1, { message: "Pole wymagane." }),
+  email: z.string().email({ message: "Nieprawidłowy adres e-mail." }),
+});
+
 export const projectSchema = z.object({
   name: z.string().min(1, { message: "Pole wymagane." }),
   clientName: z.string().min(1, { message: "Pole wymagane." }),
@@ -35,6 +44,7 @@ export const projectSchema = z.object({
   city: z.string().min(1, { message: "Pole wymagane." }),
   phoneNumber: z.string().min(1, { message: "Pole wymagane." }),
   email: z.string().email({ message: "Nieprawidłowy adres e-mail." }),
+  teamId: z.string(),
 });
 
 // edit project
@@ -50,6 +60,7 @@ export const editProjectSchema = z.object({
   plannedDeadline: z.date().nullable(),
   status: z.nativeEnum(ProjectStatus),
   id: z.string(),
+  teamId: z.string(),
 });
 
 // add additional contact
