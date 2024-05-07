@@ -27,7 +27,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
       </Button>
       {open && (
         <section
-          className="animate-in fade-in-10 absolute right-0 z-50 flex min-w-36 flex-col gap-y-2 rounded-lg bg-white p-2 text-sm font-bold shadow-archi duration-300"
+          className="absolute right-0 z-50 flex min-w-36 flex-col gap-y-2 rounded-lg bg-white p-2 text-sm font-bold shadow-archi duration-300 animate-in fade-in-10"
           onClick={() => setOpen(false)}
         >
           {menuItems.map((item) => (

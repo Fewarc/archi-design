@@ -1,4 +1,4 @@
-import ProjectDetailsView from "@/_components/ProjectDetails/ProjectDetilasView";
+import ProjectDetailsView from "@/_components/ProjectDetilasView";
 import ProjectDetailsMenu from "@/_components/ProjectDetailsMenu";
 import { api } from "@/utils/api";
 import { ProjectDetailsMenuKey } from "@/utils/items";
@@ -7,6 +7,7 @@ import { protectRoute } from "@/utils/validation";
 import { Project } from "@prisma/client";
 import { GetSessionParams } from "next-auth/react";
 import { ReactNode, useState } from "react";
+import ProjectSubmitView from "@/_components/ProjectSubmitView";
 
 interface ProjectDetailsProps {
   params: { projectId: string };
@@ -15,6 +16,7 @@ interface ProjectDetailsProps {
 const getProjectView = (project: Project, state: ProjectDetailsMenuKey) => {
   return new Map<ProjectDetailsMenuKey, ReactNode>([
     ["details", <ProjectDetailsView project={project} />],
+    ["project_submit", <ProjectSubmitView project={project} />],
   ]).get(state);
 };
 

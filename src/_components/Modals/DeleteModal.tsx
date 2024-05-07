@@ -19,8 +19,14 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
   subtitle,
 }) => {
   return (
-    <ActionModal open={open} onClose={onClose} title={modalTitle || ""} subtitle={subtitle}>
-      {children}
+    <ActionModal
+      open={open}
+      onClose={onClose}
+      title={modalTitle || ""}
+      subtitle={subtitle}
+      className="flex flex-col justify-between"
+    >
+      <div className="h-full">{children}</div>
       <div className="flex justify-end gap-x-4">
         <Button
           onClick={() => onClose()}

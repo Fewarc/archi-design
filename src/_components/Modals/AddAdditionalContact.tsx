@@ -18,6 +18,7 @@ const AddAdditionalContact: React.FC<AddAdditionalContactProps> = ({
   open,
   onClose,
 }) => {
+  // TODO: use react hook form
   const [newContact, setNewContact] = useState({
     name: "",
     occupation: "",
@@ -126,7 +127,7 @@ const AddAdditionalContact: React.FC<AddAdditionalContactProps> = ({
         <Button
           onClick={() => validate({ ...newContact, projectId })}
           variant="defualt"
-          className="mt-9 w-full md:w-fit rounded-full border-0 bg-archi-purple px-5 py-2 text-center font-medium text-white shadow-double"
+          className="mt-9 w-full rounded-full border-0 bg-archi-purple px-5 py-2 text-center font-medium text-white shadow-double md:w-fit"
         >
           Dodaj
         </Button>

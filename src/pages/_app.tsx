@@ -8,6 +8,7 @@ import { Libre_Franklin } from "next/font/google";
 import { useEffect } from "react";
 import { CustomAppProps } from "@/utils/types";
 import { AllLayouts } from "@/_components/Layouts";
+import ContextProvider from "@/_components/Context";
 
 const LF = Libre_Franklin({
   subsets: ["latin"],
@@ -34,9 +35,11 @@ function MyApp({
 
   return (
     <SessionProvider session={session}>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
+      <ContextProvider>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </ContextProvider>
     </SessionProvider>
   );
 }

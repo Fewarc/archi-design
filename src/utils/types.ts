@@ -6,6 +6,7 @@ import { AppInitialProps } from "next/app";
 import { Router } from "next/router";
 import { ProjectDetailsMenuKey } from "./items";
 import { ReactNode } from "react";
+import { Project, ProjectStage } from "@prisma/client";
 
 export type LayoutPage<P = {}, IP = P> = NextPage<P, IP> & {
   Layout?: LayoutKeys;
@@ -34,7 +35,8 @@ export interface MenuItem<KeyType = string> {
   key: KeyType;
 }
 
-export interface ProjectDetailsMenuItem extends MenuItem<ProjectDetailsMenuKey> {
+export interface ProjectDetailsMenuItem
+  extends MenuItem<ProjectDetailsMenuKey> {
   icon: ReactNode;
 }
 
@@ -48,3 +50,21 @@ export interface ModalProps {
   open: boolean;
   onClose: Function;
 }
+
+export interface ProjectViewProps {
+  project: Project;
+}
+
+export type FileUploadStatus = "default" | "loading" | "success" | "error";
+
+export type DriveFile = {
+  kind: string;
+  mimeType: string;
+  id: string;
+  name: string;
+  size: string;
+  createdTime: string;
+  webViewLink: string;
+};
+
+export type ProjectWithFiles = ProjectStage & { files: DriveFile[] };

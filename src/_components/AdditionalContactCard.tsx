@@ -1,10 +1,10 @@
 import { AdditionalContact } from "@prisma/client";
 import { AtSign, MoreHorizontal, Phone, PhoneCall } from "lucide-react";
-import ContextMenu from "../ContextMenu";
+import ContextMenu from "./ContextMenu";
 import { useMemo, useState } from "react";
 import { ContextMenuItem } from "@/utils/types";
-import EditAdditionalContacts from "../Modals/EditAdditionalContact";
-import DeleteModal from "../Modals/DeleteModal";
+import EditAdditionalContacts from "./Modals/EditAdditionalContact";
+import DeleteModal from "./Modals/DeleteModal";
 import { api } from "@/utils/api";
 
 interface AdditionalContactCardProps {

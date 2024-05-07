@@ -4,6 +4,8 @@ import { api } from "./api";
 import { useRouter } from "next/router";
 import { createAvatar } from "@dicebear/core";
 import { initials } from "@dicebear/collection";
+import { ProjectStage } from "@prisma/client";
+import { FileUploadStatus } from "./types";
 
 /**
  * hook to validate zod schemas and parse errors
@@ -149,7 +151,7 @@ export const useProjectAvatar = (name: string) => {
 
 /**
  * hook for monitoring if html element is line-clamped
- * 
+ *
  * @param ref html element ref object
  * @returns boolean stating if div is clamped
  */
@@ -174,4 +176,77 @@ export const useIsClamped = (ref: RefObject<HTMLDivElement>) => {
   }, [ref.current?.clientHeight]);
 
   return isClamped;
+};
+
+/**
+ * uploads files to google drive using resumable upload on the backend
+ *
+ * @param stage project stage
+ * @param files array of files
+ * @param onFinish function called on finish
+ * @returns uploadFiles and resetUploadStatus functions, uploadStatus and loading
+ */
+export const useUploadStageFiles = (
+  stage: ProjectStage,
+  files: File[],
+  onFinish: () => void,
+  writers?: string[],
+  readers?: string[],
+) => {
+  const [uploadStatus, setUploadStatus] = useState<FileUploadStatus[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  const updateFileStatus = (i: number, uploadStatus: FileUploadStatus) => {
+    setUploadStatus((status) => {
+      status[i] = uploadStatus;
+      return status;
+    });
+  };
+
+  const resetUploadStatus = () => {
+    setUploadStatus([]);
+  };
+
+  const uploadSingleFile = async (file: File, i: number) =>
+    new Promise<FileUploadStatus>(async (resolve, _reject) => {
+      updateFileStatus(i, "loading");
+      const form = new FormData();
+      form.append("file", file);
+      form.append("folderId", stage.folderId);
+      form.append("stageId", stage.id);
+      form.append("writers", JSON.stringify(writers));
+      form.append("readers", JSON.stringify(readers));
+
+      const res = await fetch("/api/add-file", {
+        method: "POST",
+        body: form,
+      });
+
+      if (res.status === 200) {
+        updateFileStatus(i, "success");
+        resolve("success");
+      } else {
+        updateFileStatus(i, "error");
+        resolve("error");
+      }
+    });
+
+  const uploadFiles = async (files: File[]) => {
+    setLoading(true);
+    setUploadStatus(Array<FileUploadStatus>(files.length).fill("default"));
+    await Promise.all(files.map((file, i) => uploadSingleFile(file, i)));
+    setLoading(false);
+    onFinish();
+  };
+
+  useEffect(() => {
+    files && setUploadStatus(new Array(files.length).fill("default"));
+  }, [files]);
+
+  return {
+    uploadFiles,
+    uploadStatus,
+    loading,
+    resetUploadStatus,
+  };
 };

@@ -9,6 +9,7 @@ import { protectRoute } from "@/utils/validation";
 import { ArrowDownUp, Filter, Plus, Search as SearchIcon } from "lucide-react";
 import { GetSessionParams } from "next-auth/react";
 import { useState } from "react";
+import { useUserContext } from "@/_components/Context";
 
 type SortDropdownItem = DropdownItem<"name" | "modified" | "asc" | "desc">;
 
@@ -57,6 +58,8 @@ const Projects: LayoutPage = () => {
   const [filter, setFilter] = useState<[FilterDropdownItem | null]>([null]);
   const [addProjectOpen, setAddProjectOpen] = useState<boolean>(false);
 
+  const { user } = useUserContext();
+
   const { data: projects, isLoading: _projectsLoading } =
     api.project.getAll.useQuery();
 
@@ -86,7 +89,11 @@ const Projects: LayoutPage = () => {
 
   return (
     <>
-      <AddProject open={addProjectOpen} onClose={() => setAddProjectOpen(false)}/>
+      <AddProject
+        open={addProjectOpen}
+        teamId={user?.teamId!}
+        onClose={() => setAddProjectOpen(false)}
+      />
       <Button
         className="fixed bottom-4 right-4 rounded-2xl bg-archi-purple p-4 md:hidden"
         variant="icon"
@@ -115,7 +122,7 @@ const Projects: LayoutPage = () => {
               variant="default"
               placeholder="Wyszukaj..."
               icon={<SearchIcon />}
-              className="hidden md:flex mr-4"
+              className="mr-4 hidden md:flex"
             />
             <Dropdown
               label="Sortuj"
@@ -134,8 +141,13 @@ const Projects: LayoutPage = () => {
             />
           </div>
         </section>
-        <section className="flex flex-col gap-y-3 md:gap-y-5 mt-3 w-full pb-4">
-          {projects?.map((project) => <ProjectCard project={project} key={project.name + project.clientName}/>)}
+        <section className="mt-3 flex w-full flex-col gap-y-3 pb-4 md:gap-y-5">
+          {projects?.map((project) => (
+            <ProjectCard
+              project={project}
+              key={project.name + project.clientName}
+            />
+          ))}
         </section>
       </div>
     </>

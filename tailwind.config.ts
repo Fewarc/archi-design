@@ -25,6 +25,7 @@ export default {
         },
         "archi-gray": {
           DEFAULT: "#565D60",
+          light: "#D9D9D9",
         },
       },
     },
