@@ -158,7 +158,12 @@ const ProjectDetailsView: React.FC<ProjectViewProps> = ({ project }) => {
       ) : (
         <>
           <section className="mt-7">
-            <h3 className="text-2xl font-bold leading-8">Dane podstawowe</h3>
+            <div className="flex items-center gap-x-8">
+              <h3 className="text-2xl font-bold leading-8">Dane podstawowe</h3>
+              <ContextMenu menuItems={projectContextMenuItems}>
+                <MoreHorizontal />
+              </ContextMenu>
+            </div>
             <div className="grid grid-cols-10">
               <div className="col-span-5 flex overflow-hidden">
                 <Image
@@ -224,7 +229,7 @@ const ProjectDetailsView: React.FC<ProjectViewProps> = ({ project }) => {
                 </Button>
               </div>
               {additionalContacts?.map((contact) => (
-                <AdditionalContactCard contact={contact} key={contact.id}/>
+                <AdditionalContactCard contact={contact} key={contact.id} />
               ))}
             </section>
           </div>

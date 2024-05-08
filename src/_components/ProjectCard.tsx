@@ -6,10 +6,12 @@ import { useMediaQuery, useProjectAvatar } from "@/utils/hooks";
 import Image from "next/image";
 import Button from "./Button";
 import { useRouter } from "next/router";
-import { projectCardContextMenuItems } from "@/utils/items";
+import { ContextMenuItem } from "@/utils/types";
 
 interface ProjectCardProps {
   project: Project;
+  setArchiveProject: (project: Project) => void;
+  setDeleteProject: (project: Project) => void;
   className?: string;
 }
 
@@ -21,12 +23,28 @@ const projectStatusMap = new Map<Project["status"], string>([
 
 const PROJECT_AVATAR_DIM = 218;
 
-const ProjectCard: React.FC<ProjectCardProps> = ({ project, className }) => {
+const ProjectCard: React.FC<ProjectCardProps> = ({
+  project,
+  setArchiveProject,
+  setDeleteProject,
+  className,
+}) => {
   const isMobile = useMediaQuery("(max-width: 768px)");
-
   const router = useRouter();
-
   const avatar = useProjectAvatar(project.clientName);
+
+  const projectCardContextMenuItems: ContextMenuItem[] = [
+    {
+      displayName: "Zarchiwizuj",
+      key: "archive",
+      onClick: () => setArchiveProject(project),
+    },
+    {
+      displayName: "Usuń",
+      key: "delete",
+      onClick: () => setDeleteProject(project),
+    },
+  ];
 
   return (
     <div
@@ -51,7 +69,10 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, className }) => {
               <MoreHorizontal />
             </ContextMenu>
           </section>
-          <Button variant="link" onClick={() => router.push(`/project/${project.id}`)}>
+          <Button
+            variant="link"
+            onClick={() => router.push(`/project/${project.id}`)}
+          >
             <section className="text-2xl font-bold">{project.name}</section>
           </Button>
           <section className="mt-1 flex justify-between text-[12px] leading-[14px]">
@@ -102,7 +123,10 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, className }) => {
           <div className="flex w-full flex-col">
             <div className="flex w-full justify-between pt-2">
               <div className="flex">
-                <Button variant="link" onClick={() => router.push(`/project/${project.id}`)}>
+                <Button
+                  variant="link"
+                  onClick={() => router.push(`/project/${project.id}`)}
+                >
                   <h2 className="text-[34px] font-bold leading-[38px]">
                     {project.name}
                   </h2>
@@ -118,8 +142,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, className }) => {
                 <MoreHorizontal />
               </ContextMenu>
             </div>
-            <div className="w-full mt-2 grid grid-cols-12">
-              <div className="flex flex-col gap-y-2 col-span-4">
+            <div className="mt-2 grid w-full grid-cols-12">
+              <div className="col-span-4 flex flex-col gap-y-2">
                 <div>
                   <p className="text-[10px] font-semibold leading-[18px]">
                     DANE
@@ -136,7 +160,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, className }) => {
                   <p>{project.city}</p>
                 </div>
               </div>
-              <div className="flex flex-col w-full col-span-8">
+              <div className="col-span-8 flex w-full flex-col">
                 <div className="flex justify-around">
                   <div>
                     <p className="text-[10px] font-semibold leading-[18px]">
