@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { LockKeyhole, UserRound } from "lucide-react";
 import { loginSchema } from "@/utils/validation";
 import Logo from "@/_components/Logo";
@@ -16,9 +15,6 @@ import { SubmitHandler, useForm } from "react-hook-form";
 type LoginSchemaType = z.infer<typeof loginSchema>;
 
 const Home: LayoutPage = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
   const {
     register,
     handleSubmit,
