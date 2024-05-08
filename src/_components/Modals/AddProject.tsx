@@ -1,8 +1,6 @@
 import { addProjectSchema } from "@/utils/validation";
 import Input from "@/_components/Input";
-import { useEffect, useState } from "react";
 import Button from "@/_components/Button";
-import { useValidation } from "@/utils/hooks";
 import { api } from "@/utils/api";
 import ActionModal from "../ActionModal";
 import { z } from "zod";

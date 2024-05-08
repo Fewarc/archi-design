@@ -8,37 +8,6 @@ import { ProjectStage } from "@prisma/client";
 import { FileUploadStatus } from "./types";
 
 /**
- * hook to validate zod schemas and parse errors
- *
- * @param props object with validation schema, onSuccess function and onError function
- * @returns data, errors and validate function
- */
-export function useValidation<T>(props: {
-  schema: z.ZodType<T>;
-  onSuccess?: (data: T) => void;
-  onError?: () => void;
-}) {
-  const [data, setData] = useState<T>();
-  const [errors, setErrors] = useState<z.ZodFormattedError<T, string>>();
-
-  function validate(data: T) {
-    const result = props.schema.safeParse(data);
-
-    if (result.success) {
-      setData(result.data);
-      setErrors(undefined);
-      !!props.onSuccess && props.onSuccess(result.data);
-    } else {
-      const formattedErrors = result.error.format();
-      setErrors(formattedErrors);
-      !!props.onError && props.onError();
-    }
-  }
-
-  return { data, errors, validate };
-}
-
-/**
  * hook listening to screen width changes
  *
  * @param query string query in form of CSS media query e.g. (max-width: 768px)

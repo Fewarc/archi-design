@@ -10,6 +10,9 @@ import { ArrowDownUp, Filter, Plus, Search as SearchIcon } from "lucide-react";
 import { GetSessionParams } from "next-auth/react";
 import { useState } from "react";
 import { useUserContext } from "@/_components/Context";
+import { Project } from "@prisma/client";
+import ArchiveProject from "@/_components/Modals/ArchiveProject";
+import DeleteModal from "@/_components/Modals/DeleteModal";
 
 type SortDropdownItem = DropdownItem<"name" | "modified" | "asc" | "desc">;
 
@@ -57,11 +60,21 @@ const Projects: LayoutPage = () => {
   >([null, null]);
   const [filter, setFilter] = useState<[FilterDropdownItem | null]>([null]);
   const [addProjectOpen, setAddProjectOpen] = useState<boolean>(false);
+  const [archiveProject, setArchiveProject] = useState<Project | null>(null);
+  const [deleteProject, setDeleteProject] = useState<Project | null>(null);
 
   const { user } = useUserContext();
 
+  const utils = api.useUtils();
+
   const { data: projects, isLoading: _projectsLoading } =
     api.project.getAll.useQuery();
+
+  const { mutate: removeProject } = api.project.delete.useMutation({
+    onSuccess: () => {
+      utils.project.invalidate();
+    },
+  });
 
   const handleSortSelect = (item: SortDropdownItem) => {
     if (item.key === "name" || item.key === "modified") {
@@ -94,6 +107,22 @@ const Projects: LayoutPage = () => {
         teamId={user?.teamId!}
         onClose={() => setAddProjectOpen(false)}
       />
+      <ArchiveProject
+        open={!!archiveProject}
+        project={archiveProject}
+        onClose={() => setArchiveProject(null)}
+      />
+      <DeleteModal
+        open={!!deleteProject}
+        onClose={() => setDeleteProject(null)}
+        onDelete={() =>
+          deleteProject && removeProject({ projectId: deleteProject?.id })
+        }
+        subtitle={`Czy na pewno chcesz usunąć projekt ${deleteProject?.name}`}
+      >
+        Projekt "{deleteProject?.name}" zostanie trwale usunięty ze wszystkich
+        kont, które mają do niego dostęp
+      </DeleteModal>
       <Button
         className="fixed bottom-4 right-4 rounded-2xl bg-archi-purple p-4 md:hidden"
         variant="icon"
@@ -145,6 +174,8 @@ const Projects: LayoutPage = () => {
           {projects?.map((project) => (
             <ProjectCard
               project={project}
+              setArchiveProject={setArchiveProject}
+              setDeleteProject={setDeleteProject}
               key={project.name + project.clientName}
             />
           ))}
