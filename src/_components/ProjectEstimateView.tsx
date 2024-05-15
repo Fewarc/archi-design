@@ -3,9 +3,16 @@ import { Plus } from "lucide-react";
 import Button from "./Button";
 import AddProjectScope from "./Modals/AddProjectScope";
 import { useState } from "react";
+import { api } from "@/utils/api";
 
 const ProjectEstimateView: React.FC<ProjectViewProps> = ({ project }) => {
   const [addProjectScopeOpen, setAddProejectScopeOpen] = useState(false);
+
+  const {
+    data: scopes,
+    isLoading,
+    error,
+  } = api.projectScope.find.useQuery({ projectId: project.id });
 
   return (
     <>
@@ -25,7 +32,9 @@ const ProjectEstimateView: React.FC<ProjectViewProps> = ({ project }) => {
             <Plus />
           </Button>
         </div>
-        <div className="mt-6 flex flex-col gap-y-6"></div>
+        <div className="mt-6 flex flex-col gap-y-6">
+          {scopes?.map((scope) => <div>{scope.name}</div>)}
+        </div>
       </section>
     </>
   );

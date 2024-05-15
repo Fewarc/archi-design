@@ -40,7 +40,10 @@ export interface ProjectDetailsMenuItem
   icon: ReactNode;
 }
 
-export interface DropdownItem<KeyType = string> extends MenuItem<KeyType> {}
+export interface MultiDropdownItem<KeyType = string>
+  extends MenuItem<KeyType> {}
+
+export interface ItemDropdownItem<KeyType = string> extends MenuItem<KeyType> {}
 
 export interface ContextMenuItem<KeyType = string> extends MenuItem<KeyType> {
   onClick: Function;

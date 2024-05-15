@@ -1,10 +1,10 @@
 import AddProject from "@/_components/Modals/AddProject";
 import Button from "@/_components/Button";
-import Dropdown from "@/_components/Dropdown";
+import MultiDropdown from "@/_components/MultiDropdown";
 import Input from "@/_components/Input";
 import ProjectCard from "@/_components/ProjectCard";
 import { api } from "@/utils/api";
-import { DropdownItem, LayoutPage } from "@/utils/types";
+import { MultiDropdownItem, LayoutPage } from "@/utils/types";
 import { protectRoute } from "@/utils/validation";
 import { ArrowDownUp, Filter, Plus, Search as SearchIcon } from "lucide-react";
 import { GetSessionParams } from "next-auth/react";
@@ -14,7 +14,7 @@ import { Project } from "@prisma/client";
 import ArchiveProject from "@/_components/Modals/ArchiveProject";
 import DeleteModal from "@/_components/Modals/DeleteModal";
 
-type SortDropdownItem = DropdownItem<"name" | "modified" | "asc" | "desc">;
+type SortDropdownItem = MultiDropdownItem<"name" | "modified" | "asc" | "desc">;
 
 const PROJECTS_SORT: SortDropdownItem[][] = [
   [
@@ -39,7 +39,7 @@ const PROJECTS_SORT: SortDropdownItem[][] = [
   ],
 ];
 
-type FilterDropdownItem = DropdownItem<"active" | "archived">;
+type FilterDropdownItem = MultiDropdownItem<"active" | "archived">;
 
 const PROJECTS_FILTERS: FilterDropdownItem[][] = [
   [
@@ -153,7 +153,7 @@ const Projects: LayoutPage = () => {
               icon={<SearchIcon />}
               className="mr-4 hidden md:flex"
             />
-            <Dropdown
+            <MultiDropdown
               label="Sortuj"
               itemGroups={PROJECTS_SORT}
               onSelect={handleSortSelect}
@@ -161,11 +161,11 @@ const Projects: LayoutPage = () => {
               icon={<ArrowDownUp strokeWidth={1.2} />}
               className="mr-4"
             />
-            <Dropdown
+            <MultiDropdown
               label="Filtruj"
               itemGroups={PROJECTS_FILTERS}
               onSelect={handleFilterSelect}
-              selectedItems={filter as Array<DropdownItem>}
+              selectedItems={filter as Array<MultiDropdownItem>}
               icon={<Filter strokeWidth={1.2} />}
             />
           </div>

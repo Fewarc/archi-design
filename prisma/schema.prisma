@@ -76,6 +76,7 @@ model Project {
     stages          ProjectStage[]
     Team            Team?               @relation(fields: [teamId], references: [id], onDelete: Cascade)
     teamId          String
+    scopes          ProjectScope[]
 }
 
 model AdditionalContact {
@@ -111,9 +112,11 @@ enum ProjectScopeCategory {
 }
 
 model ProjectScope {
-    id       String               @id @default(cuid()) @map("_id")
-    name     String
-    category ProjectScopeCategory @default(CONCEPTUAL)
-    surface  Float
-    price    Float
+    id        String               @id @default(cuid()) @map("_id")
+    name      String
+    category  ProjectScopeCategory @default(CONCEPTUAL)
+    surface   Float
+    price     Float
+    Project   Project?             @relation(fields: [projectId], references: [id], onDelete: Cascade)
+    projectId String?
 }

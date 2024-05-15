@@ -1,13 +1,13 @@
-import { ModalProps } from "@/utils/types";
+import { ItemDropdownItem, ModalProps } from "@/utils/types";
 import ActionModal from "../ActionModal";
 import Button from "../Button";
 import { addProjectScopeSchema } from "@/utils/validation";
 import { z } from "zod";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "../Input";
 import { api } from "@/utils/api";
-import ItemDropdown, { ItemDropdownItem } from "../ItemDropdown";
+import ItemDropdown from "../ItemDropdown";
 import { ProjectScopeCategory } from "@prisma/client";
 
 interface AddProjectScopeProps extends ModalProps {
@@ -17,11 +17,11 @@ interface AddProjectScopeProps extends ModalProps {
 const ScopeCategories: ItemDropdownItem[] = [
   {
     displayName: "Koncepcyjny",
-    value: ProjectScopeCategory.CONCEPTUAL,
+    key: ProjectScopeCategory.CONCEPTUAL,
   },
   {
     displayName: "Kompleksowy",
-    value: ProjectScopeCategory.COMPREHENSIVE,
+    key: ProjectScopeCategory.COMPREHENSIVE,
   },
 ];
 
@@ -32,8 +32,14 @@ const AddProjectScope: React.FC<AddProjectScopeProps> = ({
   open,
   onClose,
 }) => {
+  const utils = api.useUtils();
+
   const { mutate: createScope } = api.projectScope.create.useMutation({
-    onSuccess: () => {},
+    onSuccess: () => {
+      utils.projectScope.invalidate();
+      onClose();
+      reset();
+    },
   });
 
   const {
@@ -41,6 +47,7 @@ const AddProjectScope: React.FC<AddProjectScopeProps> = ({
     handleSubmit,
     watch,
     control,
+    reset,
     formState: { errors },
   } = useForm<AddProjectScopeSchmeaType>({
     resolver: zodResolver(addProjectScopeSchema),
@@ -77,19 +84,30 @@ const AddProjectScope: React.FC<AddProjectScopeProps> = ({
               <div className="text-xs font-semibold">Powierzchnia w m2</div>
             }
             error={errors?.surface?.message}
-            {...register("surface")}
+            type="number"
+            {...register("surface", { valueAsNumber: true })}
           />
-          <ItemDropdown
-            items={ScopeCategories}
-            handleChange={() => null}
-            variant="border"
+          <Controller
+            name="category"
+            control={control}
+            defaultValue="CONCEPTUAL"
+            render={({ field }) => (
+              <ItemDropdown
+                items={ScopeCategories}
+                handleChange={(item) => field.onChange(item.key)}
+                variant="border"
+                {...field}
+              />
+            )}
           />
+
           <Input
             variant="border_label"
             placeholder="100"
             label={<div className="text-xs font-semibold">Koszt za m2</div>}
             error={errors?.price?.message}
-            {...register("price")}
+            type="number"
+            {...register("price", { valueAsNumber: true })}
           />
         </div>
         <div className="flex justify-end gap-x-4">

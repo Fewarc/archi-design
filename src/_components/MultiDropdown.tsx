@@ -1,21 +1,21 @@
 import { useOnClickOutside } from "@/utils/hooks";
 import { cn } from "@/utils/styleUtils";
-import { DropdownItem } from "@/utils/types";
+import { MultiDropdownItem } from "@/utils/types";
 import { Check, ChevronDown } from "lucide-react";
 import { ReactNode, useRef, useState } from "react";
 import Divider from "./Divider";
 
-interface DropdownProps {
+interface MultiDropdownProps {
   label?: string;
-  itemGroups?: DropdownItem[][];
-  selectedItems?: DropdownItem[];
+  itemGroups?: MultiDropdownItem[][];
+  selectedItems?: MultiDropdownItem[];
   onSelect: Function;
   itemsLabel?: string;
   className?: string;
   icon?: ReactNode;
 }
 
-const Dropdown: React.FC<DropdownProps> = ({
+const MultiDropdown: React.FC<MultiDropdownProps> = ({
   label,
   itemGroups = [],
   selectedItems = [],
@@ -88,4 +88,4 @@ const Dropdown: React.FC<DropdownProps> = ({
   );
 };
 
-export default Dropdown;
+export default MultiDropdown;
