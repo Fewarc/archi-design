@@ -4,12 +4,14 @@ import { ScopeCategories } from "./Modals/AddProjectScope";
 import ContextMenu from "./ContextMenu";
 import { MoreHorizontal } from "lucide-react";
 import { ContextMenuItem } from "@/utils/types";
+import { api } from "@/utils/api";
 
 interface ProjectScopeTableProps {
   scopes: ProjectScope[];
   checkedIds: string[];
   onCheckFile: (fileId: string) => void;
   onCheckAll: (fileIds: string[]) => void;
+  setScopeToDelete: (scope: ProjectScope) => void;
 }
 
 const ProjectScopeTable: React.FC<ProjectScopeTableProps> = ({
@@ -17,11 +19,23 @@ const ProjectScopeTable: React.FC<ProjectScopeTableProps> = ({
   checkedIds,
   onCheckFile,
   onCheckAll,
+  setScopeToDelete,
 }) => {
   const allScopeIds = scopes.map((scope) => scope.id);
 
   const getScopeContextMenuItems = (scope: ProjectScope): ContextMenuItem[] => {
-    return [];
+    return [
+      {
+        displayName: "Usuń",
+        key: "delete",
+        onClick: () => setScopeToDelete(scope),
+      },
+      {
+        displayName: "Edytuj",
+        key: "edit",
+        onClick: () => null,
+      },
+    ];
   };
 
   return (

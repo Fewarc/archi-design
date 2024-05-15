@@ -6,10 +6,21 @@ import { useState } from "react";
 import { api } from "@/utils/api";
 import ProjectScopeTable from "./ProjectScopeTable";
 import { checkAll, checkChange } from "./Checkbox";
+import { ProjectScope } from "@prisma/client";
+import DeleteModal from "./Modals/DeleteModal";
 
 const ProjectEstimateView: React.FC<ProjectViewProps> = ({ project }) => {
   const [addProjectScopeOpen, setAddProejectScopeOpen] = useState(false);
+  const [scopeToDelete, setScopeToDelete] = useState<ProjectScope | null>(null);
   const [checkedIds, setCheckedIds] = useState<string[]>([]);
+
+  const utils = api.useUtils();
+
+  const { mutate: deleteScope } = api.projectScope.delete.useMutation({
+    onSuccess: () => {
+      utils.projectScope.invalidate();
+    },
+  });
 
   const {
     data: scopes,
@@ -32,6 +43,17 @@ const ProjectEstimateView: React.FC<ProjectViewProps> = ({ project }) => {
         onClose={() => setAddProejectScopeOpen(false)}
         projectId={project.id}
       />
+      <DeleteModal
+        open={!!scopeToDelete}
+        onClose={() => setScopeToDelete(null)}
+        onDelete={() =>
+          !!scopeToDelete && deleteScope({ scopeId: scopeToDelete.id })
+        }
+        subtitle="Czy na pewno chcesz usunąć zakres projektu?"
+      >
+        Zakres "{scopeToDelete?.name}" zostanie trwale usunięty ze wszystkich
+        kont, które mają do niego dostęp
+      </DeleteModal>
       <section className="mt-9">
         <div className="flex items-center justify-between md:justify-start md:gap-x-8">
           <div className="flex items-center gap-x-2">
@@ -45,13 +67,18 @@ const ProjectEstimateView: React.FC<ProjectViewProps> = ({ project }) => {
         </div>
         <div className="mt-6 flex flex-col gap-y-6">
           <div className="mt-6 hidden md:block">
-            {!!scopes && (
+            {scopes?.length ? (
               <ProjectScopeTable
                 scopes={scopes}
                 checkedIds={checkedIds}
                 onCheckAll={handleCheckAll}
                 onCheckFile={handleCheckChange}
+                setScopeToDelete={setScopeToDelete}
               />
+            ) : (
+              <div className="text-md mt-2 w-full text-center text-archi-gray-light">
+                Brak zakresów w tym projekcie
+              </div>
             )}
           </div>
         </div>

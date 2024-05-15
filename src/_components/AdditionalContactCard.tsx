@@ -49,7 +49,7 @@ const AdditionalContactCard: React.FC<AdditionalContactCardProps> = ({
         onClose={() => setOpenEdit(false)}
       />
       <DeleteModal
-        modalTitle={`Czy na pewno chcezs usunąć ten kontakt?`}
+        modalTitle={`Czy na pewno chcesz usunąć ten kontakt?`}
         open={openDelete}
         onClose={() => setOpenDelete(false)}
         onDelete={() => deleteContact({ contactId: contact.id })}
