@@ -8,6 +8,7 @@ import ProjectScopeTable from "./ProjectScopeTable";
 import { checkAll, checkChange } from "./Checkbox";
 import { ProjectScope } from "@prisma/client";
 import DeleteModal from "./Modals/DeleteModal";
+import ProjectScopeComponent from "./ProjectScopeComponent";
 
 const ProjectEstimateView: React.FC<ProjectViewProps> = ({ project }) => {
   const [addProjectScopeOpen, setAddProejectScopeOpen] = useState(false);
@@ -65,6 +66,23 @@ const ProjectEstimateView: React.FC<ProjectViewProps> = ({ project }) => {
             <Plus />
           </Button>
         </div>
+        <div className="flex flex-col gap-y-2 md:hidden">
+          {scopes?.length ? (
+            scopes.map((scope) => (
+              <ProjectScopeComponent
+                scope={scope}
+                checkedIds={checkedIds}
+                handleCheckChange={handleCheckChange}
+                setScopeToDelete={setScopeToDelete}
+                setScopeToEdit={() => null}
+              />
+            ))
+          ) : (
+            <div className="mt-2 w-full text-center text-xs text-archi-gray-light">
+              Brak plików w tym etapie
+            </div>
+          )}
+        </div>
         <div className="mt-6 flex flex-col gap-y-6">
           <div className="mt-6 hidden md:block">
             {scopes?.length ? (
@@ -72,7 +90,7 @@ const ProjectEstimateView: React.FC<ProjectViewProps> = ({ project }) => {
                 scopes={scopes}
                 checkedIds={checkedIds}
                 onCheckAll={handleCheckAll}
-                onCheckFile={handleCheckChange}
+                onCheckScope={handleCheckChange}
                 setScopeToDelete={setScopeToDelete}
               />
             ) : (

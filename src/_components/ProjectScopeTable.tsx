@@ -9,7 +9,7 @@ import { api } from "@/utils/api";
 interface ProjectScopeTableProps {
   scopes: ProjectScope[];
   checkedIds: string[];
-  onCheckFile: (fileId: string) => void;
+  onCheckScope: (fileId: string) => void;
   onCheckAll: (fileIds: string[]) => void;
   setScopeToDelete: (scope: ProjectScope) => void;
 }
@@ -17,7 +17,7 @@ interface ProjectScopeTableProps {
 const ProjectScopeTable: React.FC<ProjectScopeTableProps> = ({
   scopes,
   checkedIds,
-  onCheckFile,
+  onCheckScope,
   onCheckAll,
   setScopeToDelete,
 }) => {
@@ -72,7 +72,7 @@ const ProjectScopeTable: React.FC<ProjectScopeTableProps> = ({
             <td colSpan={1} className="pt-2">
               <Checkbox
                 value={checkedIds.includes(scope.id)}
-                onChange={() => onCheckFile(scope.id)}
+                onChange={() => onCheckScope(scope.id)}
               />
             </td>
             <td colSpan={7} className="pt-2">
