@@ -14,7 +14,7 @@ interface AddProjectScopeProps extends ModalProps {
   projectId: string;
 }
 
-const ScopeCategories: ItemDropdownItem[] = [
+export const ScopeCategories: ItemDropdownItem[] = [
   {
     displayName: "Koncepcyjny",
     key: ProjectScopeCategory.CONCEPTUAL,

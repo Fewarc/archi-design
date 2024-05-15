@@ -5,7 +5,7 @@ import {
   ShoppingBasketIcon,
   User,
 } from "lucide-react";
-import { ContextMenuItem, ProjectDetailsMenuItem } from "./types";
+import { ProjectDetailsMenuItem } from "./types";
 
 export type ProjectDetailsMenuKey =
   | "details"

@@ -4,15 +4,26 @@ import Button from "./Button";
 import AddProjectScope from "./Modals/AddProjectScope";
 import { useState } from "react";
 import { api } from "@/utils/api";
+import ProjectScopeTable from "./ProjectScopeTable";
+import { checkAll, checkChange } from "./Checkbox";
 
 const ProjectEstimateView: React.FC<ProjectViewProps> = ({ project }) => {
   const [addProjectScopeOpen, setAddProejectScopeOpen] = useState(false);
+  const [checkedIds, setCheckedIds] = useState<string[]>([]);
 
   const {
     data: scopes,
     isLoading,
     error,
   } = api.projectScope.find.useQuery({ projectId: project.id });
+
+  const handleCheckChange = (fileId: string) => {
+    checkChange(fileId, checkedIds, setCheckedIds);
+  };
+
+  const handleCheckAll = (fileIds: string[]) => {
+    checkAll(fileIds, checkedIds, setCheckedIds);
+  };
 
   return (
     <>
@@ -33,7 +44,16 @@ const ProjectEstimateView: React.FC<ProjectViewProps> = ({ project }) => {
           </Button>
         </div>
         <div className="mt-6 flex flex-col gap-y-6">
-          {scopes?.map((scope) => <div>{scope.name}</div>)}
+          <div className="mt-6 hidden md:block">
+            {!!scopes && (
+              <ProjectScopeTable
+                scopes={scopes}
+                checkedIds={checkedIds}
+                onCheckAll={handleCheckAll}
+                onCheckFile={handleCheckChange}
+              />
+            )}
+          </div>
         </div>
       </section>
     </>

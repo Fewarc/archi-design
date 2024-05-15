@@ -3,7 +3,7 @@ import ContextMenu from "./ContextMenu";
 import { ContextMenuItem, DriveFile, ProjectWithFiles } from "@/utils/types";
 import { MoreHorizontal } from "lucide-react";
 import StageFile from "./StageFile";
-import Checkbox from "./Checkbox";
+import Checkbox, { checkAll, checkChange } from "./Checkbox";
 import StageFileTable from "./StageFileTable";
 
 interface ProjectStageSectionProps {
@@ -48,21 +48,11 @@ const ProjectStageSection: React.FC<ProjectStageSectionProps> = ({
   };
 
   const handleCheckChange = (fileId: string) => {
-    if (checkedFiles.includes(fileId)) {
-      setCheckedFiles([...checkedFiles.filter((id) => id !== fileId)]);
-    } else {
-      setCheckedFiles([...checkedFiles, fileId]);
-    }
+    checkChange(fileId, checkedFiles, setCheckedFiles);
   };
 
   const handleCheckAll = (fileIds: string[]) => {
-    if (fileIds.every((id) => checkedFiles.includes(id))) {
-      setCheckedFiles([
-        ...checkedFiles.filter((fileId) => !fileIds.includes(fileId)),
-      ]);
-    } else {
-      setCheckedFiles([...checkedFiles, ...fileIds]);
-    }
+    checkAll(fileIds, checkedFiles, setCheckedFiles);
   };
 
   return (
