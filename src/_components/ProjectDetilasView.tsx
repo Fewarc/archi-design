@@ -1,4 +1,3 @@
-import { deleteProject } from "@/server/api/routers/project/actions/delete";
 import {
   Database,
   MoreHorizontal,
@@ -9,7 +8,6 @@ import {
   AtSign,
   Home,
 } from "lucide-react";
-import { props } from "node_modules/cypress/types/bluebird";
 import Button from "./Button";
 import ContextMenu from "./ContextMenu";
 import AddAdditionalContact from "./Modals/AddAdditionalContact";
@@ -19,7 +17,6 @@ import EditProjectDetials from "./Modals/EditProjectDetails";
 import AdditionalContactCard from "./AdditionalContactCard";
 import ProjectNoteCard from "./ProjectNoteCard";
 import { useMemo, useState } from "react";
-import { Project } from "@prisma/client";
 import {
   useMediaQuery,
   useProjectAvatar,

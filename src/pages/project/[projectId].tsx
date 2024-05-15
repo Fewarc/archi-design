@@ -8,6 +8,7 @@ import { Project } from "@prisma/client";
 import { GetSessionParams } from "next-auth/react";
 import { ReactNode, useState } from "react";
 import ProjectSubmitView from "@/_components/ProjectSubmitView";
+import ProjectEstimateView from "@/_components/ProjectEstimateView";
 
 interface ProjectDetailsProps {
   params: { projectId: string };
@@ -17,6 +18,7 @@ const getProjectView = (project: Project, state: ProjectDetailsMenuKey) => {
   return new Map<ProjectDetailsMenuKey, ReactNode>([
     ["details", <ProjectDetailsView project={project} />],
     ["project_submit", <ProjectSubmitView project={project} />],
+    ["estimate", <ProjectEstimateView project={project} />],
   ]).get(state);
 };
 

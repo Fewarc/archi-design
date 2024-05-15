@@ -1,4 +1,4 @@
-import { ProjectStatus } from "@prisma/client";
+import { ProjectStatus, ProjectScopeCategory } from "@prisma/client";
 import { GetSessionParams, getSession } from "next-auth/react";
 import { z } from "zod";
 
@@ -103,4 +103,13 @@ export const noteSchema = z.object({
 export const addStageSchema = z.object({
   projectId: z.string(),
   name: z.string().min(1, { message: "Pole wymagane." }),
+});
+
+// add project scope
+export const addProjectScopeSchema = z.object({
+  projectId: z.string(),
+  name: z.string(),
+  surface: z.number(),
+  category: z.nativeEnum(ProjectScopeCategory),
+  price: z.number(),
 });

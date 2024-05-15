@@ -46,8 +46,6 @@ const AddProjectNote: React.FC<AddProjectNoteProps> = ({
   const onSubmit: SubmitHandler<AddProjectNoteSchemaType> = (data) =>
     createNote(data);
 
-  console.log(errors);
-
   return (
     <ActionModal
       open={open}
