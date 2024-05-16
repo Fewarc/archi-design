@@ -114,7 +114,7 @@ export const addProjectScopeSchema = z.object({
   price: z.number(),
 });
 
-// adedit project scope
+// edit project scope
 export const projectScopeSchema = z.object({
   id: z.string(),
   projectId: z.string(),
