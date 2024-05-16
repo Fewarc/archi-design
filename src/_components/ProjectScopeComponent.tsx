@@ -28,7 +28,7 @@ const ProjectScopeComponent: React.FC<ProjectScopeProps> = ({
       {
         displayName: "Edutyj",
         key: "edit",
-        onClick: () => null,
+        onClick: () => setScopeToEdit(scope),
       },
     ];
   };

@@ -2,6 +2,7 @@ import { createTRPCRouter, protectedProcedure } from "../../trpc";
 import { createProjectScope, createProjectScopeInput } from "./actions/create";
 import { findProjectScope, findProjectScopeInput } from "./actions/find";
 import { deleteProjectScope, deleteProjectScopeInput } from "./actions/delete";
+import { editProjectScope, editProjectScopeInput } from "./actions/edit";
 
 export const projectScopeRouter = createTRPCRouter({
   create: protectedProcedure
@@ -18,5 +19,10 @@ export const projectScopeRouter = createTRPCRouter({
     .input(deleteProjectScopeInput)
     .mutation(({ input, ctx }) => {
       return deleteProjectScope(input, ctx.db);
+    }),
+  edit: protectedProcedure
+    .input(editProjectScopeInput)
+    .mutation(({ input, ctx }) => {
+      return editProjectScope(input, ctx.db);
     }),
 });

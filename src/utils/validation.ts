@@ -113,3 +113,13 @@ export const addProjectScopeSchema = z.object({
   category: z.nativeEnum(ProjectScopeCategory),
   price: z.number(),
 });
+
+// adedit project scope
+export const projectScopeSchema = z.object({
+  id: z.string(),
+  projectId: z.string(),
+  name: z.string(),
+  surface: z.number(),
+  category: z.nativeEnum(ProjectScopeCategory),
+  price: z.number(),
+});

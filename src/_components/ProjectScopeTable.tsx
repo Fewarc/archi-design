@@ -1,10 +1,9 @@
 import { ProjectScope } from "@prisma/client";
 import Checkbox from "./Checkbox";
-import { ScopeCategories } from "./Modals/AddProjectScope";
 import ContextMenu from "./ContextMenu";
 import { MoreHorizontal } from "lucide-react";
 import { ContextMenuItem } from "@/utils/types";
-import { api } from "@/utils/api";
+import { ScopeCategories } from "@/utils/items";
 
 interface ProjectScopeTableProps {
   scopes: ProjectScope[];
@@ -12,6 +11,7 @@ interface ProjectScopeTableProps {
   onCheckScope: (fileId: string) => void;
   onCheckAll: (fileIds: string[]) => void;
   setScopeToDelete: (scope: ProjectScope) => void;
+  setScopeToEdit: (scope: ProjectScope) => void;
 }
 
 const ProjectScopeTable: React.FC<ProjectScopeTableProps> = ({
@@ -20,6 +20,7 @@ const ProjectScopeTable: React.FC<ProjectScopeTableProps> = ({
   onCheckScope,
   onCheckAll,
   setScopeToDelete,
+  setScopeToEdit,
 }) => {
   const allScopeIds = scopes.map((scope) => scope.id);
 
@@ -33,7 +34,7 @@ const ProjectScopeTable: React.FC<ProjectScopeTableProps> = ({
       {
         displayName: "Edytuj",
         key: "edit",
-        onClick: () => null,
+        onClick: () => setScopeToEdit(scope),
       },
     ];
   };

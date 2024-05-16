@@ -1,33 +1,34 @@
-import { ItemDropdownItem, ModalProps } from "@/utils/types";
+import { ModalProps } from "@/utils/types";
+import { ProjectScope } from "@prisma/client";
 import ActionModal from "../ActionModal";
-import Button from "../Button";
-import { addProjectScopeSchema } from "@/utils/validation";
-import { z } from "zod";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { projectScopeSchema } from "@/utils/validation";
+import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "../Input";
-import { api } from "@/utils/api";
 import ItemDropdown from "../ItemDropdown";
 import { ScopeCategories } from "@/utils/items";
+import Button from "../Button";
+import { api } from "@/utils/api";
+import { useEffect } from "react";
 
-interface AddProjectScopeProps extends ModalProps {
-  projectId: string;
+interface EditProjectScopeProps extends ModalProps {
+  scope: ProjectScope | null;
 }
 
-type AddProjectScopeSchmeaType = z.infer<typeof addProjectScopeSchema>;
+type EditProjectScopeSchemaType = z.infer<typeof projectScopeSchema>;
 
-const AddProjectScope: React.FC<AddProjectScopeProps> = ({
-  projectId,
+const EditProjectScope: React.FC<EditProjectScopeProps> = ({
+  scope,
   open,
   onClose,
 }) => {
   const utils = api.useUtils();
 
-  const { mutate: createScope } = api.projectScope.create.useMutation({
+  const { mutate: editScope } = api.projectScope.edit.useMutation({
     onSuccess: () => {
       utils.projectScope.invalidate();
       onClose();
-      reset();
     },
   });
 
@@ -38,21 +39,25 @@ const AddProjectScope: React.FC<AddProjectScopeProps> = ({
     control,
     reset,
     formState: { errors },
-  } = useForm<AddProjectScopeSchmeaType>({
-    resolver: zodResolver(addProjectScopeSchema),
+  } = useForm<EditProjectScopeSchemaType>({
+    resolver: zodResolver(projectScopeSchema),
     defaultValues: {
-      projectId,
+      ...scope,
     },
   });
 
-  const onSubmit: SubmitHandler<AddProjectScopeSchmeaType> = (data) => {
-    createScope(data);
+  const onSubmit: SubmitHandler<EditProjectScopeSchemaType> = (data) => {
+    editScope(data);
   };
+
+  useEffect(() => {
+    !!scope && reset(scope);
+  }, [scope]);
 
   return (
     <ActionModal
-      title="Dodaj"
-      subtitle="Nowy zakres projektu"
+      title="Edytuj"
+      subtitle={`Zakres "${scope?.name}"`}
       onClose={onClose}
       open={open}
     >
@@ -101,11 +106,18 @@ const AddProjectScope: React.FC<AddProjectScopeProps> = ({
         </div>
         <div className="flex justify-end gap-x-4">
           <Button
+            onClick={() => onClose()}
+            variant="defualt"
+            className="mt-9 w-full rounded-full border-0 bg-archi-purple-light px-5 py-2 text-center font-semibold text-archi-purple shadow-double md:w-fit"
+          >
+            Anuluj
+          </Button>
+          <Button
             type="submit"
             variant="defualt"
             className="mt-9 w-full rounded-full border-0 bg-archi-purple px-5 py-2 text-center font-medium text-white shadow-double md:w-fit"
           >
-            Dodaj
+            Edytuj
           </Button>
         </div>
       </form>
@@ -113,4 +125,4 @@ const AddProjectScope: React.FC<AddProjectScopeProps> = ({
   );
 };
 
-export default AddProjectScope;
+export default EditProjectScope;

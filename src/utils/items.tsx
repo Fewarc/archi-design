@@ -5,7 +5,8 @@ import {
   ShoppingBasketIcon,
   User,
 } from "lucide-react";
-import { ProjectDetailsMenuItem } from "./types";
+import { ItemDropdownItem, ProjectDetailsMenuItem } from "./types";
+import { ProjectScopeCategory } from "@prisma/client";
 
 export type ProjectDetailsMenuKey =
   | "details"
@@ -39,5 +40,16 @@ export const projectDetailsMenuItems: ProjectDetailsMenuItem[] = [
     displayName: "Zakupy",
     key: "shopping_list",
     icon: <ShoppingBasketIcon />,
+  },
+];
+
+export const ScopeCategories: ItemDropdownItem[] = [
+  {
+    displayName: "Koncepcyjny",
+    key: ProjectScopeCategory.CONCEPTUAL,
+  },
+  {
+    displayName: "Kompleksowy",
+    key: ProjectScopeCategory.COMPREHENSIVE,
   },
 ];

@@ -9,10 +9,12 @@ import { checkAll, checkChange } from "./Checkbox";
 import { ProjectScope } from "@prisma/client";
 import DeleteModal from "./Modals/DeleteModal";
 import ProjectScopeComponent from "./ProjectScopeComponent";
+import EditProjectScope from "./Modals/EditProjectScope";
 
 const ProjectEstimateView: React.FC<ProjectViewProps> = ({ project }) => {
   const [addProjectScopeOpen, setAddProejectScopeOpen] = useState(false);
   const [scopeToDelete, setScopeToDelete] = useState<ProjectScope | null>(null);
+  const [scopeToEdit, setScopeToEdit] = useState<ProjectScope | null>(null);
   const [checkedIds, setCheckedIds] = useState<string[]>([]);
 
   const utils = api.useUtils();
@@ -55,6 +57,11 @@ const ProjectEstimateView: React.FC<ProjectViewProps> = ({ project }) => {
         Zakres "{scopeToDelete?.name}" zostanie trwale usunięty ze wszystkich
         kont, które mają do niego dostęp
       </DeleteModal>
+      <EditProjectScope
+        open={!!scopeToEdit}
+        onClose={() => setScopeToEdit(null)}
+        scope={scopeToEdit}
+      />
       <section className="mt-9">
         <div className="flex items-center justify-between md:justify-start md:gap-x-8">
           <div className="flex items-center gap-x-2">
@@ -74,7 +81,7 @@ const ProjectEstimateView: React.FC<ProjectViewProps> = ({ project }) => {
                 checkedIds={checkedIds}
                 handleCheckChange={handleCheckChange}
                 setScopeToDelete={setScopeToDelete}
-                setScopeToEdit={() => null}
+                setScopeToEdit={setScopeToEdit}
               />
             ))
           ) : (
@@ -92,6 +99,7 @@ const ProjectEstimateView: React.FC<ProjectViewProps> = ({ project }) => {
                 onCheckAll={handleCheckAll}
                 onCheckScope={handleCheckChange}
                 setScopeToDelete={setScopeToDelete}
+                setScopeToEdit={setScopeToEdit}
               />
             ) : (
               <div className="text-md mt-2 w-full text-center text-archi-gray-light">
