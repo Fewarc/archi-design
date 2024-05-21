@@ -1,11 +1,7 @@
 import puppeteer, { Page } from "puppeteer";
 
-type ProductProducer = "castorama" | "leroy_merlin" | "ikea";
-const allowedProducers: ProductProducer[] = [
-  "castorama",
-  "leroy_merlin",
-  "ikea",
-];
+type Shop = "castorama" | "leroy_merlin" | "ikea";
+const allowedShops: Shop[] = ["castorama", "leroy_merlin", "ikea"];
 
 interface ProductTemplate {
   url?: string;
@@ -13,7 +9,8 @@ interface ProductTemplate {
   description?: string;
   price?: string;
   imageUrl?: string;
-  producer?: ProductProducer;
+  producer?: string;
+  shop?: Shop;
 }
 
 interface IWebScrapingStrategy {
@@ -27,7 +24,7 @@ class CastoramaStrategy implements IWebScrapingStrategy {
         document.querySelector<HTMLElement>("#product-title")?.innerText;
       // const description = ???
       const price = document.querySelector<HTMLElement>(
-        "[data-test-id='product-primary-price'",
+        "[data-test-id='product-primary-price']",
       )?.innerText;
     });
 
@@ -45,7 +42,7 @@ class IkeaStrategy implements IWebScrapingStrategy {
   }
 }
 
-const scrapingStrategyMap = new Map<ProductProducer, IWebScrapingStrategy>([
+const scrapingStrategyMap = new Map<Shop, IWebScrapingStrategy>([
   ["castorama", new CastoramaStrategy()],
   ["leroy_merlin", new LeroyMerlinStrategy()],
   ["ikea", new IkeaStrategy()],
@@ -57,29 +54,29 @@ class WebScraperService {
   private evaluateStrategy(url: string) {
     const urlRegex = /(?:https?:\/\/)?www\.([^.\/]+)\./;
     const producerMatch = url.match(urlRegex);
-    let producer;
+    let shop;
 
     if (producerMatch && producerMatch[1]) {
-      producer = producerMatch[1];
+      shop = producerMatch[1];
     } else {
       throw new Error(
         "Couldn't evaluate product producer from the provided URL.",
       );
     }
 
-    if (!allowedProducers.includes(producer as ProductProducer)) {
+    if (!allowedShops.includes(shop as Shop)) {
       throw new Error("Unknown product producer.");
     }
 
-    producer = producer as ProductProducer;
+    shop = shop as Shop;
 
-    this.scrapingStrategy = scrapingStrategyMap.get(producer);
+    this.scrapingStrategy = scrapingStrategyMap.get(shop);
 
-    return producer;
+    return shop;
   }
 
   scrapeData = async (url: string) => {
-    const producer = this.evaluateStrategy(url);
+    const shop = this.evaluateStrategy(url);
 
     const browser = await puppeteer.launch({
       headless: false,

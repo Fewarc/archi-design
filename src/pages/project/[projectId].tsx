@@ -9,6 +9,7 @@ import { GetSessionParams } from "next-auth/react";
 import { ReactNode, useState } from "react";
 import ProjectSubmitView from "@/_components/ProjectSubmitView";
 import ProjectEstimateView from "@/_components/ProjectEstimateView";
+import ProjectShoppingView from "@/_components/ProjectShoppingView";
 
 interface ProjectDetailsProps {
   params: { projectId: string };
@@ -19,6 +20,7 @@ const getProjectView = (project: Project, state: ProjectDetailsMenuKey) => {
     ["details", <ProjectDetailsView project={project} />],
     ["project_submit", <ProjectSubmitView project={project} />],
     ["estimate", <ProjectEstimateView project={project} />],
+    ["shopping_list", <ProjectShoppingView project={project} />],
   ]).get(state);
 };
 
