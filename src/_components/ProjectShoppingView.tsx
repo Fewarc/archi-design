@@ -3,6 +3,8 @@ import Button from "./Button";
 import { Project } from "@prisma/client";
 import { api } from "@/utils/api";
 import ScopeShopping from "./ScopeShopping";
+import { useState } from "react";
+import AddProduct from "./Modals/AddProduct";
 
 interface ProjectShoppingViewProps {
   project: Project;

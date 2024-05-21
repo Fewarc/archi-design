@@ -119,4 +119,24 @@ model ProjectScope {
     price     Float
     Project   Project              @relation(fields: [projectId], references: [id], onDelete: Cascade)
     projectId String
+    Product   Product[]
+}
+
+enum Shop {
+    CASTORAMA
+    LEROY_MERLIN
+    IKEA
+}
+
+model Product {
+    id             String       @id @default(cuid()) @map("_id")
+    scope          ProjectScope @relation(fields: [projectScopeId], references: [id], onDelete: Cascade)
+    name           String
+    link           String
+    description    String?
+    price          String?
+    imageUrl       String?
+    producer       String?
+    shop           Shop
+    projectScopeId String
 }

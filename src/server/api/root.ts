@@ -6,6 +6,7 @@ import { projectStageRouter } from "./routers/projectStage/router";
 import { fileRouter } from "./routers/file/router";
 import { userRouter } from "./routers/user/router";
 import { projectScopeRouter } from "./routers/projectScope/router";
+import { productRouter } from "./routers/product/router";
 
 /**
  * This is the primary router for your server.
@@ -20,6 +21,7 @@ export const appRouter = createTRPCRouter({
   file: fileRouter,
   user: userRouter,
   projectScope: projectScopeRouter,
+  product: productRouter,
 });
 
 // export type definition of API

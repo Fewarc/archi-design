@@ -1,7 +1,7 @@
+import { Shop } from "@prisma/client";
 import puppeteer, { Page } from "puppeteer";
 
-type Shop = "castorama" | "leroy_merlin" | "ikea";
-const allowedShops: Shop[] = ["castorama", "leroy_merlin", "ikea"];
+const allowedShops: Shop[] = ["CASTORAMA", "LEROY_MERLIN", "IKEA"];
 
 interface ProductTemplate {
   url?: string;
@@ -43,9 +43,9 @@ class IkeaStrategy implements IWebScrapingStrategy {
 }
 
 const scrapingStrategyMap = new Map<Shop, IWebScrapingStrategy>([
-  ["castorama", new CastoramaStrategy()],
-  ["leroy_merlin", new LeroyMerlinStrategy()],
-  ["ikea", new IkeaStrategy()],
+  ["CASTORAMA", new CastoramaStrategy()],
+  ["LEROY_MERLIN", new LeroyMerlinStrategy()],
+  ["IKEA", new IkeaStrategy()],
 ]);
 
 class WebScraperService {

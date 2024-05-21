@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { RefObject, useEffect, useMemo, useState } from "react";
+import { RefObject, useEffect, useMemo, useRef, useState } from "react";
 import { api } from "./api";
 import { useRouter } from "next/router";
 import { createAvatar } from "@dicebear/core";
@@ -218,4 +218,25 @@ export const useUploadStageFiles = (
     loading,
     resetUploadStatus,
   };
+};
+
+/**
+ * hook for using debounce
+ *
+ * @param func function to be called after wait
+ * @param wait wait in ms
+ * @returns callable debounce function
+ */
+export const useDebounce = <T extends (...args: any) => any>(
+  func: T,
+  wait: number,
+) => {
+  let timeoutID = useRef(setTimeout(() => null, 0));
+
+  const debounced = (...args: any) => {
+    clearTimeout(timeoutID.current);
+    timeoutID.current = setTimeout(() => func(...args), wait);
+  };
+
+  return debounced;
 };

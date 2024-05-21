@@ -1,4 +1,4 @@
-import { ProjectStatus, ProjectScopeCategory } from "@prisma/client";
+import { ProjectStatus, ProjectScopeCategory, Shop } from "@prisma/client";
 import { GetSessionParams, getSession } from "next-auth/react";
 import { z } from "zod";
 
@@ -122,4 +122,17 @@ export const projectScopeSchema = z.object({
   surface: z.number(),
   category: z.nativeEnum(ProjectScopeCategory),
   price: z.number(),
+});
+
+// new product
+export const addProductSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  description: z.string().optional(),
+  price: z.string().optional(),
+  imageUrl: z.string().optional(),
+  producer: z.string().optional(),
+  projectScopeId: z.string(),
+  link: z.string(),
+  shop: z.nativeEnum(Shop),
 });
