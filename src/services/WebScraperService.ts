@@ -1,7 +1,7 @@
 import { Shop } from "@prisma/client";
 import puppeteer, { Page } from "puppeteer";
 
-const allowedShops: Shop[] = ["CASTORAMA", "LEROY_MERLIN", "IKEA"];
+const allowedShops: Shop[] = ["castorama", "leroymerlin", "ikea"];
 
 interface ProductTemplate {
   url?: string;
@@ -14,42 +14,43 @@ interface ProductTemplate {
 }
 
 interface IWebScrapingStrategy {
-  getScrapedData(page: Page): ProductTemplate;
+  getScrapedData(page: Page): Promise<ProductTemplate>;
 }
 
 class CastoramaStrategy implements IWebScrapingStrategy {
-  getScrapedData(page: Page): ProductTemplate {
-    const product = page.evaluate(() => {
+  async getScrapedData(page: Page): Promise<ProductTemplate> {
+    const product = await page.evaluate(() => {
       const name =
         document.querySelector<HTMLElement>("#product-title")?.innerText;
       // const description = ???
       const price = document.querySelector<HTMLElement>(
         "[data-test-id='product-primary-price']",
       )?.innerText;
+      return { name, price };
     });
 
-    return {};
+    return product;
   }
 }
-class LeroyMerlinStrategy implements IWebScrapingStrategy {
-  getScrapedData(page: Page): ProductTemplate {
-    return {};
-  }
-}
-class IkeaStrategy implements IWebScrapingStrategy {
-  getScrapedData(page: Page): ProductTemplate {
-    return {};
-  }
-}
+// class LeroyMerlinStrategy implements IWebScrapingStrategy {
+//   getScrapedData(page: Page): Promise<ProductTemplate> {
+
+//   }
+// }
+// class IkeaStrategy implements IWebScrapingStrategy {
+//   getScrapedData(page: Page): Promise<ProductTemplate> {
+
+//   }
+// }
 
 const scrapingStrategyMap = new Map<Shop, IWebScrapingStrategy>([
-  ["CASTORAMA", new CastoramaStrategy()],
-  ["LEROY_MERLIN", new LeroyMerlinStrategy()],
-  ["IKEA", new IkeaStrategy()],
+  ["castorama", new CastoramaStrategy()],
+  // ["LEROY_MERLIN", new LeroyMerlinStrategy()],
+  // ["IKEA", new IkeaStrategy()],
 ]);
 
 class WebScraperService {
-  scrapingStrategy?: IWebScrapingStrategy;
+  private scrapingStrategy?: IWebScrapingStrategy;
 
   private evaluateStrategy(url: string) {
     const urlRegex = /(?:https?:\/\/)?www\.([^.\/]+)\./;
@@ -89,11 +90,11 @@ class WebScraperService {
       waitUntil: "domcontentloaded",
     });
 
-    const productData = this.scrapingStrategy?.getScrapedData(page);
+    const productData = await this.scrapingStrategy?.getScrapedData(page);
 
     await browser.close();
 
-    return productData;
+    return { shop, ...productData };
   };
 }
 

@@ -50,7 +50,9 @@ const AddProduct: React.FC<AddProductProps> = ({ scope, open, onClose }) => {
   return (
     <ActionModal
       open={open}
-      onClose={onClose}
+      onClose={() => {
+        onClose();
+      }}
       title="Dodaj"
       subtitle={`Produkt w pomieszczeniu "${scope.name}"`}
     >
@@ -66,6 +68,13 @@ const AddProduct: React.FC<AddProductProps> = ({ scope, open, onClose }) => {
             error={errors?.link?.message}
             {...register("link")}
             onChange={(e) => debouncedScrape(e.target.value)}
+          />
+          <Input
+            variant="border_label"
+            placeholder=""
+            label={<div className="text-xs font-semibold">Nazwa</div>}
+            error={errors?.name?.message}
+            {...register("name")}
           />
           <Input
             variant="border_label"

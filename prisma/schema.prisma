@@ -123,9 +123,9 @@ model ProjectScope {
 }
 
 enum Shop {
-    CASTORAMA
-    LEROY_MERLIN
-    IKEA
+    castorama
+    leroymerlin
+    ikea
 }
 
 model Product {
