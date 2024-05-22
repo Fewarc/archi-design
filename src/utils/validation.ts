@@ -133,6 +133,7 @@ export const addProductSchema = z.object({
   imageUrl: z.string().optional(),
   producer: z.string().optional(),
   projectScopeId: z.string(),
+  color: z.string().optional(),
   link: z.string(),
   shop: z.nativeEnum(Shop),
 });

@@ -6,10 +6,10 @@ const allowedShops: Shop[] = ["castorama", "leroymerlin", "ikea"];
 interface ProductTemplate {
   url?: string;
   name?: string;
-  description?: string;
   price?: string;
   imageUrl?: string;
   producer?: string;
+  color?: string;
   shop?: Shop;
 }
 
@@ -22,16 +22,37 @@ class CastoramaStrategy implements IWebScrapingStrategy {
     const product = await page.evaluate(() => {
       const name =
         document.querySelector<HTMLElement>("#product-title")?.innerText;
-      // const description = ???
       const price = document.querySelector<HTMLElement>(
         "[data-test-id='product-primary-price']",
       )?.innerText;
-      return { name, price };
+      const imageUrl = document
+        .querySelector<HTMLElement>("[data-test-id='picture-wrapper']")
+        ?.querySelector("img")?.src;
+
+      let color;
+      let producer;
+
+      document.querySelectorAll("._16e35652").forEach((innerElement) => {
+        if (innerElement.querySelector("th")?.innerText === "Kolor") {
+          color = innerElement.querySelector<HTMLElement>(
+            "[data-test-id='product-spec-value']",
+          )?.innerText;
+        }
+
+        if (innerElement.querySelector("th")?.innerText === "Marka") {
+          producer = innerElement.querySelector<HTMLElement>(
+            "[data-test-id='product-spec-value']",
+          )?.innerText;
+        }
+      });
+
+      return { name, price, imageUrl, color, producer };
     });
 
     return product;
   }
 }
+
 // class LeroyMerlinStrategy implements IWebScrapingStrategy {
 //   getScrapedData(page: Page): Promise<ProductTemplate> {
 

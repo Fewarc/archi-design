@@ -21,11 +21,20 @@ type AddProductSchemaType = z.infer<typeof addProductSchema>;
 const AddProduct: React.FC<AddProductProps> = ({ scope, open, onClose }) => {
   const [link, setLink] = useState<string | null>(null);
 
-  const debouncedScrape = useDebounce((url: string) => setLink(url), 1000);
+  const debouncedScrape = useDebounce((url: string) => {
+    if (url !== link) {
+      setLink(url);
+    }
+  }, 1000);
 
-  const { data: scrapedData, isLoading } = api.product.scrape.useQuery({
-    url: link,
-  });
+  const { data: scrapedData, isLoading } = api.product.scrape.useQuery(
+    {
+      url: link,
+    },
+    {
+      refetchOnWindowFocus: false,
+    },
+  );
 
   const {
     register,
@@ -45,7 +54,7 @@ const AddProduct: React.FC<AddProductProps> = ({ scope, open, onClose }) => {
     if (scrapedData) {
       reset(scrapedData);
     }
-  }, [scrapedData]);
+  }, [JSON.stringify(scrapedData)]);
 
   return (
     <ActionModal
@@ -97,22 +106,12 @@ const AddProduct: React.FC<AddProductProps> = ({ scope, open, onClose }) => {
             error={errors?.producer?.message}
             {...register("producer")}
           />
-          <Controller
-            name="description"
-            control={control}
-            defaultValue=""
-            render={({ field }) => (
-              <TextArea
-                variant="border_label"
-                placeholder="Dodatkowe dane o produkcie"
-                label={
-                  <div className="text-xs font-semibold !leading-[6px]">
-                    Opis
-                  </div>
-                }
-                {...field}
-              />
-            )}
+          <Input
+            variant="border_label"
+            placeholder=""
+            label={<div className="text-xs font-semibold">Kolor</div>}
+            error={errors?.color?.message}
+            {...register("color")}
           />
         </div>
         <div className="flex justify-end gap-x-4">

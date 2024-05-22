@@ -133,10 +133,10 @@ model Product {
     scope          ProjectScope @relation(fields: [projectScopeId], references: [id], onDelete: Cascade)
     name           String
     link           String
-    description    String?
     price          String?
     imageUrl       String?
     producer       String?
+    color          String?
     shop           Shop
     projectScopeId String
 }
