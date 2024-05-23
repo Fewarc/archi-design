@@ -30,7 +30,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     const [showPassword, setShowPassword] = useState<boolean>(false);
 
     return (
-      <div>
+      <>
         <div
           className={cn(
             "flex h-14 border border-gray-500",
@@ -91,7 +91,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             </div>
           </div>
         )}
-      </div>
+      </>
     );
   },
 );

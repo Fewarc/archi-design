@@ -1,4 +1,9 @@
-import { ProjectStatus, ProjectScopeCategory, Shop } from "@prisma/client";
+import {
+  ProjectStatus,
+  ProjectScopeCategory,
+  Shop,
+  ProductType,
+} from "@prisma/client";
 import { GetSessionParams, getSession } from "next-auth/react";
 import { z } from "zod";
 
@@ -135,4 +140,6 @@ export const addProductSchema = z.object({
   color: z.string().optional(),
   link: z.string(),
   shop: z.nativeEnum(Shop),
+  type: z.nativeEnum(ProductType),
+  metersOrPieces: z.number(),
 });

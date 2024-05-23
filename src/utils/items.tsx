@@ -6,7 +6,7 @@ import {
   User,
 } from "lucide-react";
 import { ItemDropdownItem, ProjectDetailsMenuItem } from "./types";
-import { ProjectScopeCategory } from "@prisma/client";
+import { ProductType, ProjectScopeCategory } from "@prisma/client";
 
 export type ProjectDetailsMenuKey =
   | "details"
@@ -51,5 +51,16 @@ export const ScopeCategories: ItemDropdownItem[] = [
   {
     displayName: "Kompleksowy",
     key: ProjectScopeCategory.COMPREHENSIVE,
+  },
+];
+
+export const ProductTypeItems: ItemDropdownItem[] = [
+  {
+    displayName: "Sztuki",
+    key: ProductType.PIECE,
+  },
+  {
+    displayName: "Metry kwadratowe",
+    key: ProductType.METERS,
   },
 ];

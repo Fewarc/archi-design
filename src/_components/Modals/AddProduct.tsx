@@ -1,5 +1,5 @@
 import { ModalProps } from "@/utils/types";
-import { ProjectScope } from "@prisma/client";
+import { ProductType, ProjectScope } from "@prisma/client";
 import ActionModal from "../ActionModal";
 import { z } from "zod";
 import { addProductSchema } from "@/utils/validation";
@@ -11,6 +11,8 @@ import Button from "../Button";
 import { useDebounce } from "@/utils/hooks";
 import { api } from "@/utils/api";
 import { useEffect, useState } from "react";
+import ItemDropdown from "../ItemDropdown";
+import { ProductTypeItems } from "@/utils/items";
 
 interface AddProductProps extends ModalProps {
   scope: ProjectScope;
@@ -20,6 +22,7 @@ type AddProductSchemaType = z.infer<typeof addProductSchema>;
 
 const AddProduct: React.FC<AddProductProps> = ({ scope, open, onClose }) => {
   const [link, setLink] = useState<string | null>(null);
+  const [productType, setProductType] = useState<ProductType>("PIECE");
 
   const debouncedScrape = useDebounce((url: string) => {
     if (url !== link) {
@@ -35,6 +38,7 @@ const AddProduct: React.FC<AddProductProps> = ({ scope, open, onClose }) => {
     },
     {
       refetchOnWindowFocus: false,
+      enabled: open,
     },
   );
 
@@ -42,19 +46,20 @@ const AddProduct: React.FC<AddProductProps> = ({ scope, open, onClose }) => {
     onSuccess: () => {
       utils.product.invalidate();
       onClose();
+      setProductType("PIECE");
+      setLink(null);
     },
   });
 
   const {
     register,
     handleSubmit,
-    watch,
     control,
     formState: { errors },
     reset,
   } = useForm<AddProductSchemaType>({
     resolver: zodResolver(addProductSchema),
-    defaultValues: { projectScopeId: scope.id },
+    defaultValues: { projectScopeId: scope.id, type: "PIECE" },
   });
 
   const onSubmit: SubmitHandler<AddProductSchemaType> = (data) =>
@@ -100,22 +105,6 @@ const AddProduct: React.FC<AddProductProps> = ({ scope, open, onClose }) => {
           <Input
             variant="border_label"
             placeholder=""
-            label={<div className="text-xs font-semibold">Cena</div>}
-            error={errors?.price?.message}
-            {...register("price")}
-            disabled={isLoading}
-          />
-          <Input
-            variant="border_label"
-            placeholder=""
-            label={<div className="text-xs font-semibold">Link do zdjęcia</div>}
-            error={errors?.imageUrl?.message}
-            {...register("imageUrl")}
-            disabled={isLoading}
-          />
-          <Input
-            variant="border_label"
-            placeholder=""
             label={<div className="text-xs font-semibold">Producent</div>}
             error={errors?.producer?.message}
             {...register("producer")}
@@ -129,6 +118,57 @@ const AddProduct: React.FC<AddProductProps> = ({ scope, open, onClose }) => {
             {...register("color")}
             disabled={isLoading}
           />
+          <Input
+            variant="border_label"
+            placeholder=""
+            label={<div className="text-xs font-semibold">Link do zdjęcia</div>}
+            error={errors?.imageUrl?.message}
+            {...register("imageUrl")}
+            disabled={isLoading}
+          />
+          <Input
+            variant="border_label"
+            placeholder=""
+            label={<div className="text-xs font-semibold">Cena</div>}
+            error={errors?.price?.message}
+            {...register("price")}
+            disabled={isLoading}
+          />
+          <div className="flex w-full gap-x-4">
+            <Controller
+              name="type"
+              control={control}
+              defaultValue="PIECE"
+              render={({ field }) => (
+                <ItemDropdown
+                  items={ProductTypeItems}
+                  handleChange={(item) => {
+                    field.onChange(item.key);
+                    setProductType(item.key as ProductType);
+                  }}
+                  variant="border"
+                  {...field}
+                  disabled={isLoading}
+                  className="w-full"
+                  defaultValue="PIECE"
+                />
+              )}
+            />
+            <Input
+              variant="border_label"
+              placeholder=""
+              label={
+                <div className="text-xs font-semibold">
+                  {productType === "METERS" ? "Metry" : "Ilość"}
+                </div>
+              }
+              error={errors?.metersOrPieces?.message}
+              {...register("metersOrPieces", { valueAsNumber: true })}
+              disabled={isLoading}
+              className="w-full"
+              type="number"
+            />
+          </div>
         </div>
         <div className="flex justify-end gap-x-4">
           <Button
