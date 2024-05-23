@@ -25,7 +25,9 @@ const AddProduct: React.FC<AddProductProps> = ({ scope, open, onClose }) => {
     if (url !== link) {
       setLink(url);
     }
-  }, 1000);
+  }, 500);
+
+  const utils = api.useUtils();
 
   const { data: scrapedData, isLoading } = api.product.scrape.useQuery(
     {
@@ -35,6 +37,13 @@ const AddProduct: React.FC<AddProductProps> = ({ scope, open, onClose }) => {
       refetchOnWindowFocus: false,
     },
   );
+
+  const { mutate: createProduct } = api.product.create.useMutation({
+    onSuccess: () => {
+      utils.product.invalidate();
+      onClose();
+    },
+  });
 
   const {
     register,
@@ -48,11 +57,12 @@ const AddProduct: React.FC<AddProductProps> = ({ scope, open, onClose }) => {
     defaultValues: { projectScopeId: scope.id },
   });
 
-  const onSubmit: SubmitHandler<AddProductSchemaType> = (data) => null;
+  const onSubmit: SubmitHandler<AddProductSchemaType> = (data) =>
+    createProduct(data);
 
   useEffect(() => {
     if (scrapedData) {
-      reset(scrapedData);
+      reset({ projectScopeId: scope.id, ...scrapedData });
     }
   }, [JSON.stringify(scrapedData)]);
 
@@ -77,6 +87,7 @@ const AddProduct: React.FC<AddProductProps> = ({ scope, open, onClose }) => {
             error={errors?.link?.message}
             {...register("link")}
             onChange={(e) => debouncedScrape(e.target.value)}
+            disabled={isLoading}
           />
           <Input
             variant="border_label"
@@ -84,6 +95,7 @@ const AddProduct: React.FC<AddProductProps> = ({ scope, open, onClose }) => {
             label={<div className="text-xs font-semibold">Nazwa</div>}
             error={errors?.name?.message}
             {...register("name")}
+            disabled={isLoading}
           />
           <Input
             variant="border_label"
@@ -91,6 +103,7 @@ const AddProduct: React.FC<AddProductProps> = ({ scope, open, onClose }) => {
             label={<div className="text-xs font-semibold">Cena</div>}
             error={errors?.price?.message}
             {...register("price")}
+            disabled={isLoading}
           />
           <Input
             variant="border_label"
@@ -98,6 +111,7 @@ const AddProduct: React.FC<AddProductProps> = ({ scope, open, onClose }) => {
             label={<div className="text-xs font-semibold">Link do zdjęcia</div>}
             error={errors?.imageUrl?.message}
             {...register("imageUrl")}
+            disabled={isLoading}
           />
           <Input
             variant="border_label"
@@ -105,6 +119,7 @@ const AddProduct: React.FC<AddProductProps> = ({ scope, open, onClose }) => {
             label={<div className="text-xs font-semibold">Producent</div>}
             error={errors?.producer?.message}
             {...register("producer")}
+            disabled={isLoading}
           />
           <Input
             variant="border_label"
@@ -112,6 +127,7 @@ const AddProduct: React.FC<AddProductProps> = ({ scope, open, onClose }) => {
             label={<div className="text-xs font-semibold">Kolor</div>}
             error={errors?.color?.message}
             {...register("color")}
+            disabled={isLoading}
           />
         </div>
         <div className="flex justify-end gap-x-4">

@@ -3,10 +3,8 @@ import Button from "./Button";
 import { Plus } from "lucide-react";
 import AddProduct from "./Modals/AddProduct";
 import { useState } from "react";
-import { addProductSchema } from "@/utils/validation";
-import { z } from "zod";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { api } from "@/utils/api";
+import ProductCard from "./ProductCard";
 
 interface ScopeShoppingProps {
   scope: ProjectScope;
@@ -14,6 +12,8 @@ interface ScopeShoppingProps {
 
 const ScopeShopping: React.FC<ScopeShoppingProps> = ({ scope }) => {
   const [addProductOpen, setAddProductOpen] = useState(false);
+
+  const { data: products } = api.product.find.useQuery({ scopeId: scope.id });
 
   return (
     <>
@@ -32,6 +32,15 @@ const ScopeShopping: React.FC<ScopeShoppingProps> = ({ scope }) => {
           <Plus />
         </Button>
       </div>
+      {!!products?.length ? (
+        <div className="flex flex-col gap-y-2">
+          {products?.map((product) => <ProductCard product={product} />)}
+        </div>
+      ) : (
+        <div className="text-md mt-2 w-full text-center text-archi-gray-light">
+          Brak produktów w tym pomieszczeniu
+        </div>
+      )}
     </>
   );
 };

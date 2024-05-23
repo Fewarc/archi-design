@@ -126,7 +126,6 @@ export const projectScopeSchema = z.object({
 
 // new product
 export const addProductSchema = z.object({
-  id: z.string(),
   name: z.string(),
   description: z.string().optional(),
   price: z.string().optional(),
