@@ -5,12 +5,36 @@ import {
 } from "@/utils/stringUtils";
 import { Product } from "@prisma/client";
 import Image from "next/image";
+import { MoreVertical } from "lucide-react";
+import { ContextMenuItem } from "@/utils/types";
+import { useMemo } from "react";
+import ContextMenu from "./ContextMenu";
 
 interface ProductCardProps {
   product: Product;
+  setProductToDelete: (product: Product) => void;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+const ProductCard: React.FC<ProductCardProps> = ({
+  product,
+  setProductToDelete,
+}) => {
+  const productContextMenuItems: ContextMenuItem[] = useMemo(
+    () => [
+      {
+        displayName: "Edytuj",
+        key: "edit",
+        onClick: () => null,
+      },
+      {
+        displayName: "Usuń",
+        key: "delete",
+        onClick: () => setProductToDelete(product),
+      },
+    ],
+    [],
+  );
+
   return (
     <div className="flex border">
       <div className="p-3">
@@ -28,7 +52,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           {product.name}
         </div>
         <div className="grid grid-cols-12 content-center">
-          <div className="col-span-3 flex h-full flex-col justify-center gap-y-2">
+          <div className="col-span-4 flex h-full flex-col justify-center gap-y-2">
             <div className="flex flex-col">
               <div className="text-base font-semibold leading-[18px]">
                 {product.color}
@@ -77,6 +101,16 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+      <div className="mr-2 flex items-center">
+        <div className="flex justify-end gap-x-2">
+          {/* <Button onClick={() => null} variant="icon">
+                <Trash />
+              </Button> */}
+          <ContextMenu menuItems={productContextMenuItems}>
+            <MoreVertical />
+          </ContextMenu>
         </div>
       </div>
     </div>

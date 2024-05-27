@@ -6,7 +6,6 @@ import { addProductSchema } from "@/utils/validation";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "../Input";
-import TextArea from "../TextArea";
 import Button from "../Button";
 import { useDebounce } from "@/utils/hooks";
 import { api } from "@/utils/api";
