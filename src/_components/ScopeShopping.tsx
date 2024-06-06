@@ -6,6 +6,7 @@ import { useState } from "react";
 import { api } from "@/utils/api";
 import ProductCard from "./ProductCard";
 import DeleteModal from "./Modals/DeleteModal";
+import EditProduct from "./Modals/EditProduct";
 
 interface ScopeShoppingProps {
   scope: ProjectScope;
@@ -34,6 +35,11 @@ const ScopeShopping: React.FC<ScopeShoppingProps> = ({ scope }) => {
         open={addProductOpen}
         onClose={() => setAddProductOpen(false)}
       />
+      <EditProduct
+        open={!!productToEdit}
+        onClose={() => setProductToEdit(null)}
+        product={productToEdit!}
+      />
       <DeleteModal
         onClose={() => setProductToDelete(null)}
         open={!!productToDelete}
@@ -59,6 +65,7 @@ const ScopeShopping: React.FC<ScopeShoppingProps> = ({ scope }) => {
             <ProductCard
               product={product}
               setProductToDelete={setProductToDelete}
+              setProductToEdit={setProductToEdit}
             />
           ))}
         </div>

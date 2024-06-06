@@ -13,18 +13,20 @@ import ContextMenu from "./ContextMenu";
 interface ProductCardProps {
   product: Product;
   setProductToDelete: (product: Product) => void;
+  setProductToEdit: (product: Product) => void;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({
   product,
   setProductToDelete,
+  setProductToEdit,
 }) => {
   const productContextMenuItems: ContextMenuItem[] = useMemo(
     () => [
       {
         displayName: "Edytuj",
         key: "edit",
-        onClick: () => null,
+        onClick: () => setProductToEdit(product),
       },
       {
         displayName: "Usuń",

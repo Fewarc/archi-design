@@ -7,6 +7,7 @@ import {
 import { createProduct, createProductInput } from "./actions/create";
 import { findProducts, findProductsSchema } from "./actions/find";
 import { deleteProduct, deleteProductInput } from "./actions/delete";
+import { editProductInput, editProduct } from "./actions/edit";
 
 export const productRouter = createTRPCRouter({
   scrape: protectedProcedure
@@ -26,5 +27,10 @@ export const productRouter = createTRPCRouter({
     .input(deleteProductInput)
     .mutation(({ input, ctx }) => {
       return deleteProduct(input, ctx.db);
+    }),
+  edit: protectedProcedure
+    .input(editProductInput)
+    .mutation(({ input, ctx }) => {
+      return editProduct(input, ctx.db);
     }),
 });

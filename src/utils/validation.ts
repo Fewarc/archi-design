@@ -132,7 +132,6 @@ export const projectScopeSchema = z.object({
 // new product
 export const addProductSchema = z.object({
   name: z.string(),
-  description: z.string().optional(),
   price: z.string().optional(),
   imageUrl: z.string().optional(),
   producer: z.string().optional(),
@@ -142,4 +141,19 @@ export const addProductSchema = z.object({
   shop: z.nativeEnum(Shop),
   type: z.nativeEnum(ProductType),
   metersOrPieces: z.number(),
+});
+
+// product
+export const productSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  price: z.string().nullable(),
+  imageUrl: z.string().nullable(),
+  producer: z.string().nullable(),
+  projectScopeId: z.string(),
+  color: z.string().nullable(),
+  link: z.string(),
+  shop: z.nativeEnum(Shop),
+  type: z.nativeEnum(ProductType),
+  metersOrPieces: z.number().nullable(),
 });
